@@ -4,6 +4,7 @@ import vue from '@vitejs/plugin-vue'
 import svgLoader from 'vite-svg-loader'
 import ViteComponents, { ElementPlusResolver } from 'vite-plugin-components'
 
+
 // 路径查找
 const pathResolve = (dir: string): string => {
     return resolve(__dirname, dir)
