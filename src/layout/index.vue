@@ -1,32 +1,43 @@
 <template>
     <!-- <div :class="[set.classes]"> -->
-    <div>
+    <main :class="['app-main', set.classes]">
         <Vertical />
         <div class="main-container">
             <AppMain />
         </div>
-    </div>
+    </main>
 </template>
 
 <script lang="ts" setup>
 import { ref, reactive, computed } from 'vue'
 import Vertical from './components/vertical.vue'
 import AppMain from './components/app-main.vue'
+import { useLayoutStoreHook } from '@/store/modules/layout'
+import { setType } from './types'
 
-type setType = {
-    classes: {
-        hideSidebar: boolean
-        openSidebar: boolean
-    }
+const set: setType = reactive({
+    sidebar: computed(() => {
+        return useLayoutStoreHook().sidebar
+    }),
+    classes: computed(() => {
+        return {
+            hideSidebar: !set.sidebar.opened,
+            openSidebar: set.sidebar.opened,
+        }
+    }),
+})
+
+function setTheme(layoutModel: string) {
+    window.document.body.setAttribute('layout', layoutModel)
+    // instance.$storage.layout = {
+    //     layout: `${layoutModel}`,
+    //     theme: instance.$storage.layout?.theme,
+    //     darkMode: instance.$storage.layout?.darkMode,
+    //     sidebarStatus: instance.$storage.layout?.sidebarStatus,
+    //     epThemeColor: instance.$storage.layout?.epThemeColor,
+    // }
 }
-// const set: setType = reactive({
-//     classes: computed(() => {
-//         return {
-//             hideSidebar: isCollapse.value,
-//             openSidebar: !isCollapse.value,
-//         }
-//     }),
-// })
+setTheme('vertical')
 </script>
 
 <style lang="scss" scoped>

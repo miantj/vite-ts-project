@@ -1,11 +1,11 @@
-// import { store } from '@/store'
+import { store } from '@/store'
 import { layoutType } from '../types'
 import { defineStore } from 'pinia'
 import { getConfig } from '@/config'
 // import { storageLocal } from '/@/utils/storage'
 // import { deviceDetection } from '/@/utils/deviceDetection'
 
-export const useAppStore = defineStore({
+export const useLayoutStore = defineStore({
     id: 'pure-app',
     state: (): layoutType => ({
         sidebar: {
@@ -35,6 +35,6 @@ export const useAppStore = defineStore({
     },
 })
 
-export function useAppStoreHook() {
-    return useAppStore()
+export function useLayoutStoreHook() {
+    return useLayoutStore(store)
 }

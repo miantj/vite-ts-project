@@ -1,19 +1,25 @@
 <template>
-    <main class="app-main">
-        <el-icon><location /></el-icon>
-        <el-input v-model="input" placeholder="Please input" />
-        <el-rate v-model="value1"></el-rate>
-        <el-time-picker v-model="value2" placeholder="Arbitrary time"> </el-time-picker>
+    <section>
+        <!-- <Navbar /> -->
 
         <!-- <router-view /> -->
-    </main>
+    </section>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, reactive, computed } from 'vue'
+import { useLayoutStoreHook } from '@/store/modules/layout'
+import Navbar from './navbar/inndex.vue'
+import { warn } from 'console'
+
 const input = ref('')
 const value1 = ref(null)
 const value2 = ref()
+
+function open() {
+    useLayoutStoreHook().toggleSideBar(!useLayoutStoreHook().sidebar.opened)
+    console.warn(useLayoutStoreHook().sidebar.opened)
+}
 </script>
 
 <style scoped>
