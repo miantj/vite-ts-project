@@ -20,6 +20,7 @@ module.exports = {
          *  "warn" -> 1 开启警告规则
          *  "error" -> 2 开启错误规则
          */
+        'end-of-line': 'auto',
         'no-console': 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
         'no-unreachable': 2, //不能有无法执行的代码

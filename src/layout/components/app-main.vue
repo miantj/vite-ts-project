@@ -1,5 +1,6 @@
 <template>
     <main class="app-main">
+        <el-icon><location /></el-icon>
         <el-input v-model="input" placeholder="Please input" />
         <el-rate v-model="value1"></el-rate>
         <el-time-picker v-model="value2" placeholder="Arbitrary time"> </el-time-picker>

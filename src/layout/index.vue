@@ -1,4 +1,5 @@
 <template>
+    <!-- <div :class="[set.classes]"> -->
     <div>
         <Vertical />
         <div class="main-container">
@@ -8,9 +9,24 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import Vertical from './components/vertical.vue'
 import AppMain from './components/app-main.vue'
+
+type setType = {
+    classes: {
+        hideSidebar: boolean
+        openSidebar: boolean
+    }
+}
+// const set: setType = reactive({
+//     classes: computed(() => {
+//         return {
+//             hideSidebar: isCollapse.value,
+//             openSidebar: !isCollapse.value,
+//         }
+//     }),
+// })
 </script>
 
 <style lang="scss" scoped>
