@@ -44,7 +44,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useNav } from '../hook/nav'
-import { Location, Document, Menu as IconMenu, Setting } from '@element-plus/icons-vue'
+import { Menu as IconMenu } from '@element-plus/icons-vue'
 
 const { isCollapse } = useNav()
 
