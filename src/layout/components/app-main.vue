@@ -1,6 +1,6 @@
 <template>
     <section>
-        <!-- <Navbar /> -->
+        <Navbar />
 
         <!-- <router-view /> -->
     </section>
@@ -8,18 +8,13 @@
 
 <script lang="ts" setup>
 import { ref, reactive, computed } from 'vue'
-import { useLayoutStoreHook } from '@/store/modules/layout'
-import Navbar from './navbar/inndex.vue'
+
+import Navbar from './navbar/index.vue'
 import { warn } from 'console'
 
 const input = ref('')
 const value1 = ref(null)
 const value2 = ref()
-
-function open() {
-    useLayoutStoreHook().toggleSideBar(!useLayoutStoreHook().sidebar.opened)
-    console.warn(useLayoutStoreHook().sidebar.opened)
-}
 </script>
 
 <style scoped>

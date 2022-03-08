@@ -7,7 +7,11 @@ import './style/index.scss'
 import * as ElIconModules from '@element-plus/icons-vue'
 const app = createApp(App)
 
+// 全局注册IconFont图标库
+import { IconFont } from './config/iconfont'
+
 // 全局注册图标库
+app.component('IconFont', IconFont)
 for (const iconName in ElIconModules) {
     if (Reflect.has(ElIconModules, iconName)) {
         const item = ElIconModules[iconName]
@@ -16,6 +20,6 @@ for (const iconName in ElIconModules) {
 }
 
 app.use(router)
-// setupStore(app) 
+// setupStore(app)
 await router.isReady()
 app.mount('#app')

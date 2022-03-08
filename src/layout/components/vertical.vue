@@ -43,12 +43,10 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { useLayoutStoreHook } from '@/store/modules/layout'
+import { useNav } from '../hook/nav'
 import { Location, Document, Menu as IconMenu, Setting } from '@element-plus/icons-vue'
 
-const isCollapse = computed(() => {
-    return !useLayoutStoreHook().getSidebarStatus
-})
+const { isCollapse } = useNav()
 
 const handleOpen = (key: string, keyPath: string[]) => {
     console.log(key, keyPath)

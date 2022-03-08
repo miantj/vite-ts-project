@@ -9,7 +9,7 @@ export const useLayoutStore = defineStore({
     id: 'pure-app',
     state: (): layoutType => ({
         sidebar: {
-            opened: false,
+            opened: true,
             withoutAnimation: false,
             isClickHamburger: false,
         },
