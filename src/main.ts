@@ -8,7 +8,6 @@ import { useIconFont } from '@/config/iconfont'
 import './style/index.scss'
 const app = createApp(App)
 
-// "vetur.validation.script": false,
 // setupStore(app)
 
 app.use(router)
