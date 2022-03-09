@@ -8,7 +8,6 @@ const homeRouter = {
     meta: {
         icon: 'home-filled',
         title: '首页',
-        i18n: true,
         rank: 0,
     },
     children: [

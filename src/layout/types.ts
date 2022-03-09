@@ -54,13 +54,12 @@ export interface setType {
 }
 
 export type childrenType = {
-    path?: string
+    path: string
     noShowingChildren?: boolean
     children?: childrenType[]
-    value: unknown
-    meta?: {
+    meta: {
         icon?: string
-        title?: string
+        title: string
         i18n?: boolean
         showParent?: boolean
         extraIcon?: {

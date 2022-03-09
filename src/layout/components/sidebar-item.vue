@@ -1,8 +1,8 @@
 <template>
     <template v-if="isShowChildren()">
-        <el-menu-item :index="props?.item?.path">
+        <el-menu-item :index="props.item.path">
             <template #title>
-                {{ props?.item?.path }}
+                {{ props.item.meta.title }}
             </template>
         </el-menu-item>
     </template>
@@ -16,6 +16,7 @@ import { childrenType } from '../types'
 const props = defineProps({
     item: {
         type: Object as PropType<childrenType>,
+        default: {},
     },
     isNest: {
         type: Boolean,
