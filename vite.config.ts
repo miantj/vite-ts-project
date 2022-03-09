@@ -11,6 +11,7 @@ const pathResolve = (dir: string): string => {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+    base: '/',
     plugins: [
         vue(),
         // svg组件化支持

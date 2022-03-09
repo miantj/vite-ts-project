@@ -1,9 +1,6 @@
 import { store } from '@/store'
 import { layoutType } from '../types'
 import { defineStore } from 'pinia'
-import { getConfig } from '@/config'
-// import { storageLocal } from '/@/utils/storage'
-// import { deviceDetection } from '/@/utils/deviceDetection'
 
 export const useLayoutStore = defineStore({
     id: 'pure-app',
@@ -21,9 +18,6 @@ export const useLayoutStore = defineStore({
         getSidebarStatus(): Boolean {
             return this.sidebar.opened
         },
-        // getDevice() {
-        //     return this.device
-        // },
     },
     actions: {
         TOGGLE_SIDEBAR(opened: boolean = false) {

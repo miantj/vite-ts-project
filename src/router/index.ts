@@ -1,17 +1,5 @@
-import { Router, RouteMeta, createRouter, RouteRecordName, createWebHashHistory } from 'vue-router'
-import home from './modules/home'
-
-const routes = [
-    {
-        path: '/login',
-        name: 'login',
-        component: () => import('@/pages/login.vue'),
-        meta: {
-            title: '登陆',
-        },
-    },
-    home,
-]
+import { Router, createRouter, createWebHashHistory } from 'vue-router'
+import routes from './modules'
 
 // 创建路由实例
 export const router: Router = createRouter({

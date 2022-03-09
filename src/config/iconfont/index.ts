@@ -8,6 +8,6 @@ export function useIconFont(app: App) {
     // 全局注册图标库
     app.component('IconFont', IconFont)
     components.forEach((component: Component) => {
-        app.component(component.name, component)
+        if (component.name) app.component(component.name, component)
     })
 }

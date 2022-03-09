@@ -1,5 +1,6 @@
 <template>
     <div class="sidebar-container">
+        <Logo />
         <el-menu
             default-active="2"
             class="el-menu-vertical-demo"
@@ -37,6 +38,14 @@
                 <el-icon><setting /></el-icon>
                 <template #title>Navigator Four</template>
             </el-menu-item>
+
+            <SidebarItem
+                v-for="routes in constantMenus"
+                :key="routes.path"
+                :item="routes"
+                class="outer-most"
+                :base-path="routes.path"
+            />
         </el-menu>
     </div>
 </template>
@@ -44,9 +53,16 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useNav } from '../hook/nav'
+import { usePermissionStoreHook } from '@/store/modules/permission'
+import Logo from './logo.vue'
+import SidebarItem from './sidebar-item.vue'
 import { Menu as IconMenu } from '@element-plus/icons-vue'
+import { warn } from 'console'
 
 const { isCollapse } = useNav()
+const { constantMenus } = usePermissionStoreHook()
+
+// console.warn('menuData', constantMenus)
 
 const handleOpen = (key: string, keyPath: string[]) => {
     console.log(key, keyPath)
