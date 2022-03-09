@@ -1,6 +1,9 @@
 <template>
     <template v-if="isShowChildren()">
         <el-menu-item :index="props.item.path">
+            <el-icon v-if="props.item.meta.icon">
+                <component :is="useRenderIcon(props.item.meta.icon)"></component>
+            </el-icon>
             <template #title>
                 {{ props.item.meta.title }}
             </template>
@@ -10,6 +13,7 @@
 
 <script setup lang="ts">
 import { PropType } from 'vue'
+import { useRenderIcon } from '@/config/iconfont/iconfont'
 import path from 'path'
 import { childrenType } from '../types'
 

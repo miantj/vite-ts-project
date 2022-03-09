@@ -1,4 +1,4 @@
-import { h, defineComponent } from 'vue'
+import { h, defineComponent, Component } from 'vue'
 
 export const IconFont = defineComponent({
     name: 'iconFont',
@@ -43,6 +43,23 @@ export const IconFont = defineComponent({
     },
 })
 
+export function useRenderIcon(icon: string): Component | string {
+    //  判断是否属于iconfont
+    if (icon.includes('icon-')) {
+        return defineComponent({
+            name: 'IconFont',
+            render() {
+                return h(IconFont, {
+                    icon: icon,
+                })
+            },
+        })
+    } else {
+        return icon
+    }
+}
+
 export default {
     IconFont,
+    useRenderIcon,
 }

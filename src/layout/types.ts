@@ -55,21 +55,14 @@ export interface setType {
 
 export type childrenType = {
     path: string
-    noShowingChildren?: boolean
+    name?: string
     children?: childrenType[]
     meta: {
         icon?: string
+        iconfont?: string
         title: string
-        i18n?: boolean
         showParent?: boolean
-        extraIcon?: {
-            svg?: boolean
-            name?: string
-        }
     }
-    showTooltip?: boolean
-    parentId?: number
-    pathList?: number[]
 }
 
 export type themeColorsType = {
