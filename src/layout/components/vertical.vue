@@ -3,12 +3,10 @@
         <Logo />
         <el-scrollbar wrap-class="scrollbar-wrapper">
             <el-menu
-                default-active="2"
                 class="el-menu-vertical-demo"
-                :collapse="isCollapse"
                 router
-                @open="handleOpen"
-                @close="handleClose"
+                :collapse="isCollapse"
+                :default-active="route.path == '/home' ? '/' : route.path"
             >
                 <el-sub-menu index="1">
                     <template #title>
@@ -48,17 +46,17 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { RouteComponent } from 'vue-router'
+import { computed, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { useNav } from '../hook/nav'
 import { usePermissionStoreHook } from '@/store/modules/permission'
 import Logo from './logo.vue'
 import SidebarItem from './sidebar-item.vue'
 import { Menu as IconMenu } from '@element-plus/icons-vue'
-import { childrenType } from '../types'
 
 const { isCollapse } = useNav()
 const { constantMenus } = usePermissionStoreHook()
+const route = useRoute()
 const routes = computed(() => filterTree(constantMenus))
 
 function filterTree(data: any) {
@@ -66,14 +64,7 @@ function filterTree(data: any) {
     newTree.forEach((v: { children: any }) => v.children && (v.children = filterTree(v.children)))
     return newTree
 }
-
-const handleOpen = (key: string, keyPath: string[]) => {
-    console.log(key, keyPath)
-}
-const handleClose = (key: string, keyPath: string[]) => {
-    console.log(key, keyPath)
-}
 </script>
 
-//
+
 <style lang="scss" scoped></style>

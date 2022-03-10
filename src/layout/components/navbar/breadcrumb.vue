@@ -1,9 +1,9 @@
 <template>
     <el-breadcrumb separator="/">
         <el-breadcrumb-item v-for="(item, index) in breadcrumbRoute" :key="item.path">
-            <span v-if="item.redirect === 'noRedirect' || index == breadcrumbRoute.length - 1" class="no-redirect">{{
-                item.meta.title
-            }}</span>
+            <span v-if="item.meta.hiddenChildren || index == breadcrumbRoute.length - 1" class="no-redirect">
+                {{ item.meta.title }}
+            </span>
             <a v-else @click.prevent="handleLink(item)">
                 {{ item.meta.title }}
             </a>
@@ -20,6 +20,8 @@ const router = useRouter()
 const breadcrumbRoute = ref([{} as unknown as RouteLocationMatched])
 
 const getBreadcrumb = (): void => {
+    console.warn(route.matched)
+
     // 设置面包屑
     const first = route.matched[0]
     if (first.meta.title !== '首页') {
@@ -31,14 +33,7 @@ const getBreadcrumb = (): void => {
             } as unknown as RouteLocationMatched,
         ].concat(route.matched)
     } else {
-        breadcrumbRoute.value = route.matched
-        if (first.meta.hiddenChildren) {
-            breadcrumbRoute.value.forEach((element, index) => {
-                if (element.path == first.redirect) {
-                    breadcrumbRoute.value.splice(index, 1)
-                }
-            })
-        }
+        breadcrumbRoute.value = route.matched.filter(item => item.meta.hiddenChildren)
     }
 }
 

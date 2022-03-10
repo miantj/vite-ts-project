@@ -5,6 +5,7 @@ const errorRouter = {
     name: '403',
     component: () => import('@/views/error/403.vue'),
     meta: {
+        icon: 'homeFilled',
         title: '403',
     },
 }

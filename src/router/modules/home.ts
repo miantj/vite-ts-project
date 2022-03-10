@@ -14,16 +14,18 @@ const homeRouter = [
     {
         path: '/',
         component: Layout,
+        name: 'index',
         redirect: '/home',
         meta: {
+            icon: 'homeFilled',
             title: '首页',
             hiddenChildren: true,
         },
         children: [
             {
                 path: '/home',
-                name: '首页',
-                component: () => import('@/views/error/404.vue'),
+                name: 'home',
+                component: () => import('@/views/home.vue'),
                 meta: {
                     title: '首页',
                 },
@@ -34,6 +36,7 @@ const homeRouter = [
         path: '/error',
         name: 'error',
         component: Layout,
+        redirect: '/error/404',
         meta: {
             icon: 'homeFilled',
             title: '错误页面',
