@@ -53,16 +53,16 @@ export interface setType {
     }
 }
 
-export type childrenType = {
+export interface childrenType {
     path: string
     name?: string
-    children?: childrenType[]
     meta: {
         icon?: string
         iconfont?: string
         title: string
         showParent?: boolean
     }
+    children?: childrenType[]
 }
 
 export type themeColorsType = {

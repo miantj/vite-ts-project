@@ -1,8 +1,25 @@
 <template>
     <section>
-        <Navbar />
+        <div class="fixed-header">
+            <Navbar />
+        </div>
 
-        <!-- <router-view /> -->
+        <section class="app-main">
+            <router-view>
+                <template #default="{ Component, route }">
+                    <el-scrollbar>
+                        <!-- <el-backtop title="回到顶部" target=".app-main .el-scrollbar__wrap">
+                            <backTop />
+                        </el-backtop> -->
+                        <transition name="fade-transform">
+                            <keep-alive>
+                                <component :is="Component" :key="route.fullPath" class="main-content" />
+                            </keep-alive>
+                        </transition>
+                    </el-scrollbar>
+                </template>
+            </router-view>
+        </section>
     </section>
 </template>
 
@@ -23,6 +40,7 @@ const value2 = ref()
     height: 100vh;
     position: relative;
     overflow-x: hidden;
+    padding-top: 85px;
 }
 
 .app-main-nofixed-header {

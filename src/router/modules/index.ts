@@ -5,7 +5,11 @@ const filtersFiles = import.meta.globEager('./*.ts')
 const routes: Array<RouteRecordRaw> = []
 
 for (const key in filtersFiles) {
-    routes.push(filtersFiles[key].default)
+    if (filtersFiles[key].default instanceof Array) {
+        routes.push(...filtersFiles[key].default)
+    } else {
+        routes.push(filtersFiles[key].default)
+    }
 }
-
+console.warn(routes)
 export default routes

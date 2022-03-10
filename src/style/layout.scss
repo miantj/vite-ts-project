@@ -46,6 +46,15 @@ body[layout='vertical'] {
     $sideBarWidth: 200px;
     @include merge-style($sideBarWidth);
 
+    .fixed-header {
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 998;
+        width: calc(100% - 200px);
+        transition: width 0.28s;
+    }
+
     .hideSidebar {
         .sidebar-container,
         .el-menu--collapse {
@@ -54,6 +63,15 @@ body[layout='vertical'] {
 
         .main-container {
             margin-left: 54px;
+        }
+        .fixed-header {
+            width: calc(100% - 54px);
+        }
+    }
+
+    .sidebar-container.has-logo {
+        .el-scrollbar {
+            height: calc(100% - 50px);
         }
     }
 }

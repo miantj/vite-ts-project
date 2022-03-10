@@ -1,51 +1,38 @@
+<template>
+    <div class="container" :title="props.isActive ? '点击折叠' : '点击展开'" @click="toggleClick"></div>
+</template>
+
 <script setup lang="ts">
-import { ref } from "vue";
-// import { useEpThemeStoreHook } from "/@/store/modules/epTheme";
+import { ref } from 'vue'
 export interface Props {
-  isActive: boolean;
+    isActive: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  isActive: false
-});
-
-const fillColor = ref<string>("");
+    isActive: false,
+})
 
 const emit = defineEmits<{
-  (e: "toggleClick"): void;
-}>();
+    (e: 'toggleClick'): void
+}>()
 
 const toggleClick = () => {
-  emit("toggleClick");
-};
-</script>
-
-<template>
-  <div
-    :class="classes.container"
-    :title="props.isActive ? '点击折叠' : '点击展开'"
-    @click="toggleClick"
- 
-  >
-  
-  </div>
-</template>
-
-<style module="classes" scoped>
-.container {
-  padding: 0 15px;
+    emit('toggleClick')
 }
-</style>
+</script>
 
 <style scoped>
 .hamburger {
-  display: inline-block;
-  vertical-align: middle;
-  width: 20px;
-  height: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+}
+.container {
+    padding: 0 15px;
 }
 
 .is-active {
-  transform: rotate(180deg);
+    transform: rotate(180deg);
 }
 </style>

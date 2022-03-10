@@ -25,8 +25,7 @@ const title = '广州世安'
     height: 48px;
     text-align: center;
     overflow: hidden;
-    border: 1px solid transparent;
-    border-bottom-color: #e6e6e6;
+    border-bottom: 1px solid #e6e6e6;
     padding: 5px 25px 0;
 
     .sidebar-logo-link {
@@ -39,7 +38,7 @@ const title = '广州世安'
 }
 .hideSidebar {
     .sidebar-logo-container {
-        padding:5px 10px;
+        padding: 5px 10px;
     }
 }
 </style>

@@ -45,7 +45,7 @@ export const IconFont = defineComponent({
 
 export function useRenderIcon(icon: string): Component | string {
     //  判断是否属于iconfont
-    if (icon.includes('icon-')) {
+    if (icon && icon.includes('icon-')) {
         return defineComponent({
             name: 'IconFont',
             render() {

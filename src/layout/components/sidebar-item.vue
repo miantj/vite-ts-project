@@ -9,68 +9,52 @@
             </template>
         </el-menu-item>
     </template>
+
+    <template v-else>
+        <el-sub-menu :index="props.item.path">
+            <template #title>
+                <el-icon v-if="props.item.meta.icon">
+                    <component :is="useRenderIcon(props.item.meta.icon)"></component>
+                </el-icon>
+                <span> {{ props.item.meta.title }}</span>
+            </template>
+            <el-menu-item-group v-for="child in props.item.children" :key="child.path">
+                <el-menu-item :index="child.path">
+                    <el-icon v-if="child.meta.icon">
+                        <component :is="useRenderIcon(child.meta.icon)"></component>
+                    </el-icon>
+                    <template #title>
+                        {{ child.meta.title }}
+                    </template>
+                </el-menu-item>
+            </el-menu-item-group>
+        </el-sub-menu>
+    </template>
 </template>
 
 <script setup lang="ts">
 import { PropType } from 'vue'
+
 import { useRenderIcon } from '@/config/iconfont/iconfont'
-import path from 'path'
 import { childrenType } from '../types'
+import { warn } from 'console'
 
 const props = defineProps({
     item: {
-        type: Object as PropType<childrenType>,
-        default: {},
-    },
-    isNest: {
-        type: Boolean,
-        default: false,
-    },
-    basePath: {
-        type: String,
-        default: '',
+        type: Object,
+        required: true,
     },
 })
 
-function resolvePath(routePath: any) {
-    const httpReg = /^http(s?):\/\//
-    console.warn(routePath)
-    if (httpReg.test(routePath) || httpReg.test(props.basePath)) {
-        console.warn(routePath || props.basePath)
 
-        return routePath || props.basePath
-    } else {
-        console.warn(path.resolve(props.basePath, routePath))
 
-        return path.resolve(props.basePath, routePath)
-    }
-}
 
-// 校验是否有子菜单
+// 校验是否显示子菜单
 function isShowChildren(): Boolean {
-    // console.log(props.item)
-    if (props.item?.children) {
+    if (!props.item.meta?.hiddenChildren && props.item.children) {
+        return false
+    } else {
         return true
     }
-    // const showingChildren = children.filter((item: any) => {
-    //     // onlyOneChild.value = item
-    //     console.log(item)
-
-    //     return true
-    // })
-
-    // if (showingChildren[0]?.meta?.showParent) {
-    //     return false
-    // }
-
-    // if (showingChildren.length === 1) {
-    //     return true
-    // }
-
-    // if (showingChildren.length === 0) {
-    //     onlyOneChild.value = { ...parent, path: '', noShowingChildren: true }
-    //     return true
-    // }
-    return false
 }
 </script>
