@@ -30,9 +30,7 @@ import { ref, reactive, computed } from 'vue'
 import Navbar from './navbar/index.vue'
 import Tag from './tag/index.vue'
 
-const input = ref('')
-const value1 = ref(null)
-const value2 = ref()
+
 </script>
 
 <style scoped>

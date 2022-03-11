@@ -46,7 +46,7 @@
     color: var(--el-text-color-regular);
     background: #fff;
     position: relative;
-    box-shadow: 0 0 1px #888;
+    border-bottom: 1px solid #e6e6e6;
 
     .scroll-item {
         border-radius: 3px 3px 0 0;
@@ -219,7 +219,7 @@
     position: relative;
     // color: #fff;
     color: var(--el-color-primary);
-    
+
     &:not(:first-child) {
         padding-right: 18px;
     }
@@ -255,14 +255,14 @@
     }
 }
 
-// .arrow-right {
-//     box-shadow: -5px 0 5px -6px #ccc;
-//     border-right: 1px solid #ccc;
+.arrow-right {
+    box-shadow: -5px 0 5px -6px #ccc;
+    border-right: 1px solid #ccc;
 
-//     &:hover {
-//         cursor: e-resize;
-//     }
-// }
+    &:hover {
+        cursor: e-resize;
+    }
+}
 
 // /* 卡片模式下鼠标移入显示蓝色边框 */
 // // .card-in {

@@ -15,11 +15,16 @@ export const usePermissionStore = defineStore({
     }),
     actions: {
         handleTags(value: RouteLocationNormalized) {
+            console.warn(value);
+            
             if (this.historyTags.has(value.name)) {
                 this.historyTags.delete(value.name)
             }
-            this.historyTags.set(value.name, value)
-            this.navTags.set(value.name, value)
+
+            if (value?.meta?.title) {
+                this.historyTags.set(value.name, value)
+                this.navTags.set(value.name, value)
+            }
         },
 
         deleteTags(value: RouteLocationNormalized, router: any) {

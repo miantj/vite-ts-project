@@ -24,7 +24,7 @@ const getBreadcrumb = (): void => {
 
     // 设置面包屑
     const first = route.matched[0]
-    if (first.meta.title !== '首页') {
+    if (first?.meta?.title !== '首页') {
         breadcrumbRoute.value = [
             {
                 path: '/',

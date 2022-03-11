@@ -43,7 +43,7 @@
 }
 
 body[layout='vertical'] {
-    $sideBarWidth: 200px;
+    $sideBarWidth: 210px;
     @include merge-style($sideBarWidth);
 
     .fixed-header {
@@ -51,7 +51,7 @@ body[layout='vertical'] {
         top: 0;
         right: 0;
         z-index: 998;
-        width: calc(100% - 200px);
+        width: calc(100% - 210px);
         transition: width 0.28s;
     }
 
