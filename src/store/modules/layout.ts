@@ -1,4 +1,4 @@
-import { store } from '@/store'
+import store from '@/store'
 import { layoutType } from '../types'
 import { defineStore } from 'pinia'
 

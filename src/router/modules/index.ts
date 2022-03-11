@@ -11,5 +11,4 @@ for (const key in filtersFiles) {
         routes.push(filtersFiles[key].default)
     }
 }
-console.warn(routes)
 export default routes

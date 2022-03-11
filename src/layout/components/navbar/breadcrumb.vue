@@ -20,7 +20,7 @@ const router = useRouter()
 const breadcrumbRoute = ref([{} as unknown as RouteLocationMatched])
 
 const getBreadcrumb = (): void => {
-    console.warn(route.matched)
+ 
 
     // 设置面包屑
     const first = route.matched[0]

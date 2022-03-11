@@ -2,6 +2,7 @@
     <section>
         <div class="fixed-header">
             <Navbar />
+            <Tag />
         </div>
 
         <section class="app-main">
@@ -27,7 +28,7 @@
 import { ref, reactive, computed } from 'vue'
 
 import Navbar from './navbar/index.vue'
-import { warn } from 'console'
+import Tag from './tag/index.vue'
 
 const input = ref('')
 const value1 = ref(null)

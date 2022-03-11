@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
-
 <template>
     <div>这是首页</div>
 </template>
 
-<style scoped></style>
+<script setup lang="ts">
+import { ref } from 'vue'
+</script>
+
+<style lang="scss" scoped></style>

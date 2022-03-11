@@ -37,7 +37,6 @@ import { PropType } from 'vue'
 
 import { useRenderIcon } from '@/config/iconfont/iconfont'
 import { childrenType } from '../types'
-import { warn } from 'console'
 
 const props = defineProps({
     item: {

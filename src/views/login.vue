@@ -1,44 +1,3 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-// import { initRouter } from '@/router/utils'
-import { storageSession } from '@/utils/storage'
-// import { addClass, removeClass } from '@/utils/operate'
-import bg from '@/assets/login/bg.png'
-import avatar from '@/assets/login/avatar.svg'
-import illustration from '@/assets/login/illustration.svg'
-
-const router = useRouter()
-
-let user = ref('admin')
-let pwd = ref('123456')
-
-const onLogin = (): void => {
-    storageSession.setItem('info', {
-        username: 'admin',
-        accessToken: 'eyJhbGciOiJIUzUxMiJ9.test',
-    })
-    // initRouter('admin')
-    router.push('/')
-}
-
-function onUserFocus() {
-    // addClass(document.querySelector('.user'), 'focus')
-}
-
-function onUserBlur() {
-    // if (user.value.length === 0) removeClass(document.querySelector('.user'), 'focus')
-}
-
-function onPwdFocus() {
-    // addClass(document.querySelector('.pwd'), 'focus')
-}
-
-function onPwdBlur() {
-    // if (pwd.value.length === 0) removeClass(document.querySelector('.pwd'), 'focus')
-}
-</script>
-
 <template>
     <img :src="bg" class="wave" />
     <div class="login-container">
@@ -136,6 +95,47 @@ function onPwdBlur() {
         </div>
     </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+// import { initRouter } from '@/router/utils'
+import { storageSession } from '@/utils/storage'
+// import { addClass, removeClass } from '@/utils/operate'
+import bg from '@/assets/login/bg.png'
+import avatar from '@/assets/login/avatar.svg'
+import illustration from '@/assets/login/illustration.svg'
+
+const router = useRouter()
+
+let user = ref('admin')
+let pwd = ref('123456')
+
+const onLogin = (): void => {
+    storageSession.setItem('info', {
+        username: 'admin',
+        accessToken: 'eyJhbGciOiJIUzUxMiJ9.test',
+    })
+    // initRouter('admin')
+    router.push('/')
+}
+
+function onUserFocus() {
+    // addClass(document.querySelector('.user'), 'focus')
+}
+
+function onUserBlur() {
+    // if (user.value.length === 0) removeClass(document.querySelector('.user'), 'focus')
+}
+
+function onPwdFocus() {
+    // addClass(document.querySelector('.pwd'), 'focus')
+}
+
+function onPwdBlur() {
+    // if (pwd.value.length === 0) removeClass(document.querySelector('.pwd'), 'focus')
+}
+</script>
 
 <style scoped>
 .wave {

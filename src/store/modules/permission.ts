@@ -1,18 +1,40 @@
 import { defineStore } from 'pinia'
-import { store } from '@/store'
-// import { cacheType } from "./types";
-// import { cloneDeep } from "lodash-unified";
-// import { RouteConfigs } from "/@/layout/types";
+import { RouteLocationNormalized, useRouter } from 'vue-router'
+import store from '@/store'
+import { multiType } from '../types'
 import routes from '@/router/modules'
-// import { ascending, filterTree } from "/@/router/utils";
 
 export const usePermissionStore = defineStore({
     id: 'pure-permission',
     state: () => ({
         // 静态路由生成的菜单
         constantMenus: routes,
+        // 存储标签页信息（路由信息）
+        navTags: new Map(),
+        historyTags: new Map(),
     }),
-    actions: {},
+    actions: {
+        handleTags(value: RouteLocationNormalized) {
+            if (this.historyTags.has(value.name)) {
+                this.historyTags.delete(value.name)
+            }
+            this.historyTags.set(value.name, value)
+            this.navTags.set(value.name, value)
+        },
+
+        deleteTags(value: RouteLocationNormalized, router: any) {
+            if (this.navTags.has(value.name)) {
+                this.navTags.delete(value.name)
+                this.historyTags.delete(value.name)
+            }
+            const last = Array.from(this.historyTags)[this.historyTags.size - 1][1]
+
+            router.push({
+                path: last?.path,
+                query: last?.query,
+            })
+        },
+    },
 })
 
 export function usePermissionStoreHook() {

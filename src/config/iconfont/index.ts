@@ -1,9 +1,18 @@
 import { App, Component } from 'vue'
-import { Location, Document, Menu, Setting, HomeFilled } from '@element-plus/icons-vue'
+import {
+    Location,
+    Document,
+    Menu,
+    Setting,
+    HomeFilled,
+    ArrowLeftBold,
+    Close,
+    ArrowRightBold,
+} from '@element-plus/icons-vue'
 import { IconFont } from '@/config/iconfont/iconfont'
 
 // 注册element-icon
-const components = [Location, Document, Menu, Setting, HomeFilled]
+const components = [Location, Document, Menu, Setting, HomeFilled, ArrowLeftBold, Close, ArrowRightBold]
 
 export function useIconFont(app: App) {
     // 全局注册图标库

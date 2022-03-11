@@ -38,7 +38,7 @@ const { isCollapse } = useNav()
 
 function open() {
     useLayoutStoreHook().toggleSideBar(!useLayoutStoreHook().sidebar.opened)
-    console.warn(useLayoutStoreHook().sidebar.opened)
+   
 }
 function logout() {}
 </script>
