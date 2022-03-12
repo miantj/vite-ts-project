@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { useLayoutStoreHook } from '@/store/modules/layout'
+import { useLayoutStoreHook } from '@/layout/store'
 import { useNav } from '../../hook/nav'
 import Breadcrumb from './breadcrumb.vue'
 import Screenfull from './screenfull.vue'

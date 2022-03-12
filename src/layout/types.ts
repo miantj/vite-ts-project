@@ -1,44 +1,31 @@
 import { Component } from 'vue'
-export const routerArrays: Array<RouteConfigs> = [
-    {
-        path: '/welcome',
-        parentPath: '/',
-        meta: {
-            title: 'menus.hshome',
-            i18n: true,
-            icon: 'home-filled',
-        },
-    },
-]
 
-export type routeMetaType = {
-    title?: string
-    i18n?: boolean
-    icon?: string
-    showLink?: boolean
-    savedPosition?: boolean
-    authority?: Array<string>
-}
-
-export type RouteConfigs = {
-    path?: string
-    parentPath?: string
-    query?: object
-    meta?: routeMetaType
-    children?: RouteConfigs[]
-    name?: string
-}
-
-export type multiTagsType = {
-    tags: Array<RouteConfigs>
+export type layoutType = {
+    sidebar: {
+        opened: boolean
+        withoutAnimation: boolean
+        // 判断是否手动点击Hamburger
+        isClickHamburger: boolean
+    }
+    layout: string
+    redirect: boolean
+    navTags: Map<any, any>
+    historyTags: Map<any, any>
+    tagsViews: Array<tagsViewsType>
 }
 
 export type tagsViewsType = {
-    icon: Component
+    icon: Component | string
     text: string
     divided: boolean
     disabled: boolean
-    show: boolean
+}
+
+export type multiType = {
+    path: string
+    name: string
+    meta: any
+    query?: object
 }
 
 export interface setType {
@@ -50,28 +37,5 @@ export interface setType {
     classes: {
         hideSidebar: boolean
         openSidebar: boolean
-    }
-}
-
-export interface childrenType {
-    path: string
-    name?: string
-    meta: {
-        icon?: string
-        iconfont?: string
-        title: string
-        showParent?: boolean
-    }
-    children?: childrenType[]
-}
-
-export type themeColorsType = {
-    rgb: string
-    themeColor: string
-}
-
-export interface scrollbarDomType extends HTMLElement {
-    wrap?: {
-        offsetWidth: number
     }
 }

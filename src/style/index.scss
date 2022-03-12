@@ -74,6 +74,7 @@ ul {
     transform: translateX(30px);
 }
 
+// 错误页面样式
 .justify-center {
     display: flex;
     justify-content: center;
@@ -90,4 +91,8 @@ ul {
     .mb-4 {
         margin-bottom: 1rem;
     }
+}
+
+.iconfont {
+    margin: 0 !important;
 }

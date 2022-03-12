@@ -28,10 +28,10 @@
                     <refresh-right />
                 </el-icon>
             </li>
-            <!-- <li>
+            <li>
                 <el-dropdown trigger="click" placement="bottom-end" @command="handleCommand">
-                    <el-icon>
-                        <IconifyIconOffline icon="arrow-down" />
+                    <el-icon :size="30" style="padding: 8px">
+                        <arrow-down />
                     </el-icon>
                     <template #dropdown>
                         <el-dropdown-menu>
@@ -42,43 +42,91 @@
                                 :divided="item.divided"
                                 :disabled="item.disabled"
                             >
-                                <component :is="item.icon" :key="key" style="margin-right: 6px" />
-                                {{ $t(item.text) }}
+                                <el-icon>
+                                    <component :is="useRenderIcon(item.icon)" :key="key" />
+                                </el-icon>
+
+                                {{ item.text }}
                             </el-dropdown-item>
                         </el-dropdown-menu>
                     </template>
                 </el-dropdown>
-            </li> -->
-            <li>
-                <slot></slot>
             </li>
         </ul>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, unref } from 'vue'
+import { ref, reactive, unref, shallowRef } from 'vue'
 import { useRoute, useRouter, RouteLocationNormalized } from 'vue-router'
-import { usePermissionStoreHook } from '@/store/modules/permission'
-import { warn } from 'console'
+import { tagsViewsType } from '../../types'
+import { useRenderIcon } from '@/config/iconfont/iconfont'
+import { useLayoutStoreHook } from '@/layout/store'
 
-const { navTags } = usePermissionStoreHook()
+const { navTags } = useLayoutStoreHook()
 const router = useRouter()
 const route = useRoute()
+const { tagsViews, showMenuModel, deleteTags } = useLayoutStoreHook()
 
 // 触发tags标签切换
 function tagOnClick(item: RouteLocationNormalized) {
-    console.warn(item)
-
     router.push({
         path: item?.path,
         query: item?.query,
     })
-    // showMenuModel(item?.path, item?.query)
+    showMenuModel(item)
 }
 
-function deleteMenu(item: RouteLocationNormalized) {
-    usePermissionStoreHook().deleteTags(item, router)
+function handleCommand(command: { key: number; item: tagsViewsType }) {
+    const { key, item } = command
+
+    onClickDrop(key, item)
+}
+
+function onClickDrop(key: number, item: tagsViewsType) {
+    if (item && item.disabled) return
+
+    // 当前路由信息
+    switch (key) {
+        case 0:
+            // 重新加载
+            onFresh()
+            break
+        case 1:
+            // 关闭当前标签页
+            deleteMenu(route)
+            break
+        case 2:
+            // 关闭左侧标签页
+            deleteMenu(route, 'left')
+            break
+        case 3:
+            // 关闭右侧标签页
+            deleteMenu(route, 'right')
+            break
+        case 4:
+            // 关闭其他标签页
+            deleteMenu(route, 'other')
+            break
+        case 5:
+            // 关闭全部标签页
+            deleteMenu(route, 'all')
+            break
+    }
+}
+
+function deleteMenu(item: RouteLocationNormalized, type?: string) {
+    deleteTags(
+        {
+            path: item.path,
+            name: String(item.name),
+            meta: item.meta,
+            query: item.query,
+        },
+        router,
+        type
+    )
+    showMenuModel(item)
 }
 
 // 重新加载

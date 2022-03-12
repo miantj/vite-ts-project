@@ -2,7 +2,7 @@ import NProgress from '@/utils/progress'
 import { Router, createRouter, createWebHashHistory, useRouter } from 'vue-router'
 
 import routes from './modules'
-import { usePermissionStoreHook } from '@/store/modules/permission'
+import { useLayoutStoreHook } from '@/layout/store'
 
 // 创建路由实例
 export const router: Router = createRouter({
@@ -25,9 +25,14 @@ export const router: Router = createRouter({
 
 // 全局前置守卫
 router.beforeEach((to, from) => {
-    NProgress.start()
     // console.warn('beforeEach', to)
-    usePermissionStoreHook().handleTags(to)
+    NProgress.start()
+    useLayoutStoreHook().handleTags({
+        path: to.path,
+        name: String(to.name),
+        meta: to.meta,
+        query: to.query,
+    })
 })
 
 // 全局解析守卫

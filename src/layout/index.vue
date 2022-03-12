@@ -12,7 +12,7 @@
 import { ref, reactive, computed } from 'vue'
 import Vertical from './components/vertical.vue'
 import AppMain from './components/app-main.vue'
-import { useLayoutStoreHook } from '@/store/modules/layout'
+import { useLayoutStoreHook } from '@/layout/store'
 import { setType } from './types'
 
 const set: setType = reactive({
