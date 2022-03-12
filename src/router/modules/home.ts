@@ -5,6 +5,7 @@ const Layout = () => import('@/layout/index.vue')
  *  @Icon   {srting}                 展示icon
  *  @hiddenChildren {Boolean}        是否展示Children子页面
  *  @hidden {Boolean}                是否展示当前页面，优先级大于hiddenChildren
+ *  @noCache {Boolean}               是否缓存当前页面，默认 false 开启缓存
  *  @activeMenu {srting||Array}      左侧菜单选中状态
  *  @activeHeadMenu {srting}         头部head选中状态
  *
@@ -13,8 +14,8 @@ const Layout = () => import('@/layout/index.vue')
 const homeRouter = [
     {
         path: '/',
-        component: Layout,
         name: 'index',
+        component: Layout,
         redirect: '/home',
         meta: {
             icon: 'homeFilled',
@@ -29,6 +30,24 @@ const homeRouter = [
                 meta: {
                     title: '首页',
                 },
+            },
+        ],
+    },
+    {
+        path: '/redirect',
+        name: 'redirect',
+        component: Layout,
+        meta: {
+            icon: 'homeFilled',
+            title: '首页',
+            noCache: true,
+            hidden: true,
+        },
+        children: [
+            {
+                path: '/redirect/:path(.*)',
+                name: 'redirect',
+                component: () => import('@/views/redirect.vue'),
             },
         ],
     },

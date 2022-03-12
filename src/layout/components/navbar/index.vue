@@ -38,7 +38,6 @@ const { isCollapse } = useNav()
 
 function open() {
     useLayoutStoreHook().toggleSideBar(!useLayoutStoreHook().sidebar.opened)
-   
 }
 function logout() {}
 </script>
@@ -47,12 +46,10 @@ function logout() {}
 .navbar {
     width: 100%;
     height: 48px;
-    line-height: 50px;
     overflow: hidden;
-    background: #fff;
     box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
     border-bottom: 1px solid #e6e6e6;
-
+    background: #fff;
     .hamburger-container {
         line-height: 48px;
         height: 100%;

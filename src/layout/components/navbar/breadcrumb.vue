@@ -20,8 +20,6 @@ const router = useRouter()
 const breadcrumbRoute = ref([{} as unknown as RouteLocationMatched])
 
 const getBreadcrumb = (): void => {
- 
-
     // 设置面包屑
     const first = route.matched[0]
     if (first?.meta?.title !== '首页') {
@@ -66,7 +64,6 @@ const handleLink = (item: RouteLocationMatched): any => {
 .app-breadcrumb.el-breadcrumb {
     display: inline-block;
     font-size: 14px;
-    line-height: 50px;
 
     .no-redirect {
         color: #97a8be;

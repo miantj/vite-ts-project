@@ -22,20 +22,54 @@
         <!-- 右键菜单按钮 -->
 
         <!-- 右侧功能按钮 -->
-        <ul class="right-button"></ul>
+        <ul class="right-button">
+            <li @click="onFresh">
+                <el-icon title="刷新路由" class="el-icon-refresh-right rotate">
+                    <refresh-right />
+                </el-icon>
+            </li>
+            <!-- <li>
+                <el-dropdown trigger="click" placement="bottom-end" @command="handleCommand">
+                    <el-icon>
+                        <IconifyIconOffline icon="arrow-down" />
+                    </el-icon>
+                    <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item
+                                v-for="(item, key) in tagsViews"
+                                :key="key"
+                                :command="{ key, item }"
+                                :divided="item.divided"
+                                :disabled="item.disabled"
+                            >
+                                <component :is="item.icon" :key="key" style="margin-right: 6px" />
+                                {{ $t(item.text) }}
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
+            </li> -->
+            <li>
+                <slot></slot>
+            </li>
+        </ul>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, unref } from 'vue'
+import { useRoute, useRouter, RouteLocationNormalized } from 'vue-router'
 import { usePermissionStoreHook } from '@/store/modules/permission'
+import { warn } from 'console'
 
 const { navTags } = usePermissionStoreHook()
 const router = useRouter()
+const route = useRoute()
 
 // 触发tags标签切换
-function tagOnClick(item) {
+function tagOnClick(item: RouteLocationNormalized) {
+    console.warn(item)
+
     router.push({
         path: item?.path,
         query: item?.query,
@@ -43,8 +77,17 @@ function tagOnClick(item) {
     // showMenuModel(item?.path, item?.query)
 }
 
-function deleteMenu(item, tag?: string) {
+function deleteMenu(item: RouteLocationNormalized) {
     usePermissionStoreHook().deleteTags(item, router)
+}
+
+// 重新加载
+function onFresh() {
+    const { fullPath, query } = unref(route)
+    router.replace({
+        path: '/redirect' + fullPath,
+        query: query,
+    })
 }
 </script>
 

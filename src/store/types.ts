@@ -11,7 +11,7 @@ export type layoutType = {
         isClickHamburger: boolean
     }
     layout: string
-    device: string
+    redirect: boolean
 }
 
 export type multiType = {

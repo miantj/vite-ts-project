@@ -12,7 +12,7 @@ export const useLayoutStore = defineStore({
         },
         // 这里的layout用于监听容器拖拉后恢复对应的导航模式
         layout: '',
-        device: '',
+        redirect: true,
     }),
     getters: {
         getSidebarStatus(): Boolean {
