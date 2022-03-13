@@ -58,6 +58,9 @@ const handleLink = (item: RouteLocationMatched): any => {
     }
     router.push(path)
 }
+defineExpose({
+    getBreadcrumb,
+})
 </script>
 
 <style lang="scss" scoped>

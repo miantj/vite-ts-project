@@ -85,6 +85,86 @@ const homeRouter = [
                     title: '500',
                 },
             },
+            {
+                path: '/error/5001',
+                name: '5001',
+                component: () => import('@/views/error/500.vue'),
+                meta: {
+                    title: '5-0-0-1',
+                },
+            },
+            {
+                path: '/error/5002',
+                name: '5002',
+                component: () => import('@/views/error/500.vue'),
+                meta: {
+                    title: '5-0-0-2',
+                },
+            },
+            {
+                path: '/error/5003',
+                name: '5003',
+                component: () => import('@/views/error/500.vue'),
+                meta: {
+                    title: '5-0-0-3',
+                },
+            },
+            {
+                path: '/error/5004',
+                name: '5004',
+                component: () => import('@/views/error/500.vue'),
+                meta: {
+                    title: '5-0-0-4',
+                },
+            },
+            {
+                path: '/error/5005',
+                name: '5005',
+                component: () => import('@/views/error/500.vue'),
+                meta: {
+                    title: '5-0-0-5',
+                },
+            },
+            {
+                path: '/error/5006',
+                name: '5006',
+                component: () => import('@/views/error/500.vue'),
+                meta: {
+                    title: '5-0-0-6',
+                },
+            },
+            {
+                path: '/error/5007',
+                name: '5007',
+                component: () => import('@/views/error/500.vue'),
+                meta: {
+                    title: '5-0-0-7',
+                },
+            },
+            {
+                path: '/error/5008',
+                name: '5008',
+                component: () => import('@/views/error/500.vue'),
+                meta: {
+                    title: '5-0-0-8',
+                },
+            },
+            {
+                path: '/error/5009',
+                name: '5009',
+                component: () => import('@/views/error/500.vue'),
+                meta: {
+                    title: '5-0-0-9',
+                },
+            },
+            {
+                path: '/error/50061',
+                name: '50061',
+                component: () => import('@/views/error/500.vue'),
+                meta: {
+                    title: '5-0-0-61',
+                },
+            },
         ],
     },
 ]

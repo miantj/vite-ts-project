@@ -1,13 +1,14 @@
 <template>
     <div class="tags-view">
-        <div class="arrow-left">
+        <div class="arrow-left" @click="handleScroll(200)">
             <el-icon><arrow-left-bold /></el-icon>
         </div>
         <div ref="scrollbarDom" class="scroll-container">
-            <div class="tab" ref="tabDom">
+            <div class="tab" ref="tabDom" :style="getTabStyle">
                 <div
                     v-for="(item, index) in navTags.values()"
                     :key="item.path"
+                    :ref="'dynamic' + index"
                     :class="['scroll-item is-closable', { 'is-active': $route.path === item.path }]"
                     @click="tagOnClick(item)"
                 >
@@ -16,7 +17,7 @@
                 </div>
             </div>
         </div>
-        <span class="arrow-right">
+        <span class="arrow-right" @click="handleScroll(-200)">
             <el-icon><arrow-right-bold /></el-icon>
         </span>
         <!-- 右键菜单按钮 -->
@@ -57,16 +58,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, unref, shallowRef } from 'vue'
+import { ref, watch, computed, CSSProperties, unref, getCurrentInstance, nextTick } from 'vue'
 import { useRoute, useRouter, RouteLocationNormalized } from 'vue-router'
 import { tagsViewsType } from '../../types'
 import { useRenderIcon } from '@/config/iconfont/iconfont'
 import { useLayoutStoreHook } from '@/layout/store'
+import { templateRef } from '@vueuse/core'
 
-const { navTags } = useLayoutStoreHook()
+const { tagsViews, navTags, tagsArray, showMenuModel, deleteTags } = useLayoutStoreHook()
 const router = useRouter()
 const route = useRoute()
-const { tagsViews, showMenuModel, deleteTags } = useLayoutStoreHook()
+const instance = getCurrentInstance()
+// 偏移量
+const translateX = ref<number>(0)
+const tabDom = templateRef<HTMLElement | null>('tabDom', null)
+const scrollbarDom = templateRef<HTMLElement | null>('scrollbarDom', null)
 
 // 触发tags标签切换
 function tagOnClick(item: RouteLocationNormalized) {
@@ -76,6 +82,69 @@ function tagOnClick(item: RouteLocationNormalized) {
     })
     showMenuModel(item)
 }
+
+const handleScroll = (offset: number = 0): void => {
+    const scrollbarDomWidth = scrollbarDom.value ? scrollbarDom.value?.offsetWidth : 0
+    const tabDomWidth = tabDom.value ? tabDom.value.offsetWidth : 0
+    if (offset > 0) {
+        translateX.value = Math.min(0, translateX.value + offset)
+    } else {
+        if (scrollbarDomWidth < tabDomWidth) {
+            if (translateX.value >= -(tabDomWidth - scrollbarDomWidth)) {
+                translateX.value = Math.max(translateX.value + offset, scrollbarDomWidth - tabDomWidth)
+            }
+        } else {
+            translateX.value = 0
+        }
+    }
+}
+
+// 设置tags偏移量
+const moveToView = async () => {
+    let currentIndex = tagsArray.findIndex((v: any) => v.path == route.path)
+    const scrollbarDomWidth = scrollbarDom.value ? scrollbarDom.value?.offsetWidth : 0
+    const tabDomWidth = tabDom.value ? tabDom.value.offsetWidth : 0
+    const maxOffset = scrollbarDomWidth - tabDomWidth //最大偏移量
+
+    if (currentIndex < 0 || currentIndex == 0) {
+        if (tabDomWidth > scrollbarDomWidth) {
+            translateX.value = maxOffset
+        }
+        return
+    }
+    const tabItemEl: any = instance?.refs[`dynamic${currentIndex}`]
+    const tabItemElOffsetLeft = tabItemEl[0].offsetLeft + tabItemEl[0].offsetWidth + 4
+
+    // 如果当前偏移量等于总宽度，则显示最后一位
+    if (tabItemElOffsetLeft === tabDomWidth) {
+        translateX.value = maxOffset
+    }
+
+    // 如果当前tag偏移量大于显示范围，则显示当前tag
+    if (tabItemElOffsetLeft > scrollbarDomWidth) {
+        if (scrollbarDomWidth - tabItemElOffsetLeft - 30 > maxOffset) {
+            translateX.value = scrollbarDomWidth - tabItemElOffsetLeft - 30
+        } else {
+            translateX.value = scrollbarDomWidth - tabItemElOffsetLeft
+        }
+        return
+    }
+
+    // 如果总体宽度减当前偏移量大于显示范围，则显示第一位
+    if (tabDomWidth - tabItemElOffsetLeft > scrollbarDomWidth) {
+        if (tabItemElOffsetLeft + 30 > scrollbarDomWidth) {
+            translateX.value = -30
+        } else {
+            translateX.value = 0
+        }
+    }
+}
+
+const getTabStyle = computed((): CSSProperties => {
+    return {
+        transform: `translateX(${translateX.value}px)`,
+    }
+})
 
 function handleCommand(command: { key: number; item: tagsViewsType }) {
     const { key, item } = command
@@ -137,6 +206,10 @@ function onFresh() {
         query: query,
     })
 }
+
+watch([route], () => {
+    moveToView()
+})
 </script>
 
 <style lang="scss" scoped>
