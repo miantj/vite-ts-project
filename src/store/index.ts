@@ -19,9 +19,8 @@ const dataKey = 'tcs-pinia'
 
 const piniaPersistedstate = (pinia: any) => {
     const { store } = pinia
-
     const pathList = dataPath[store.$id] as string[]
-    // console.warn(pinia.store)
+
     if (pathList && pathList.length > 0) {
         const localStoreVal: any = storageLocal.getItem(store.$id)
         console.warn(localStoreVal)
@@ -38,11 +37,13 @@ const piniaPersistedstate = (pinia: any) => {
             },
             { detached: true }
         )
-        console.warn(pinia.store)
-        pinia.store = {
-            ...store,
-            ...localStoreVal,
+        for (const key in localStoreVal) {
+            const map = localStoreVal[key]
+            for (const i in map) {
+                pinia.store[key].set(map[i][0], map[i][1])
+            }
         }
+
         console.warn(pinia.store)
         return pinia
     } else {
@@ -54,7 +55,7 @@ const store = createPinia()
 // console.warn(store)
 
 // const store = (app: App) => {
-// store.use(piniaPersistedstate)
+store.use(piniaPersistedstate)
 //     app.use(pinia)
 // }
 

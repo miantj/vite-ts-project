@@ -113,29 +113,32 @@ const moveToView = async () => {
         return
     }
     const tabItemEl: any = instance?.refs[`dynamic${currentIndex}`]
-    const tabItemElOffsetLeft = tabItemEl[0].offsetLeft + tabItemEl[0].offsetWidth + 4
 
-    // 如果当前偏移量等于总宽度，则显示最后一位
-    if (tabItemElOffsetLeft === tabDomWidth) {
-        translateX.value = maxOffset
-    }
+    if (tabItemEl) {
+        const tabItemElOffsetLeft = tabItemEl[0]?.offsetLeft + tabItemEl[0].offsetWidth + 4
 
-    // 如果当前tag偏移量大于显示范围，则显示当前tag
-    if (tabItemElOffsetLeft > scrollbarDomWidth) {
-        if (scrollbarDomWidth - tabItemElOffsetLeft - 30 > maxOffset) {
-            translateX.value = scrollbarDomWidth - tabItemElOffsetLeft - 30
-        } else {
-            translateX.value = scrollbarDomWidth - tabItemElOffsetLeft
+        // 如果当前偏移量等于总宽度，则显示最后一位
+        if (tabItemElOffsetLeft === tabDomWidth) {
+            translateX.value = maxOffset
         }
-        return
-    }
 
-    // 如果总体宽度减当前偏移量大于显示范围，则显示第一位
-    if (tabDomWidth - tabItemElOffsetLeft > scrollbarDomWidth) {
-        if (tabItemElOffsetLeft + 30 > scrollbarDomWidth) {
-            translateX.value = -30
-        } else {
-            translateX.value = 0
+        // 如果当前tag偏移量大于显示范围，则显示当前tag
+        if (tabItemElOffsetLeft > scrollbarDomWidth) {
+            if (scrollbarDomWidth - tabItemElOffsetLeft - 30 > maxOffset) {
+                translateX.value = scrollbarDomWidth - tabItemElOffsetLeft - 30
+            } else {
+                translateX.value = scrollbarDomWidth - tabItemElOffsetLeft
+            }
+            return
+        }
+
+        // 如果总体宽度减当前偏移量大于显示范围，则显示第一位
+        if (tabDomWidth - tabItemElOffsetLeft > scrollbarDomWidth) {
+            if (tabItemElOffsetLeft + 30 > scrollbarDomWidth) {
+                translateX.value = -30
+            } else {
+                translateX.value = 0
+            }
         }
     }
 }
