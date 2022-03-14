@@ -1,26 +1,14 @@
+import { Component } from 'vue'
+
 export type positionType = {
     startIndex?: number
     length?: number
 }
 
-export type layoutType = {
-    sidebar: {
-        opened: boolean
-        withoutAnimation: boolean
-        // 判断是否手动点击Hamburger
-        isClickHamburger: boolean
-    }
-    layout: string
-    device: string
-}
 
-export type multiType = {
-    path: string
-    parentPath: string
-    name: string
-    meta: any
-    query?: object
-}
+
+
+
 
 export type setType = {
     title: string

@@ -13,15 +13,15 @@
 <script setup lang="ts">
 import { ref, Ref, watch } from 'vue'
 import { useRoute, useRouter, RouteLocationMatched } from 'vue-router'
-import { storageLocal } from '@/utils/storage'
+import { useLayoutStoreHook } from '@/layout/store'
 const route = useRoute()
 const router = useRouter()
+const { showMenuModel } = useLayoutStoreHook()
+
 // 面包屑数组
 const breadcrumbRoute = ref([{} as unknown as RouteLocationMatched])
 
 const getBreadcrumb = (): void => {
- 
-
     // 设置面包屑
     const first = route.matched[0]
     if (first?.meta?.title !== '首页') {
@@ -35,6 +35,7 @@ const getBreadcrumb = (): void => {
     } else {
         breadcrumbRoute.value = route.matched.filter(item => item.meta.hiddenChildren)
     }
+    showMenuModel(route)
 }
 
 getBreadcrumb()
@@ -57,6 +58,9 @@ const handleLink = (item: RouteLocationMatched): any => {
     }
     router.push(path)
 }
+defineExpose({
+    getBreadcrumb,
+})
 </script>
 
 <style lang="scss" scoped>
@@ -66,7 +70,6 @@ const handleLink = (item: RouteLocationMatched): any => {
 .app-breadcrumb.el-breadcrumb {
     display: inline-block;
     font-size: 14px;
-    line-height: 50px;
 
     .no-redirect {
         color: #97a8be;

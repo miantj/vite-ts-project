@@ -5,7 +5,7 @@
         <div class="hamburger-container" :title="isCollapse ? '点击展开' : '点击折叠'" @click="open">
             <IconFont style="font-size: 20px" :icon="isCollapse ? 'icon-indent' : 'icon-outdent'" />
         </div>
-        <Breadcrumb class="breadcrumb-container" />
+        <Breadcrumb ref="breadcrumbDom" class="breadcrumb-container" />
         <div class="vertical-header-right">
             <Screenfull />
 
@@ -29,16 +29,22 @@
 </template>
 
 <script setup lang="ts">
-import { useLayoutStoreHook } from '@/store/modules/layout'
+import { useLayoutStoreHook } from '@/layout/store'
 import { useNav } from '../../hook/nav'
 import Breadcrumb from './breadcrumb.vue'
 import Screenfull from './screenfull.vue'
+import { templateRef } from '@vueuse/core'
+import { ref, onMounted, computed, CSSProperties, unref, shallowRef } from 'vue'
 
 const { isCollapse } = useNav()
+const breadcrumbDom = ref()
+onMounted(() => {
+    // 4、调用子组件中的方法
+    // console.warn(breadcrumbDom.value.getBreadcrumb())
+})
 
 function open() {
     useLayoutStoreHook().toggleSideBar(!useLayoutStoreHook().sidebar.opened)
-   
 }
 function logout() {}
 </script>
@@ -47,12 +53,9 @@ function logout() {}
 .navbar {
     width: 100%;
     height: 48px;
-    line-height: 50px;
     overflow: hidden;
-    background: #fff;
     box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
     border-bottom: 1px solid #e6e6e6;
-
     .hamburger-container {
         line-height: 48px;
         height: 100%;

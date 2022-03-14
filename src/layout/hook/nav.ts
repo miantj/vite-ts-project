@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { useLayoutStoreHook } from '@/store/modules/layout'
+import { useLayoutStoreHook } from '@/layout/store'
 
 export function useNav() {
     const pureLayout = useLayoutStoreHook()

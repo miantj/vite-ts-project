@@ -109,6 +109,7 @@
             list-style: none;
             overflow: visible;
             white-space: nowrap;
+            height: 28px;
             transition: transform 0.5s ease-in-out;
 
             .scroll-item {
@@ -116,6 +117,9 @@
                 overflow: hidden;
                 .el-icon {
                     transform: translate(40%, -50%);
+                    &:hover {
+                        transform: translate(30%, -50%);
+                    }
                 }
                 &:nth-child(1) {
                     margin-left: 5px;
@@ -221,7 +225,7 @@
     color: var(--el-color-primary);
 
     &:not(:first-child) {
-        padding-right: 18px;
+        padding-right: 20px;
     }
 
     .el-icon-close {
