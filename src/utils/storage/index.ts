@@ -1,3 +1,4 @@
+import { toRaw } from 'vue'
 interface ProxyStorage {
     getItem(key: string): any
     setItem(Key: string, value: string): void
@@ -15,7 +16,12 @@ class sessionStorageProxy implements ProxyStorage {
 
     // 存
     public setItem(key: string, value: any): void {
-        this.storage.setItem(key, JSON.stringify(value))
+        // console.warn(key, value)
+        let obj = {}
+        for (var k in value) {
+            obj[k] = Array.from(toRaw(value[k]))
+        }
+        this.storage.setItem(key, JSON.stringify(obj))
     }
 
     // 取

@@ -1,14 +1,7 @@
-import { Component } from 'vue'
-
 export type positionType = {
     startIndex?: number
     length?: number
 }
-
-
-
-
-
 
 export type setType = {
     title: string
