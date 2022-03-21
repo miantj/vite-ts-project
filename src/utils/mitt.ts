@@ -8,7 +8,6 @@ type Events = {
             height: number
         }
     }
-    openPanel: string
     tagViewsChange: string
     tagViewsShowModel: string
     logoChange: string

@@ -1,7 +1,7 @@
 import { shallowRef } from 'vue'
 import { layoutType, multiType } from './types'
 import { defineStore } from 'pinia'
-import { RouteLocationNormalized, Router } from 'vue-router'
+import { RouteLocationNormalized, Router, RouteRecordRaw } from 'vue-router'
 
 import closeLeft from '@/assets/svg/close_left.svg'
 import closeRight from '@/assets/svg/close_right.svg'
@@ -9,14 +9,17 @@ import closeRight from '@/assets/svg/close_right.svg'
 export const useLayoutStore = defineStore({
     id: 'pure-app',
     state: (): layoutType => ({
-        sidebar: {
-            opened: true,
-            withoutAnimation: false,
+        settings: {
+            sidebarOpened: true,
+            hideTabs: false,
+            // 布局类型
+            layout: 'vertical',
             isClickHamburger: false,
         },
-        // 这里的layout用于监听容器拖拉后恢复对应的导航模式
-        layout: '',
-        redirect: true,
+
+        openPanel: false,
+        // 存储混合模式路由信息
+        mixRoutes: [],
         // 存储标签页信息（路由信息）
         navTags: new Map(),
         historyTags: new Map(),
@@ -61,22 +64,39 @@ export const useLayoutStore = defineStore({
     }),
     getters: {
         getSidebarStatus(): Boolean {
-            return this.sidebar.opened
-        },
-        tagsArray(): any {
-            return Array.from(this.navTags.values())
+            return this.settings.sidebarOpened
         },
     },
     actions: {
-        TOGGLE_SIDEBAR(opened: boolean = false) {
-            this.sidebar.opened = opened
+        TOGGLE_SETTINGS(key: string, data: string | boolean = false) {
+            this.settings[key] = data
         },
-        async toggleSideBar(opened?: boolean) {
-            await this.TOGGLE_SIDEBAR(opened)
+
+        TOGGLE_PANEL(panel: boolean = false) {
+            this.openPanel = panel
+        },
+
+        HANDLE_TAGS(value: multiType) {
+            if (value?.meta?.title) {
+                this.historyTags.set(value.name, value)
+                this.navTags.set(value.name, value)
+            }
+        },
+
+        DELETE_TAGS(value: multiType) {
+            if (value.name !== 'home' && this.navTags.has(value.name)) {
+                this.navTags.delete(value.name)
+                this.historyTags.delete(value.name)
+            }
+        },
+
+        CHANGE_MIX_ROUTES(value: Array<RouteRecordRaw>) {
+            this.mixRoutes = value
         },
 
         // 检查当前右键的菜单两边是否存在别的菜单，如果左侧的菜单是首页，则不显示关闭左侧标签页，如果右侧没有菜单，则不显示关闭右侧标签页
         showMenuModel(item: RouteLocationNormalized) {
+            const tagsArray = Array.from(this.navTags.values())
             // 当前为首页时状态
             if (item.name == 'home') {
                 // 重置状态
@@ -97,7 +117,7 @@ export const useLayoutStore = defineStore({
                 })
             }
 
-            let currentIndex = this.tagsArray.findIndex((v: any) => v.path == item.path)
+            let currentIndex = tagsArray.findIndex((v: any) => v.path == item.path)
 
             /**
              * currentIndex为1时，左侧的菜单是首页，则不显示关闭左侧标签页
@@ -108,28 +128,14 @@ export const useLayoutStore = defineStore({
             /**
              * 如果size等于length，右侧没有菜单，则不显示关闭右侧标签页
              */
-            if (currentIndex == this.tagsArray.length - 1) {
+            if (currentIndex == tagsArray.length - 1) {
                 this.tagsViews[3].disabled = true
             }
             /**
              * 不显示关闭其他标签页
              */
-            if (currentIndex == 1 && currentIndex == this.tagsArray.length - 1) {
+            if (currentIndex == 1 && currentIndex == tagsArray.length - 1) {
                 this.tagsViews[4].disabled = true
-            }
-        },
-
-        HANDLE_TAGS(value: multiType) {
-            if (value?.meta?.title) {
-                this.historyTags.set(value.name, value)
-                this.navTags.set(value.name, value)
-            }
-        },
-
-        DELETE_TAGS(value: multiType) {
-            if (value.name !== 'home' && this.navTags.has(value.name)) {
-                this.navTags.delete(value.name)
-                this.historyTags.delete(value.name)
             }
         },
 
@@ -195,12 +201,18 @@ export const useLayoutStore = defineStore({
                 // 关闭当前标签页
                 default:
                     this.DELETE_TAGS(value)
-                    const last = Array.from(this.historyTags)[this.historyTags.size - 1][1]
+                    let last
+                    if (this.historyTags.size === 0) {
+                        last = Array.from(this.navTags)[this.navTags.size - 1][1]
+                    } else {
+                        last = Array.from(this.historyTags)[this.historyTags.size - 1][1]
+                    }
 
                     router.push({
                         path: last?.path,
                         query: last?.query,
                     })
+
                     break
             }
         },

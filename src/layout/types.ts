@@ -1,14 +1,17 @@
 import { Component } from 'vue'
+import { RouteRecordRaw } from 'vue-router'
 
 export type layoutType = {
-    sidebar: {
-        opened: boolean
-        withoutAnimation: boolean
+    settings: {
+        sidebarOpened: boolean
+        hideTabs: boolean
+        layout: string
         // 判断是否手动点击Hamburger
         isClickHamburger: boolean
     }
-    layout: string
-    redirect: boolean
+
+    mixRoutes: Array<RouteRecordRaw>
+    openPanel: boolean
     navTags: Map<any, any>
     historyTags: Map<any, any>
     tagsViews: Array<tagsViewsType>
@@ -31,8 +34,6 @@ export type multiType = {
 export interface setType {
     sidebar: {
         opened: boolean
-        withoutAnimation: boolean
-        isClickHamburger: boolean
     }
     classes: {
         hideSidebar: boolean

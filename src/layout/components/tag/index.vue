@@ -58,14 +58,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, CSSProperties, unref, getCurrentInstance, nextTick } from 'vue'
+import { ref, watch, computed, CSSProperties, unref, getCurrentInstance, onMounted } from 'vue'
 import { useRoute, useRouter, RouteLocationNormalized } from 'vue-router'
 import { tagsViewsType } from '../../types'
 import { useRenderIcon } from '@/config/iconfont/iconfont'
 import { useLayoutStoreHook } from '@/layout/store'
 import { templateRef } from '@vueuse/core'
 
-const { tagsViews, navTags, tagsArray, showMenuModel, deleteTags } = useLayoutStoreHook()
+const { tagsViews, navTags, showMenuModel, deleteTags } = useLayoutStoreHook()
 const router = useRouter()
 const route = useRoute()
 const instance = getCurrentInstance()
@@ -85,7 +85,7 @@ function tagOnClick(item: RouteLocationNormalized) {
 
 const handleScroll = (offset: number = 0): void => {
     const scrollbarDomWidth = scrollbarDom.value ? scrollbarDom.value?.offsetWidth : 0
-    const tabDomWidth = tabDom.value ? tabDom.value.offsetWidth : 0
+    const tabDomWidth = tabDom.value ? tabDom.value?.offsetWidth : 0
     if (offset > 0) {
         translateX.value = Math.min(0, translateX.value + offset)
     } else {
@@ -101,33 +101,40 @@ const handleScroll = (offset: number = 0): void => {
 
 // 设置tags偏移量
 const moveToView = async () => {
-    let currentIndex = tagsArray.findIndex((v: any) => v.path == route.path)
+    const tagsArray = Array.from(navTags.values())
+    const currentIndex = tagsArray.findIndex((v: any) => v.path == route.path)
     const scrollbarDomWidth = scrollbarDom.value ? scrollbarDom.value?.offsetWidth : 0
     const tabDomWidth = tabDom.value ? tabDom.value.offsetWidth : 0
     const maxOffset = scrollbarDomWidth - tabDomWidth //最大偏移量
 
-    if (currentIndex < 0 || currentIndex == 0) {
-        if (tabDomWidth > scrollbarDomWidth) {
-            translateX.value = maxOffset
-        }
-        return
-    }
-    const tabItemEl: any = instance?.refs[`dynamic${currentIndex}`]
+    // console.warn(currentIndex)
+    // console.warn('tags总宽度', tabDomWidth)
+    // console.warn('总宽度', scrollbarDomWidth)
+    // console.warn('最大偏移量', maxOffset)
 
+    if (tabDomWidth > scrollbarDomWidth) {
+        translateX.value = maxOffset
+    } else {
+        translateX.value = 0
+    }
+
+    const tabItemEl: any = instance?.refs[`dynamic${currentIndex}`]
     if (tabItemEl) {
-        const tabItemElOffsetLeft = tabItemEl[0]?.offsetLeft + tabItemEl[0].offsetWidth + 4
+        const tabItemElOffsetLeft = tabItemEl[0]?.offsetLeft + tabItemEl[0]?.offsetWidth + 5
+        // console.warn('当前偏移量', tabItemElOffsetLeft)
 
         // 如果当前偏移量等于总宽度，则显示最后一位
-        if (tabItemElOffsetLeft === tabDomWidth) {
+        if (tabItemElOffsetLeft === tabDomWidth && tabDomWidth > scrollbarDomWidth) {
             translateX.value = maxOffset
         }
 
         // 如果当前tag偏移量大于显示范围，则显示当前tag
         if (tabItemElOffsetLeft > scrollbarDomWidth) {
-            if (scrollbarDomWidth - tabItemElOffsetLeft - 30 > maxOffset) {
-                translateX.value = scrollbarDomWidth - tabItemElOffsetLeft - 30
+            if (scrollbarDomWidth - tabItemElOffsetLeft - 60 > maxOffset) {
+                translateX.value = scrollbarDomWidth - tabItemElOffsetLeft - 60
             } else {
-                translateX.value = scrollbarDomWidth - tabItemElOffsetLeft
+                const x = scrollbarDomWidth - tabItemElOffsetLeft
+                translateX.value = x < maxOffset ? maxOffset - 14 : x
             }
             return
         }
@@ -209,6 +216,9 @@ function onFresh() {
         query: query,
     })
 }
+onMounted(() => {
+    moveToView()
+})
 
 watch([route], () => {
     moveToView()
