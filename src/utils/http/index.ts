@@ -1,10 +1,11 @@
 import Axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
+import { baseUrl } from '@/config/env'
 import { type } from 'os'
 import Qs from 'qs'
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
-    baseURL: '',
+    baseURL: `${baseUrl}`,
     timeout: 10000,
     headers: {},
     // 数组格式参数序列化
@@ -66,7 +67,7 @@ export const get = async (params: paramsType) => {
         url: params.url,
         params: params.data,
     })
-    
+
     console.warn(responseJson)
     return responseJson
 }

@@ -1,4 +1,5 @@
 import { toRaw } from 'vue'
+import { isMap, isObject, isString, isArray } from '@/utils/is'
 interface ProxyStorage {
     getItem(key: string): any
     setItem(Key: string, value: string): void
@@ -16,10 +17,16 @@ class sessionStorageProxy implements ProxyStorage {
 
     // 存
     public setItem(key: string, value: any): void {
-        // console.warn(key, value)
         let obj = {}
+
         for (var k in value) {
-            obj[k] = Array.from(toRaw(value[k]))
+            let data = toRaw(value[k])
+
+            if (isMap(data)) {
+                obj[k] = Array.from(toRaw(value[k]))
+            } else {
+                obj[k] = data
+            }
         }
         this.storage.setItem(key, JSON.stringify(obj))
     }

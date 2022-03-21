@@ -1,11 +1,12 @@
 <template>
     <section>
         <div class="fixed-header">
-            <Navbar />
-            <Tag />
+            <Navbar v-if="!isLayout('horizontal')" />
+            <Horizontal v-else />
+            <Tag v-if="!settings.hideTabs" />
         </div>
 
-        <section class="app-main">
+        <section class="app-main" :style="getSectionStyle">
             <router-view>
                 <template #default="{ Component, route }">
                     <el-scrollbar>
@@ -33,9 +34,17 @@
 
 <script lang="ts" setup>
 import { ref, reactive, computed } from 'vue'
+import Horizontal from './horizontal.vue'
+import { useNav } from '@/layout/hook/nav'
 
 import Navbar from './navbar/index.vue'
 import Tag from './tag/index.vue'
+
+const { isLayout, settings } = useNav()
+
+const getSectionStyle = computed(() => {
+    return settings.value.hideTabs ? 'padding-top: 48px;' : ''
+})
 </script>
 
 <style lang="scss" scoped>

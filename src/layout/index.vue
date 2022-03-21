@@ -1,23 +1,33 @@
 <template>
     <!-- <div :class="[set.classes]"> -->
     <main :class="['app-main', set.classes]">
-        <Vertical />
+        <Vertical v-if="!isLayout('horizontal')" />
+
         <div class="main-container">
             <AppMain />
         </div>
+        <!-- 系统设置 -->
+        <Setting />
     </main>
 </template>
 
 <script lang="ts" setup>
 import { ref, reactive, computed } from 'vue'
 import Vertical from './components/vertical.vue'
+
 import AppMain from './components/app-main.vue'
+import Setting from './components/setting/index.vue'
 import { useLayoutStoreHook } from '@/layout/store'
+import { useNav } from '@/layout/hook/nav'
+
 import { setType } from './types'
 
+const { isLayout, layout } = useNav()
 const set: setType = reactive({
     sidebar: computed(() => {
-        return useLayoutStoreHook().sidebar
+        return {
+            opened: useLayoutStoreHook().settings.sidebarOpened,
+        }
     }),
     classes: computed(() => {
         return {
@@ -29,15 +39,8 @@ const set: setType = reactive({
 
 function setTheme(layoutModel: string) {
     window.document.body.setAttribute('layout', layoutModel)
-    // instance.$storage.layout = {
-    //     layout: `${layoutModel}`,
-    //     theme: instance.$storage.layout?.theme,
-    //     darkMode: instance.$storage.layout?.darkMode,
-    //     sidebarStatus: instance.$storage.layout?.sidebarStatus,
-    //     epThemeColor: instance.$storage.layout?.epThemeColor,
-    // }
 }
-setTheme('vertical')
+setTheme(layout.value)
 </script>
 
 <style lang="scss" scoped></style>

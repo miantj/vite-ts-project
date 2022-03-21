@@ -1,30 +1,28 @@
 <template>
     <div class="navbar">
-        <!-- <Hamburger class="hamburger-container" /> -->
-
         <div class="hamburger-container" :title="isCollapse ? '点击展开' : '点击折叠'" @click="open">
             <IconFont style="font-size: 20px" :icon="isCollapse ? 'icon-indent' : 'icon-outdent'" />
         </div>
-        <Breadcrumb ref="breadcrumbDom" class="breadcrumb-container" />
-        <div class="vertical-header-right">
-            <Screenfull />
 
-            <!-- 退出登陆 -->
-            <el-dropdown trigger="click">
-                <span class="el-dropdown-link">
-                    <img src="https://avatars.githubusercontent.com/u/29756128?s=40&v=4" />
-                    <p>admin</p>
-                </span>
-                <template #dropdown>
-                    <el-dropdown-menu class="logout">
-                        <el-dropdown-item @click="logout">
-                            <IconFont style="font-size: 20px" icon="icon-logout" />
-                            退出系统
-                        </el-dropdown-item>
-                    </el-dropdown-menu>
+        <el-menu
+            v-if="layout === 'mix'"
+            class="el-menu-vertical-demo"
+            mode="horizontal"
+            router
+            :default-active="defaultActive == '/home' ? '/' : defaultActive"
+            :collapse-transition="false"
+        >
+            <el-menu-item v-for="item in filterRouter" :key="item.path" :index="item.path">
+                <el-icon v-if="item.meta.icon">
+                    <component :is="useRenderIcon(item.meta.icon)"></component>
+                </el-icon>
+                <template #title>
+                    {{ item.meta.title }}
                 </template>
-            </el-dropdown>
-        </div>
+            </el-menu-item>
+        </el-menu>
+        <Breadcrumb v-else ref="breadcrumbDom" class="breadcrumb-container" />
+        <HeaderRight />
     </div>
 </template>
 
@@ -32,21 +30,34 @@
 import { useLayoutStoreHook } from '@/layout/store'
 import { useNav } from '../../hook/nav'
 import Breadcrumb from './breadcrumb.vue'
-import Screenfull from './screenfull.vue'
-import { templateRef } from '@vueuse/core'
-import { ref, onMounted, computed, CSSProperties, unref, shallowRef } from 'vue'
+import { useRenderIcon } from '@/config/iconfont/iconfont'
+import HeaderRight from './header-right.vue'
+import { useRoute, useRouter } from 'vue-router'
+import { ref, reactive, onMounted, watch } from 'vue'
 
-const { isCollapse } = useNav()
+const { isCollapse, filterRouter, layout } = useNav()
 const breadcrumbDom = ref()
+const route = useRoute()
+
+let defaultActive = ref()
+
 onMounted(() => {
     // 4、调用子组件中的方法
-    // console.warn(breadcrumbDom.value.getBreadcrumb())
+    defaultActive.value = route?.meta?.parentid
 })
 
+watch(
+    () => route.path,
+    () => {
+        console.warn(route.meta)
+
+        defaultActive.value = route?.meta?.parentid
+    }
+)
+
 function open() {
-    useLayoutStoreHook().toggleSideBar(!useLayoutStoreHook().sidebar.opened)
+    useLayoutStoreHook().TOGGLE_SETTINGS('sidebarOpened', !useLayoutStoreHook().settings.sidebarOpened)
 }
-function logout() {}
 </script>
 
 <style lang="scss" scoped>
@@ -69,24 +80,6 @@ function logout() {}
         font-size: 14px;
         line-height: 48px;
         float: left;
-    }
-    .vertical-header-right {
-        display: flex;
-        min-width: 280px;
-        height: 48px;
-        align-items: center;
-        color: #000000d9;
-        justify-content: flex-end;
-    }
-
-    .logout {
-        max-width: 120px;
-
-        ::v-deep(.el-dropdown-menu__item) {
-            min-width: 100%;
-            display: inline-flex;
-            flex-wrap: wrap;
-        }
     }
 }
 </style>

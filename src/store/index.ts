@@ -1,36 +1,28 @@
-import { storageLocal } from '@/utils/storage'
-import { watch } from 'vue'
-import { createPinia, PiniaPluginContext } from 'pinia'
+import { storageLocal, storageSession } from '@/utils/storage'
+import { isArray } from '@/utils/is'
+import { piniaStorageLocal, piniaStorageSession } from '@/config'
+import { createPinia } from 'pinia'
 
-/*需要持久化的数据*/
-const dataPath = {
-    'pure-app': ['navTags', 'historyTags'],
-    user: ['token', 'userInfo'],
-    settings: ['collapse'],
-}
-
-const dataKey = 'tcs-pinia'
+const piniaKey = 'tcs-pinia'
 
 /**
- * @name: sww
- * @date: 2022-02-07
+ * @name: mtj
+ * @date: 2022-03-14
  * @desc: 数据持久化
  */
 
 const piniaPersistedstate = (pinia: any) => {
     const { store } = pinia
 
-    const pathList = dataPath[store.$id] as string[]
-    // console.warn(pinia.store)
-    if (pathList && pathList.length > 0) {
-        const localStoreVal: any = storageLocal.getItem(store.$id)
-        console.warn(localStoreVal)
+    const pathListLocal = piniaStorageLocal[store.$id] as string[]
+    if (pathListLocal && pathListLocal.length > 0) {
+        const localStoreVal: any = storageLocal.getItem(`${piniaKey}_Local_${store.$id}`)
+
         store.$subscribe(
             () => {
-                console.warn(store.$id)
                 storageLocal.setItem(
-                    store.$id,
-                    pathList.reduce((val: Record<string, any>, key: string) => {
+                    `${piniaKey}_Local_${store.$id}`,
+                    pathListLocal.reduce((val: Record<string, any>, key: string) => {
                         val[key] = store.$state[key] as any
                         return val
                     }, {})
@@ -38,24 +30,60 @@ const piniaPersistedstate = (pinia: any) => {
             },
             { detached: true }
         )
-        console.warn(pinia.store)
-        pinia.store = {
-            ...store,
-            ...localStoreVal,
+
+        for (const key in localStoreVal) {
+            const value = localStoreVal[key]
+
+            // map类型赋值
+            if (isArray(value) && isArray(value[0])) {
+                for (const i in value) {
+                    pinia.store[key].set(value[i][0], value[i][1])
+                }
+            } else {
+                pinia.store[key] = value
+            }
         }
-        console.warn(pinia.store)
-        return pinia
-    } else {
+
         return pinia
     }
+
+    const pathListSession = piniaStorageSession[store.$id] as string[]
+    if (pathListSession && pathListSession.length > 0) {
+        const sessionStoreVal: any = storageSession.getItem(`${piniaKey}_Session_${store.$id}`)
+
+        store.$subscribe(
+            () => {
+                storageSession.setItem(
+                    `${piniaKey}_Session_${store.$id}`,
+                    pathListSession.reduce((val: Record<string, any>, key: string) => {
+                        val[key] = store.$state[key] as any
+                        return val
+                    }, {})
+                )
+            },
+            { detached: true }
+        )
+
+        for (const key in sessionStoreVal) {
+            const value = sessionStoreVal[key]
+
+            // map类型赋值
+            if (isArray(value) && isArray(value[0])) {
+                for (const i in value) {
+                    pinia.store[key].set(value[i][0], value[i][1])
+                }
+            } else {
+                pinia.store[key] = value
+            }
+        }
+
+        return pinia
+    }
+
+    return pinia
 }
 
 const store = createPinia()
-// console.warn(store)
-
-// const store = (app: App) => {
-// store.use(piniaPersistedstate)
-//     app.use(pinia)
-// }
+store.use(piniaPersistedstate)
 
 export default store

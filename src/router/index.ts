@@ -23,6 +23,8 @@ export const router: Router = createRouter({
     },
 })
 
+
+
 // 全局前置守卫
 router.beforeEach((to, from) => {
     // console.warn('beforeEach', to)
