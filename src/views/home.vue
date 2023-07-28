@@ -1,43 +1,38 @@
 <script setup lang="ts">
-import SaLeftMenu from '@/components/SaLeftMenu/index.vue'
-import Echarts from '@/views/demo/echarts/index.vue'
-
-const leftMenu = [
-    {
-        label: '三级菜单-A',
-        value: 'conf',
-    },
-    {
-        label: '三级菜单-B',
-        value: 'wrong',
-    },
+let gridData = [
+    { name: 1, value: '2332' },
+    { name: 2, value: '2332' },
+    { name: 3, value: '2332' },
+    { name: 4, value: '2332' },
+    { name: 5, value: '2332' },
+    { name: 6, value: '2332' },
+    { name: 7, value: '2332' },
+    { name: 8, value: '2332' },
+    { name: 9, value: '2332' },
+    { name: 10, value: '2332' },
 ]
-
-const tabOrder = (active: any) => {
-    console.log(active)
-}
+onMounted(async () => {})
 </script>
-
 <template>
-    <div class="main">
-        <SaLeftMenu :data="leftMenu" title="自定义菜单名称" @handleTabClick="tabOrder" />
-        <div class="main_right">
-            <Echarts />
+    <div>
+        <div class="grid">
+            <div v-for="item of gridData" class="grid-item">
+                {{ item.name }}
+            </div>
         </div>
     </div>
 </template>
-
 <style lang="scss" scoped>
-.main {
-    height: calc(100% - 31px);
-    flex: auto;
-    display: flex;
-    .main_right {
-        width: calc(100% - 305px);
-        margin-left: 14px;
-        flex: auto;
-        background: #ffffff;
-        padding: 4px 14px;
-    }
+.grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 5px;
+    font-size: 18px;
+    text-align: center;
+}
+
+.grid-item {
+    background-color: #f2f2f2;
+    padding: 10px;
 }
 </style>

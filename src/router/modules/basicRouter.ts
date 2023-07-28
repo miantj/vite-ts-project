@@ -14,24 +14,12 @@ const basicRouter = [
     {
         path: '/',
         name: 'home',
-        component: () => import('@/layout/index.vue'),
-        redirect: '/home',
+        component: () => import('@/views/home.vue'),
         meta: {
             title: '首页',
             icon: 'home-filled',
-            parentid:'/',
             hiddenChildren: true,
         },
-        children: [
-            {
-                path: '/home',
-                name: 'home',
-                component: () => import('@/views/home.vue'),
-                meta: {
-                    title: '首页',
-                },
-            },
-        ],
     },
     {
         path: '/error',
