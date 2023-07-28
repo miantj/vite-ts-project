@@ -1,5 +1,12 @@
-import { get, post } from '@/utils/http'
+import { request, requestFormData } from '@/utils/http'
+import { baseImgPath } from '@/config/env'
 
-export const getAsyncRoutes = (params?: object) => {
-    return get({ url: '/api/rest/orgs', data: { type: 2 } })
+// 动态路由
+export const getMenu = (params?: object) => {
+    return request({ url: '/api/getMenu' })
+}
+
+// 权限校验
+export const getPermissions = (params?: object) => {
+    return request({ url: '/api/permissions' })
 }

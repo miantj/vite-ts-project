@@ -1,26 +1,21 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { onClickOutside } from '@vueuse/core'
 import { useNav } from '@/layout/hook/nav'
-
 const { openPanel, togglePanel } = useNav()
 
 const target = ref()
-// onClickOutside(target, event => {
-//     if (event.clientX > target.value.offsetLeft) return
-//     togglePanel(!openPanel)
-// })
 </script>
 
 <template>
     <div :class="{ show: openPanel }" class="right-panel-container">
-        <div class="right-panel-background" @click="togglePanel(!openPanel)"/>
+        <div class="right-panel-background" @click="togglePanel(!openPanel)" />
         <div ref="target" class="right-panel">
             <div class="right-panel-items">
                 <div class="project-configuration">
                     <h3>项目配置</h3>
+
                     <el-icon title="关闭配置" class="el-icon-close" @click="togglePanel(!openPanel)">
-                        <close />
+                        <i-ep-close />
                     </el-icon>
                 </div>
                 <div style="border-bottom: 1px solid #dcdfe6"></div>
@@ -79,10 +74,10 @@ const target = ref()
 }
 
 .handle-button {
-    width: 48px;
-    height: 48px;
+    width: 60px;
+    height: 60px;
     position: absolute;
-    left: -48px;
+    left: -60px;
     text-align: center;
     font-size: 24px;
     border-radius: 6px 0 0 6px !important;
@@ -90,13 +85,13 @@ const target = ref()
     pointer-events: auto;
     cursor: pointer;
     color: #fff;
-    line-height: 48px;
+    line-height: 60px;
     top: 45%;
     background: rgb(24, 144, 255);
 
     i {
         font-size: 24px;
-        line-height: 48px;
+        line-height: 60px;
     }
 }
 

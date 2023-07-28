@@ -1,14 +1,12 @@
 {
     "recommendations": [
-        "octref.vetur",
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
-        "johnsoncodehk.volar",
+        "Vue.volar",
         "christian-kohler.path-intellisense",
         "dracula-theme.theme-dracula",
         "vscode-icons-team.vscode-icons",
         "xabikos.JavaScriptSnippets",
         "stylelint.vscode-stylelint",
-        "johnsoncodehk.vscode-typescript-vue-plugin"
     ]
 }

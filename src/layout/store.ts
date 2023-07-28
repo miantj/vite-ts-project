@@ -2,6 +2,7 @@ import { shallowRef } from 'vue'
 import { layoutType, multiType } from './types'
 import { defineStore } from 'pinia'
 import { RouteLocationNormalized, Router, RouteRecordRaw } from 'vue-router'
+import store from '@/store'
 
 import closeLeft from '@/assets/svg/close_left.svg'
 import closeRight from '@/assets/svg/close_right.svg'
@@ -11,21 +12,25 @@ export const useLayoutStore = defineStore({
     state: (): layoutType => ({
         settings: {
             sidebarOpened: true,
-            hideTabs: false,
+            hideTabs: true,
+            horizontalBreadcrumb: false,
+            multiTagsCache: false,
             // 布局类型
-            layout: 'vertical',
+            layout: 'horizontal',
+            theme: 'default',
             isClickHamburger: false,
         },
-
+        frameParent: true,
         openPanel: false,
         // 存储混合模式路由信息
         mixRoutes: [],
         // 存储标签页信息（路由信息）
         navTags: new Map(),
         historyTags: new Map(),
+        tagFirst: null,
         tagsViews: [
             {
-                icon: 'refreshRight',
+                icon: 'refresh-right',
                 text: '重新加载',
                 divided: false,
                 disabled: false,
@@ -38,12 +43,14 @@ export const useLayoutStore = defineStore({
             },
             {
                 icon: shallowRef(closeLeft),
+                svg: true,
                 text: '关闭左侧标签页',
                 divided: true,
                 disabled: true,
             },
             {
                 icon: shallowRef(closeRight),
+                svg: true,
                 text: '关闭右侧标签页',
                 divided: false,
                 disabled: true,
@@ -61,6 +68,8 @@ export const useLayoutStore = defineStore({
                 disabled: true,
             },
         ],
+        // 缓存路由列表
+        keepAliveInclude: [],
     }),
     getters: {
         getSidebarStatus(): Boolean {
@@ -77,14 +86,14 @@ export const useLayoutStore = defineStore({
         },
 
         HANDLE_TAGS(value: multiType) {
-            if (value?.meta?.title) {
+            if (!value?.meta?.tagHidden && value?.meta?.title) {
                 this.historyTags.set(value.name, value)
                 this.navTags.set(value.name, value)
             }
         },
 
         DELETE_TAGS(value: multiType) {
-            if (value.name !== 'home' && this.navTags.has(value.name)) {
+            if (value.name !== this.tagFirst?.name && this.navTags.has(value.name)) {
                 this.navTags.delete(value.name)
                 this.historyTags.delete(value.name)
             }
@@ -94,11 +103,16 @@ export const useLayoutStore = defineStore({
             this.mixRoutes = value
         },
 
+        CHANGE_IFRAME(value: boolean) {
+            this.frameParent = value
+        },
+
         // 检查当前右键的菜单两边是否存在别的菜单，如果左侧的菜单是首页，则不显示关闭左侧标签页，如果右侧没有菜单，则不显示关闭右侧标签页
         showMenuModel(item: RouteLocationNormalized) {
             const tagsArray = Array.from(this.navTags.values())
+
             // 当前为首页时状态
-            if (item.name == 'home') {
+            if (item.name == this.tagFirst?.name) {
                 // 重置状态
                 Array.of(1, 2, 3, 4, 5).forEach(v => {
                     this.tagsViews[v].disabled = true
@@ -139,7 +153,18 @@ export const useLayoutStore = defineStore({
             }
         },
 
-        handleTags(value: multiType) {
+        handleTags(to: any) {
+            if (this.tagFirst && this.navTags.size == 0 && to.name !== this.tagFirst.name) {
+                this.HANDLE_TAGS(this.tagFirst)
+            }
+
+            let value = {
+                path: to.path,
+                name: String(to.name),
+                meta: to.meta,
+                query: to.query,
+            }
+
             if (value.name == 'redirect') return
 
             if (this.historyTags.has(value.name)) {
@@ -156,7 +181,6 @@ export const useLayoutStore = defineStore({
                     for (const [key, element] of this.navTags) {
                         if (key !== value.name) {
                             this.DELETE_TAGS(element)
-                            console.warn(key)
                         } else {
                             return
                         }
@@ -175,7 +199,7 @@ export const useLayoutStore = defineStore({
                 // 关闭其他标签页
                 case 'other':
                     {
-                        const home = this.navTags.get('home')
+                        const home = this.navTags.get(this.tagFirst?.name)
                         const tag = this.navTags.get(value.name)
                         this.navTags.clear()
                         this.historyTags.clear()
@@ -187,7 +211,7 @@ export const useLayoutStore = defineStore({
                 // 关闭全部标签页
                 case 'all':
                     {
-                        const home = this.navTags.get('home')
+                        const home = this.navTags.get(this.tagFirst?.name)
                         router.push({
                             path: home?.path,
                             query: home?.query,
@@ -220,5 +244,5 @@ export const useLayoutStore = defineStore({
 })
 
 export function useLayoutStoreHook() {
-    return useLayoutStore()
+    return useLayoutStore(store)
 }

@@ -9,12 +9,16 @@
         "sourceMap": true,
         "resolveJsonModule": true,
         "esModuleInterop": true,
-        "suppressImplicitAnyIndexErrors":true,
         "lib": ["esnext", "dom"],
+        "skipLibCheck": true,
+        "types": ["element-plus/global","vite-svg-loader"],
         "paths": {
             "@/*": ["./src/*"]
         }
     },
-    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
-    "references": [{ "path": "./tsconfig.node.json" }]
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "vite.config.ts"],
+    "exclude": ["node_modules", "dist", "**/*.js"]
+    // "vueCompilerOptions": {
+    //     "experimentalDisableTemplateSupport": true
+    // }
 }

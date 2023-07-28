@@ -1,71 +1,12 @@
-<template>
-    <div class="tags-view">
-        <div class="arrow-left" @click="handleScroll(200)">
-            <el-icon><arrow-left-bold /></el-icon>
-        </div>
-        <div ref="scrollbarDom" class="scroll-container">
-            <div class="tab" ref="tabDom" :style="getTabStyle">
-                <div
-                    v-for="(item, index) in navTags.values()"
-                    :key="item.path"
-                    :ref="'dynamic' + index"
-                    :class="['scroll-item is-closable', { 'is-active': $route.path === item.path }]"
-                    @click="tagOnClick(item)"
-                >
-                    {{ item.meta.title }}
-                    <el-icon v-if="index !== 0" class="el-icon-close" @click.stop="deleteMenu(item)"><close /></el-icon>
-                </div>
-            </div>
-        </div>
-        <span class="arrow-right" @click="handleScroll(-200)">
-            <el-icon><arrow-right-bold /></el-icon>
-        </span>
-        <!-- 右键菜单按钮 -->
-
-        <!-- 右侧功能按钮 -->
-        <ul class="right-button">
-            <li @click="onFresh">
-                <el-icon title="刷新路由" class="el-icon-refresh-right rotate">
-                    <refresh-right />
-                </el-icon>
-            </li>
-            <li>
-                <el-dropdown trigger="click" placement="bottom-end" @command="handleCommand">
-                    <el-icon :size="30" style="padding: 8px">
-                        <arrow-down />
-                    </el-icon>
-                    <template #dropdown>
-                        <el-dropdown-menu>
-                            <el-dropdown-item
-                                v-for="(item, key) in tagsViews"
-                                :key="key"
-                                :command="{ key, item }"
-                                :divided="item.divided"
-                                :disabled="item.disabled"
-                            >
-                                <el-icon>
-                                    <component :is="useRenderIcon(item.icon)" :key="key" />
-                                </el-icon>
-
-                                {{ item.text }}
-                            </el-dropdown-item>
-                        </el-dropdown-menu>
-                    </template>
-                </el-dropdown>
-            </li>
-        </ul>
-    </div>
-</template>
-
 <script setup lang="ts">
 import { ref, watch, computed, CSSProperties, unref, getCurrentInstance, onMounted } from 'vue'
 import { useRoute, useRouter, RouteLocationNormalized } from 'vue-router'
 import { tagsViewsType } from '../../types'
-import { useRenderIcon } from '@/config/iconfont/iconfont'
 import { useLayoutStoreHook } from '@/layout/store'
 import { templateRef } from '@vueuse/core'
 
-const { tagsViews, navTags, showMenuModel, deleteTags } = useLayoutStoreHook()
+const { tagsViews, navTags, showMenuModel, deleteTags, settings } = useLayoutStoreHook()
+
 const router = useRouter()
 const route = useRoute()
 const instance = getCurrentInstance()
@@ -80,7 +21,6 @@ function tagOnClick(item: RouteLocationNormalized) {
         path: item?.path,
         query: item?.query,
     })
-    showMenuModel(item)
 }
 
 const handleScroll = (offset: number = 0): void => {
@@ -156,6 +96,11 @@ const getTabStyle = computed((): CSSProperties => {
     }
 })
 
+// 每次打开标签页菜单，更新状态
+function handleOpen(visible: any) {
+    if (visible) showMenuModel(route)
+}
+
 function handleCommand(command: { key: number; item: tagsViewsType }) {
     const { key, item } = command
 
@@ -205,7 +150,6 @@ function deleteMenu(item: RouteLocationNormalized, type?: string) {
         router,
         type
     )
-    showMenuModel(item)
 }
 
 // 重新加载
@@ -224,6 +168,79 @@ watch([route], () => {
     moveToView()
 })
 </script>
+
+<template>
+    <div class="tags-view">
+        <div class="arrow-left" @click="handleScroll(200)">
+            <el-icon>
+                <i-ep-arrow-left-bold />
+            </el-icon>
+        </div>
+        <div ref="scrollbarDom" class="scroll-container">
+            <div class="tab" ref="tabDom" :style="getTabStyle">
+                <div
+                    v-for="(item, index) in navTags.values()"
+                    :key="item.path"
+                    :ref="'dynamic' + index"
+                    :class="['scroll-item is-closable', { 'is-active': $route.path === item.path }]"
+                    @click="tagOnClick(item)"
+                >
+                    {{ item.meta.title }}
+
+                    <el-icon v-if="index !== 0" class="el-icon-close" @click.stop="deleteMenu(item)">
+                        <i-ep-close />
+                    </el-icon>
+                </div>
+            </div>
+        </div>
+        <span class="arrow-right" @click="handleScroll(-200)">
+            <el-icon>
+                <i-ep-arrow-right-bold />
+            </el-icon>
+        </span>
+        <!-- 右键菜单按钮 -->
+
+        <!-- 右侧功能按钮 -->
+        <ul class="right-button">
+            <li>
+                <el-icon title="刷新路由" class="tag-right-button" @click="onFresh">
+                    <i-ep-refresh-right />
+                </el-icon>
+            </li>
+            <li>
+                <el-dropdown
+                    trigger="click"
+                    placement="bottom-end"
+                    @visible-change="handleOpen"
+                    @command="handleCommand"
+                >
+                    <el-icon class="tag-right-button">
+                        <i-ep-arrow-down />
+                    </el-icon>
+                    <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item
+                                v-for="(item, key) in tagsViews"
+                                :key="key"
+                                :command="{ key, item }"
+                                :divided="item.divided"
+                                :disabled="item.disabled"
+                            >
+                                <el-icon v-if="item.svg">
+                                    <component :is="item.icon" :key="key" />
+                                </el-icon>
+
+                                <sa-icon v-else :icon="item.icon" :key="key" />
+
+                                {{ item.text }}
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
+            </li>
+        </ul>
+    </div>
+</template>
 
 <style lang="scss" scoped>
 @import './index.scss';

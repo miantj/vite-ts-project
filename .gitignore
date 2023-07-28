@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 dist
+osp_*
 dist-ssr
 *.local
 stats.html
@@ -22,3 +23,9 @@ stats.html
 *.njsproj
 *.sln
 *.sw?
+
+auto-imports.d.ts
+components.d.ts
+pnpm-lock.yaml
+package-lock.json
+src/auto-import.d.ts

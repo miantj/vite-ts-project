@@ -1,5 +1,6 @@
 import { toRaw } from 'vue'
-import { isMap, isObject, isString, isArray } from '@/utils/is'
+import { piniaKey } from '@/store'
+import { isMap, isString } from '@/utils/is'
 interface ProxyStorage {
     getItem(key: string): any
     setItem(Key: string, value: string): void
@@ -17,23 +18,29 @@ class sessionStorageProxy implements ProxyStorage {
 
     // 存
     public setItem(key: string, value: any): void {
-        let obj = {}
-
-        for (var k in value) {
-            let data = toRaw(value[k])
-
-            if (isMap(data)) {
-                obj[k] = Array.from(toRaw(value[k]))
-            } else {
-                obj[k] = data
+        if (key.includes(piniaKey)) {
+            let obj = {} as any
+            for (var k in value) {
+                let data = toRaw(value[k])
+                if (isMap(data)) {
+                    obj[k] = Array.from(toRaw(value[k]))
+                } else {
+                    obj[k] = data
+                }
             }
+            this.storage.setItem(key, JSON.stringify(obj))
+        } else {
+            this.storage.setItem(key, isString(value) ? value : JSON.stringify(value))
         }
-        this.storage.setItem(key, JSON.stringify(obj))
     }
 
     // 取
     public getItem(key: string): any {
-        return JSON.parse(this.storage.getItem(key))
+        try {
+            return JSON.parse(this.storage.getItem(key))
+        } catch (error) {
+            return this.storage.getItem(key)
+        }
     }
 
     // 删

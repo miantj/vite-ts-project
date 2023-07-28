@@ -1,0 +1,29 @@
+.sa-tree-select {
+    .el-tree-select__popper {
+        .el-select-dropdown__item {
+            height: initial !important;
+            position: initial;
+        }
+    }
+
+    .el-tree-node__expand-icon {
+        margin-left: 0;
+        &.is-leaf {
+            opacity: 0;
+        }
+
+        span {
+            height: 12px;
+            width: 12px;
+            background-image: url('../../assets/icon/+.png');
+        }
+        &.expanded {
+            transform: rotate(0deg);
+            span {
+                height: 12px;
+                width: 12px;
+                background-image: url('../../assets/icon/-.png');
+            }
+        }
+    }
+}

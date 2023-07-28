@@ -2,19 +2,9 @@ import type { Emitter } from 'mitt'
 import mitt from 'mitt'
 
 type Events = {
-    resize: {
-        detail: {
-            width: number
-            height: number
-        }
-    }
-    tagViewsChange: string
-    tagViewsShowModel: string
-    logoChange: string
-    changLayoutRoute: {
-        indexPath: string
-        parentPath: string
-    }
+    mittHandleMessage: any;
+    mittCountA?: number;
+    mittCountB?: number;
 }
 
 export const emitter: Emitter<Events> = mitt<Events>()

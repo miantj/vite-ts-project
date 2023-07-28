@@ -1,0 +1,27 @@
+.sidebar-container {
+    background: var(--sa-color-primary);
+    .sidebar-logo-container {
+        background: var(--sa-sidebar-logo);
+    }
+    .el-menu {
+        .el-menu-item,
+        .el-sub-menu__title {
+            color: var(--sa-menu-text-color);
+            &:hover {
+                color: var(--sa-menu-title-hover);
+                background-color: var(--sa-menu-bg-hover);
+            }
+        }
+        .is-active > .el-sub-menu__title {
+            color: var(--sa-menu-active-color);
+        }
+
+        .el-menu--inline {
+            background-color: var(--sa-menu-sub-menu-bg);
+        }
+        .el-menu-item.is-active {
+            color: var(--sa-menu-active-color);
+            background-color: var(--sa-sub-menu-active-bg);
+        }
+    }
+}

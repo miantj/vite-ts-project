@@ -1,45 +1,18 @@
-<template>
-    <div class="navbar">
-        <div class="hamburger-container" :title="isCollapse ? '点击展开' : '点击折叠'" @click="open">
-            <IconFont style="font-size: 20px" :icon="isCollapse ? 'icon-indent' : 'icon-outdent'" />
-        </div>
-
-        <el-menu
-            v-if="layout === 'mix'"
-            class="el-menu-vertical-demo"
-            mode="horizontal"
-            router
-            :default-active="defaultActive == '/home' ? '/' : defaultActive"
-            :collapse-transition="false"
-        >
-            <el-menu-item v-for="item in filterRouter" :key="item.path" :index="item.path">
-                <el-icon v-if="item.meta.icon">
-                    <component :is="useRenderIcon(item.meta.icon)"></component>
-                </el-icon>
-                <template #title>
-                    {{ item.meta.title }}
-                </template>
-            </el-menu-item>
-        </el-menu>
-        <Breadcrumb v-else ref="breadcrumbDom" class="breadcrumb-container" />
-        <HeaderRight />
-    </div>
-</template>
-
 <script setup lang="ts">
 import { useLayoutStoreHook } from '@/layout/store'
 import { useNav } from '../../hook/nav'
 import Breadcrumb from './breadcrumb.vue'
-import { useRenderIcon } from '@/config/iconfont/iconfont'
 import HeaderRight from './header-right.vue'
-import { useRoute, useRouter } from 'vue-router'
-import { ref, reactive, onMounted, watch } from 'vue'
+import SidebarItem from '../sidebar-item.vue'
+import { useRoute } from 'vue-router'
+import { ref, onMounted, watch } from 'vue'
+import Logo from '../logo.vue'
+import { routes } from '@/router'
 
-const { isCollapse, filterRouter, layout } = useNav()
+const { isCollapse, layout } = useNav()
 const breadcrumbDom = ref()
-const route = useRoute()
-
 let defaultActive = ref()
+const route = useRoute()
 
 onMounted(() => {
     // 4、调用子组件中的方法
@@ -49,8 +22,6 @@ onMounted(() => {
 watch(
     () => route.path,
     () => {
-        console.warn(route.meta)
-
         defaultActive.value = route?.meta?.parentid
     }
 )
@@ -60,25 +31,62 @@ function open() {
 }
 </script>
 
+<template>
+    <div class="navbar">
+        <Logo />
+
+        <div class="hamburger-container" :title="isCollapse ? '点击展开' : '点击折叠'" @click="open">
+            <el-icon :size="22">
+                <iBiTextIndentLeft v-if="isCollapse" />
+                <i-bi-text-indent-right v-else />
+            </el-icon>
+        </div>
+
+        <div class="horizontal-header-menu">
+            <el-menu
+                v-if="layout === 'mix'"
+                class="el-menu-vertical-demo"
+                mode="horizontal"
+                router
+                :default-active="defaultActive == '/home' ? '/' : defaultActive"
+                :collapse-transition="false"
+            >
+                <SidebarItem v-for="item in routes" :key="item.path" :item="item" />
+            </el-menu>
+
+            <!-- <Breadcrumb v-else ref="breadcrumbDom" class="breadcrumb-container" /> -->
+        </div>
+
+        <HeaderRight />
+    </div>
+</template>
+
 <style lang="scss" scoped>
 .navbar {
+    display: flex;
     width: 100%;
-    height: 48px;
+    height: 60px;
     overflow: hidden;
-    box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
-    border-bottom: 1px solid #e6e6e6;
+    box-shadow: 0 0px 1px #666;
+    border-bottom: 1px solid var(--element-tree-line-color);
+    background: #fff;
     .hamburger-container {
-        line-height: 48px;
+        line-height: 72px;
         height: 100%;
-        float: left;
+
         cursor: pointer;
         transition: background 0.3s;
         -webkit-tap-highlight-color: transparent;
         padding: 0 15px;
     }
+
+    .horizontal-header-menu {
+        width: calc(100% - 240px);
+    }
+
     .breadcrumb-container {
         font-size: 14px;
-        line-height: 48px;
+        line-height: 60px;
         float: left;
     }
 }

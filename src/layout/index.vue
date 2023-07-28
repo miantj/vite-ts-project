@@ -1,32 +1,22 @@
-<template>
-    <!-- <div :class="[set.classes]"> -->
-    <main :class="['app-main', set.classes]">
-        <Vertical v-if="!isLayout('horizontal')" />
-
-        <div class="main-container">
-            <AppMain />
-        </div>
-        <!-- 系统设置 -->
-        <Setting />
-    </main>
-</template>
-
-<script lang="ts" setup>
-import { ref, reactive, computed } from 'vue'
+<script setup lang="ts">
+import { reactive, computed, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useLayoutStoreHook } from '@/layout/store'
+import { useGlobalStoreHook } from '@/store/modules/global'
+import { useNav } from '@/layout/hook/nav'
+import { emitter } from '@/utils/mitt'
+import { setType } from './types'
 import Vertical from './components/vertical.vue'
-
 import AppMain from './components/app-main.vue'
 import Setting from './components/setting/index.vue'
-import { useLayoutStoreHook } from '@/layout/store'
-import { useNav } from '@/layout/hook/nav'
-
-import { setType } from './types'
 
 const { isLayout, layout } = useNav()
+const { settings, frameParent } = storeToRefs(useLayoutStoreHook())
+
 const set: setType = reactive({
     sidebar: computed(() => {
         return {
-            opened: useLayoutStoreHook().settings.sidebarOpened,
+            opened: settings.value.sidebarOpened,
         }
     }),
     classes: computed(() => {
@@ -37,10 +27,60 @@ const set: setType = reactive({
     }),
 })
 
-function setTheme(layoutModel: string) {
-    window.document.body.setAttribute('layout', layoutModel)
+window.document.body.setAttribute('layout', layout.value)
+
+const handleMessage = (params: any) => {
+    if (params.origin != location.host) {
+        const data = params.data
+        if (data.source == 'child') {
+            useLayoutStoreHook().CHANGE_IFRAME(false)
+            useGlobalStoreHook().clientHeight = useGlobalStoreHook().clientHeight + 150
+        }
+    }
+    emitter.emit('mittHandleMessage', params)
 }
-setTheme(layout.value)
+
+window.addEventListener('message', handleMessage)
+onMounted(async () => {})
 </script>
 
-<style lang="scss" scoped></style>
+<template>
+    <main
+        :class="[
+            'app-wrapper',
+            { 'parent-iframe': !frameParent },
+            { 'login-red': useNav().settings.theme == 'red' },
+            set.classes,
+        ]"
+    >
+        <Vertical v-if="!isLayout('horizontal')" />
+
+        <div class="main-container">
+            <!-- <el-scrollbar> -->
+                <AppMain />
+            <!-- </el-scrollbar> -->
+        </div>
+        <div class="main-footer" v-if="frameParent">© 广州世安信息技术股份有限公司 【V1.0.8】</div>
+        <!-- 系统设置 -->
+        <Setting />
+    </main>
+</template>
+
+<style lang="scss" scoped>
+.app-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.main-footer {
+    position: fixed;
+    bottom: 0px;
+    line-height: 24px;
+    width: 100%;
+    font-size: 14px;
+    text-align: center;
+    padding: 4px;
+    background: #fff;
+    border-top: 1px solid #f0f2f5;
+}
+</style>

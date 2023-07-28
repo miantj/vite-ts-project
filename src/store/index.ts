@@ -3,7 +3,7 @@ import { isArray } from '@/utils/is'
 import { piniaStorageLocal, piniaStorageSession } from '@/config'
 import { createPinia } from 'pinia'
 
-const piniaKey = 'tcs-pinia'
+export const piniaKey = 'tcs-pinia'
 
 /**
  * @name: mtj
@@ -13,8 +13,15 @@ const piniaKey = 'tcs-pinia'
 
 const piniaPersistedstate = (pinia: any) => {
     const { store } = pinia
+    const newPiniaStorageLocal = Object.assign(
+        {},
+        {
+            'pure-app': ['navTags', 'settings'],
+        },
+        piniaStorageLocal
+    )
 
-    const pathListLocal = piniaStorageLocal[store.$id] as string[]
+    const pathListLocal = newPiniaStorageLocal[store.$id] as string[]
     if (pathListLocal && pathListLocal.length > 0) {
         const localStoreVal: any = storageLocal.getItem(`${piniaKey}_Local_${store.$id}`)
 
@@ -35,7 +42,7 @@ const piniaPersistedstate = (pinia: any) => {
             const value = localStoreVal[key]
 
             // map类型赋值
-            if (isArray(value) && isArray(value[0])) {
+            if (key == 'navTags' || (isArray(value) && isArray(value[0]))) {
                 for (const i in value) {
                     pinia.store[key].set(value[i][0], value[i][1])
                 }
@@ -68,7 +75,7 @@ const piniaPersistedstate = (pinia: any) => {
             const value = sessionStoreVal[key]
 
             // map类型赋值
-            if (isArray(value) && isArray(value[0])) {
+            if (key == 'navTags' || (isArray(value) && isArray(value[0]))) {
                 for (const i in value) {
                     pinia.store[key].set(value[i][0], value[i][1])
                 }

@@ -1,3 +1,118 @@
+<script setup lang="ts">
+import { ref, computed, reactive, onMounted } from 'vue'
+import { ElMessageBox } from 'element-plus'
+import { useLayoutStoreHook } from '@/layout/store'
+import { themeColorsType } from '@/layout/types'
+import { useNav } from '@/layout/hook/nav'
+import { storageSession, storageLocal } from '@/utils/storage'
+import { useRouter } from 'vue-router'
+import Panel from './panel.vue'
+import dayIcon from '@/assets/svg/day.svg'
+import darkIcon from '@/assets/svg/dark.svg'
+
+const router = useRouter()
+let themeColors = ref<Array<themeColorsType>>([
+    // 道奇蓝（默认）
+    { rgb: '87, 169, 247', themeColor: 'default' },
+    { rgb: '200, 112, 112', themeColor: 'red' },
+])
+const { switchTheme, togglePanel, openPanel } = useNav()
+const { settings } = useLayoutStoreHook()
+
+let dataTheme = ref<boolean>(settings.theme !== 'default')
+let radio = ref<boolean>(settings.hideTabs)
+
+let layoutTheme = reactive({
+    loginRadio: storageLocal.getItem('befLogin') || 1,
+    loginOptions: [
+        {
+            value: 1,
+            label: '账号',
+        },
+        {
+            value: 2,
+            label: '二维码',
+        },
+    ],
+    layout: settings.layout || 'vertical',
+})
+
+function dataThemeChange(value: any) {
+    if (value) {
+        switchTheme('red')
+    } else {
+        switchTheme('default')
+    }
+}
+
+function tabsChange(value: any) {
+    if (value) {
+        useLayoutStoreHook().TOGGLE_SETTINGS('horizontalBreadcrumb', !value)
+        useLayoutStoreHook().TOGGLE_SETTINGS('hideTabs', value)
+    } else {
+        useLayoutStoreHook().TOGGLE_SETTINGS('hideTabs', value)
+        useLayoutStoreHook().TOGGLE_SETTINGS('horizontalBreadcrumb', !value)
+    }
+}
+
+function loginChange(value: any) {
+    storageLocal.setItem('befLogin', value)
+}
+
+function breadcrumbChange(value: any) {
+    useLayoutStoreHook().TOGGLE_SETTINGS('horizontalBreadcrumb', value)
+}
+
+function multiTagsCacheChange(value: any) {
+    useLayoutStoreHook().TOGGLE_SETTINGS('multiTagsCache', value)
+}
+
+function outAll(value: any) {
+    ElMessageBox.confirm('您确定要清空全部缓存数据吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+    })
+        .then(() => {
+            togglePanel(!openPanel)
+            localStorage.clear()
+            storageSession.clear()
+            router.replace('/login')
+        })
+        .catch(() => {})
+}
+
+setLayoutModel(useLayoutStoreHook().settings.layout)
+function setLayoutModel(layout: string) {
+    layoutTheme.layout = layout
+    window.document.body.setAttribute('layout', layout)
+    useLayoutStoreHook().TOGGLE_SETTINGS('layout', layout)
+}
+
+const getThemeColorStyle = computed(() => {
+    return (rgb: any) => {
+        return { background: `rgb(${rgb})` }
+    }
+})
+
+// 主题色 激活选择项
+const getThemeColor = computed(() => {
+    return (current: any) => {
+        if (current === settings.theme && settings.theme !== 'default') {
+            return 'color:#fff'
+        } else if (current === settings.theme && settings.theme === 'default') {
+            return 'color:#1d2b45'
+        } else {
+            return 'color:transparent'
+        }
+    }
+})
+
+onMounted(() => {
+    console.warn(radio.value)
+})
+</script>
+
 <template>
     <Panel>
         <el-divider>主题</el-divider>
@@ -8,8 +123,7 @@
             :active-icon="dayIcon"
             :inactive-icon="darkIcon"
             @change="dataThemeChange"
-        >
-        </el-switch>
+        ></el-switch>
 
         <el-divider>导航栏模式</el-divider>
         <ul class="pure-theme">
@@ -47,98 +161,68 @@
             </el-tooltip>
         </ul>
 
-        <el-divider v-show="!dataTheme">主题色</el-divider>
-        <div class="theme-color">
-            <el-color-picker v-model="themeColor" show-alpha :predefine="predefineColors" @change="themeColorChange" />
-        </div>
+        <el-divider>主题色</el-divider>
+        <ul class="theme-color">
+            <li
+                v-for="(item, index) in themeColors"
+                :key="index"
+                :style="getThemeColorStyle(item.rgb)"
+                @click="switchTheme(item.themeColor)"
+            >
+                <el-icon style="margin: 1px 0 0 0" :style="getThemeColor(item.themeColor)">
+                    <i-ep-check />
+                </el-icon>
+            </li>
+        </ul>
 
         <el-divider>界面显示</el-divider>
         <ul class="setting">
-            <li v-show="!dataTheme">
-                <span>隐藏标签页</span>
+            <li>
+                <el-radio-group v-model="radio" @change="tabsChange">
+                    <el-radio :label="false" size="large">标签导航</el-radio>
+                    <el-radio :label="true" size="large">面包屑导航</el-radio>
+                </el-radio-group>
+            </li>
+
+            <li>
+                <span>默认登录方式</span>
+                <el-select
+                    v-model="layoutTheme.loginRadio"
+                    placeholder="Select"
+                    size="small"
+                    style="width: 100px"
+                    @change="loginChange"
+                >
+                    <el-option
+                        v-for="item in layoutTheme.loginOptions"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                    />
+                </el-select>
+            </li>
+
+            <li>
+                <span>标签页持久化</span>
                 <el-switch
-                    v-model="settings.hideTabs"
+                    v-model="settings.multiTagsCache"
                     inline-prompt
                     inactive-color="#a6a6a6"
                     active-text="开"
                     inactive-text="关"
-                    @change="tabsChange"
-                >
-                </el-switch>
+                    @change="multiTagsCacheChange"
+                ></el-switch>
             </li>
         </ul>
+        <el-divider></el-divider>
+        <div class="out">
+            <el-button type="danger" size="large" @click="outAll">
+                <i-fa-sign-out></i-fa-sign-out>
+                清空缓存并返回登录页
+            </el-button>
+        </div>
     </Panel>
 </template>
-
-<script setup lang="ts">
-import rgbHex from 'rgb-hex'
-import { ref, getCurrentInstance, reactive } from 'vue'
-import Panel from './panel.vue'
-import { useLayoutStoreHook } from '@/layout/store'
-
-import dayIcon from '@/assets/svg/day.svg'
-import darkIcon from '@/assets/svg/dark.svg'
-
-const predefineColors = ref([
-    '#ff4500',
-    '#ff8c00',
-    '#ffd700',
-    '#90ee90',
-    '#00ced1',
-    '#1e90ff',
-    '#c71585',
-    'rgba(255, 69, 0, 0.68)',
-    'rgb(255, 120, 0)',
-    'hsv(51, 100, 98)',
-    'hsva(120, 40, 94, 0.5)',
-    'hsl(181, 100%, 37%)',
-    'hsla(209, 100%, 56%, 0.73)',
-    '#c7158577',
-])
-
-let dataTheme = ref<boolean>()
-let themeColor = ref('#409EFF')
-const settings = reactive({
-    hideTabs: useLayoutStoreHook().settings.hideTabs,
-})
-
-const instanceConfig = getCurrentInstance()?.appContext.app.config.globalProperties.$config
-
-let layoutTheme = ref({
-    layout: instanceConfig?.Layout ?? 'vertical',
-})
-
-function dataThemeChange() {}
-function tabsChange(value: boolean) {
-    console.warn(value)
-    useLayoutStoreHook().TOGGLE_SETTINGS('hideTabs', value)
-}
-
-setLayoutModel(useLayoutStoreHook().settings.layout)
-function setLayoutModel(layout: string) {
-    layoutTheme.value.layout = layout
-    window.document.body.setAttribute('layout', layout)
-    useLayoutStoreHook().TOGGLE_SETTINGS('layout', layout)
-}
-
-function themeColorChange(rgb: string) {
-    const color = '#' + rgbHex(rgb)
-    getOpacityColor(rgb, '0.6')
-    document.documentElement.style.setProperty('--el-color-primary', color)
-    document.documentElement.style.setProperty('--el-color-primary-light-3', getOpacityColor(rgb, '0.6'))
-}
-
-// 设置rgba透明度
-function getOpacityColor(color: string, opacity: string) {
-    let newColor = color
-    let val = color.match(/(\d(\.\d+)?)+/g)
-    if (val?.length == 4) {
-        val[3] = opacity
-        newColor = '#' + rgbHex('rgba(' + val.join(',') + ')')
-    }
-    return newColor
-}
-</script>
 
 <style scoped module>
 .isSelect {
@@ -186,7 +270,7 @@ function getOpacityColor(color: string, opacity: string) {
                     top: 0;
                     right: 0;
                     background: #fff;
-                    box-shadow: 0 0 1px #888;
+                    box-shadow: 0 0 1px #666;
                     position: absolute;
                 }
             }
@@ -198,7 +282,7 @@ function getOpacityColor(color: string, opacity: string) {
                     width: 100%;
                     height: 30%;
                     background: #1b2a47;
-                    box-shadow: 0 0 1px #888;
+                    box-shadow: 0 0 1px #666;
                 }
             }
         }
@@ -209,7 +293,7 @@ function getOpacityColor(color: string, opacity: string) {
                     width: 100%;
                     height: 30%;
                     background: #1b2a47;
-                    box-shadow: 0 0 1px #888;
+                    box-shadow: 0 0 1px #666;
                 }
 
                 &:nth-child(2) {
@@ -218,7 +302,7 @@ function getOpacityColor(color: string, opacity: string) {
                     bottom: 0;
                     left: 0;
                     background: #fff;
-                    box-shadow: 0 0 1px #888;
+                    box-shadow: 0 0 1px #666;
                     position: absolute;
                 }
             }
@@ -227,8 +311,24 @@ function getOpacityColor(color: string, opacity: string) {
 }
 
 .theme-color {
-    text-align: center;
-    margin-top: 25px;
+    width: 100%;
+    height: 40px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    li {
+        width: 20px;
+        height: 20px;
+        margin-top: 8px;
+        margin-right: 8px;
+        font-weight: 700;
+        text-align: center;
+        border-radius: 2px;
+        cursor: pointer;
+        &:nth-child(1) {
+            border: 1px solid var(--element-tree-line-color);
+        }
+    }
 }
 
 .el-popper {
@@ -244,5 +344,9 @@ function getOpacityColor(color: string, opacity: string) {
         align-items: center;
         margin: 25px;
     }
+}
+.out {
+    padding: 30px 10px;
+    text-align: center;
 }
 </style>
