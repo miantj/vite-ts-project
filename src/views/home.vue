@@ -1,8 +1,8 @@
 <script setup lang="ts">
-let gridSun = 8
+let gridSun = 24
 
-let horizontal = 6
-let column = 6
+let horizontal = 6 //横
+let vertical = 6 //竖
 
 let gridData = {
     '1': '2332',
@@ -14,13 +14,16 @@ let gridData = {
     '7': '2332',
     '8': '2332',
     '9': '2332',
+    '10': '2332',
+    '11': '2332',
+    '12': '2332',
+    '13': '2332',
 } as any
 
 onMounted(async () => {
     const container = document.querySelector('.grid') as any
 
     for (let index = 0; index < gridSun; index++) {
-        const element = gridData[index]
         const box = document.createElement('div')
         box.classList.add('grid-item')
         box.style.position = 'absolute'
@@ -29,17 +32,25 @@ onMounted(async () => {
         box.style.width = '120px'
         box.style.height = '120px'
         box.style.border = '3px solid #111'
+        box.textContent = String(index)
+
         let left = '',
             top = ''
+        let type = Math.floor(index / horizontal)
+
         if (index < horizontal) {
             left = index * 117 + 'px'
             top = 0 + 'px'
         } else {
             const row = index - horizontal + 1
-            console.warn(row)
-
-            left = (column - 1) * 117 + 'px'
-            top = row * 117 + 'px'
+            if (row < vertical) {
+                left = (vertical - 1) * 117 + 'px'
+                top = row * 117 + 'px'
+            } else {
+                left = (horizontal - row + horizontal - 1) * 117 + 'px'
+                top = (vertical - 1) * 117 + 'px'
+                console.warn(index / horizontal)
+            }
         }
 
         box.style.left = left
