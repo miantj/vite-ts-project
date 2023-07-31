@@ -16,7 +16,7 @@ export default defineComponent({
     },
     computed: {
         currentLocale() {
-            return zhCn
+            // return zhCn
         },
     },
     mounted() {},
