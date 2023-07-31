@@ -103,7 +103,7 @@ export default ({ mode }: any) => {
         },
 
         build: {
-            outDir: `osp_${moment().format('YYYY-MM-DD HH.mm.ss')}`,
+            outDir: `game_${moment().format('YYYY-MM-DD HH.mm.ss')}`,
             // 线上环境删除console
             minify: 'terser',
             chunkSizeWarningLimit: 1500,

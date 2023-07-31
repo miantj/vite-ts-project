@@ -7,7 +7,6 @@ import { routes } from '@/router'
 import { useGlobalStoreHook } from '@/store/modules/global'
 import { storageSession } from '@/utils/storage'
 
-import logo from '@/assets/logo/logo-tran-old.png'
 
 const { layout, openPanel, togglePanel, settings, navClear, pureLayout } = useNav()
 const { isFullscreen, toggle } = useFullscreen()
@@ -73,7 +72,7 @@ watch(
     >
         <div class="horizontal-header-left">
             <router-link title="世安智慧" class="sidebar-logo-link" :to="pureLayout.tagFirst?.path || '/'">
-                <el-image style="width: 130px" :src="logo" fit="contain" />
+                <!-- <el-image style="width: 130px" :src="logo" fit="contain" /> -->
             </router-link>
             <div class="horizontal-header-title" v-if="headData.authorizedUnit">
                 <p title="综合运维服务平台">综合运维服务平台综合运维服务平台</p>

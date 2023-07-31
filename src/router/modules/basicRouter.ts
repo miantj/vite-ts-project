@@ -62,16 +62,6 @@ const basicRouter = [
         ],
     },
     {
-        path: '/login',
-        name: 'login',
-        component: () => import('@/views/login/index.vue'),
-        meta: {
-            title: '登录',
-            hidden: true,
-            tagHidden: true,
-        },
-    },
-    {
         path: '/redirect',
         name: 'redirect',
         component: () => import('@/layout/index.vue'),
