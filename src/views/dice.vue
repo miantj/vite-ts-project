@@ -34,6 +34,7 @@ const startRun = () => {
                 break
         }
         box.style.animation = 'none'
+
         emit('startEnd', dicData.loseNumber)
     }, 1000)
 }
@@ -96,6 +97,7 @@ onMounted(async () => {})
 .dice {
     width: 100px;
     display: inline-block;
+    cursor: pointer;
     .dice-box {
         margin: 50px auto;
         width: 50px;
