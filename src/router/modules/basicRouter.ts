@@ -22,6 +22,36 @@ const basicRouter = [
         },
     },
     {
+        path: '/campusBullying',
+        name: 'campusBullying',
+        component: () => import('@/views/campusBullying.vue'),
+        meta: {
+            title: '防范校园欺凌',
+            icon: 'home-filled',
+            hiddenChildren: true,
+        },
+    },
+    {
+        path: '/civilCode',
+        name: 'civilCode',
+        component: () => import('@/views/civilCode.vue'),
+        meta: {
+            title: '民法典大冲关',
+            icon: 'home-filled',
+            hiddenChildren: true,
+        },
+    },
+    {
+        path: '/constitution',
+        name: '宪法知识大冲关',
+        component: () => import('@/views/constitution.vue'),
+        meta: {
+            title: '首页',
+            icon: 'home-filled',
+            hiddenChildren: true,
+        },
+    },
+    {
         path: '/error',
         name: 'error',
         component: () => import('@/layout/index.vue'),
