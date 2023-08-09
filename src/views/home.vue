@@ -839,12 +839,12 @@ onMounted(async () => {
     font-weight: 500;
     margin: auto;
     overflow: hidden;
+    text-align: center;
     :deep(.grid) {
         position: relative;
-        width: 100%;
+        width: 1100px;
         height: 100%;
-        margin-top: 50px;
-        margin-left: 20%;
+        margin: 50px auto;
         display: inline-block;
 
         .active {
@@ -927,8 +927,8 @@ onMounted(async () => {
     }
     .grid_box {
         position: absolute;
-        left: 63%;
-        bottom: 22%;
+        left: 65%;
+        bottom: 21%;
         z-index: 10;
     }
     .box_card {
