@@ -7,7 +7,7 @@ import Dice from './dice.vue'
 let horizontal = 8 //横
 let vertical = 6 //竖
 const gridData = reactive({
-    pace: 0,
+    pace: 1,
     total: 0,
     width: 137,
     dialogVisible: false,
@@ -22,13 +22,13 @@ const startEnd = (data: number) => {
     const time = setInterval(() => {
         if (stop >= data) {
             const text = gridData.container[gridData.pace + 1].getElementsByTagName('div')[0]
-
-            gridData.text = text.innerHTML
-            console.warn(gridData.text)
-            setTimeout(() => {
-                gridData.dialogVisible = true
-            }, 1000)
-
+            if (text) {
+                gridData.text = text.innerHTML
+                console.warn(gridData.text)
+                setTimeout(() => {
+                    gridData.dialogVisible = true
+                }, 1000)
+            }
             clearInterval(time)
         }
         stop++
@@ -41,8 +41,8 @@ const startEnd = (data: number) => {
                         confirmButtonText: '重新开始',
                         callback: (action: any) => {
                             gridData.pace = 0
-                            active.style.top = '0'
-                            active.style.left = '0'
+                            active.style.top = '685'
+                            active.style.left = '150'
                         },
                     })
                 }, 600)
@@ -56,24 +56,32 @@ const direction = (index: number) => {
     let left = 0,
         top = 0
     if (index < horizontal) {
-        left = index == 0 ? -40 : index * gridData.width
-        top = index == 0 ? -20 : 0
+        left = index == 0 ? 0 : index * gridData.width
+        top = 685
     } else {
-        const row = index - horizontal + 1
-        if (row < vertical) {
+        const row = vertical - index
+
+        if (0 <= vertical + row) {
             left = (horizontal - 1) * gridData.width
-            top = row * gridData.width
+            top = (vertical + row) * gridData.width
         } else {
-            if (index > horizontal * 2 + vertical - 3) {
-                left = 0
-                top = (gridData.total + 3 - index) * gridData.width
-                if (index == gridData.total) {
-                    top = top - 40
-                    left = left - 20
+            const row2 = horizontal * 2 + vertical - 3
+            if (index > row2) {
+                const row3 = horizontal * 2 + vertical
+                if (index > row3) {
+                    left = (index - row3) * gridData.width
+                    top = (vertical - 3) * gridData.width
+                    if (index == gridData.total) {
+                        top = top - 177
+                        left = left - 137
+                    }
+                } else {
+                    left = 0
+                    top = (index - row2) * gridData.width
                 }
             } else {
                 left = (vertical + horizontal + (horizontal - 3) - index) * gridData.width
-                top = (vertical - 1) * gridData.width
+                top = 0
             }
         }
     }
@@ -112,8 +120,12 @@ onMounted(async () => {
             <div class="active"></div>
             <div class="grid-item grid-start" style="background: #ffff33">
                 <p></p>
-                <p class="text">起点GO</p>
-                <el-icon :size="70">
+                <p class="text">
+                    起点
+                    <br />
+                    start
+                </p>
+                <el-icon :size="70" style="margin-left: 120px">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
                         <path
                             fill="#ff6242"
@@ -255,58 +267,73 @@ onMounted(async () => {
             </div>
             <div class="grid-item" style="background: #529b2e">
                 <i class="index">1</i>
-                <div>
-                    小明常用污言秽语对其他学生进行攻击，从而产生矛盾
-                    <span style="color: red">蹲起3个</span>
-                </div>
+                <div></div>
+            </div>
+            <div class="grid-item" style="background: #529b2e">
+                <i class="index">1</i>
+                <div>若小张阻止施暴男子过程中，自己的名牌眼镜被对方打坏，如何索赔</div>
             </div>
             <div class="grid-item" style="background: #337ecc">
                 <i class="index">2</i>
-                <div>开展校园欺凌治理为主题的专题教育，开展品德。心理健康和安全教育</div>
+                <div>
+                    小明见到一个小女孩被一群人围住，于是决定见义勇为。上前搭救过程中不慎造成小女孩受伤，请问小明是否需要承担民事责任？
+                </div>
             </div>
             <div class="grid-item" style="background: #f3d19e">
                 <i class="index">3</i>
                 <div>
-                    给李明取侮辱性绰号侮辱他人人格
-                    <span style="color: red">原地转1圈</span>
+                    <span style="color: red">前进3步</span>
                 </div>
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">4</i>
                 <div>
-                    我国刑法对犯罪年龄的界定是（）
-                    <br />
-                    A已满16周岁应当负刑事责任
-                    <br />
-                    B已满14周岁不满16周岁故意伤害不负刑责
-                    <br />
-                    C已满16周岁不负刑事责任
+                    11岁的小强用妈妈的手机玩游戏并充值了10000元买装备，妈妈知道之后很生气，她可以要求有些平台返还这笔钱吗？
                 </div>
             </div>
             <div class="grid-item" style="background: #a0cfff">
                 <i class="index">5</i>
                 <div>
-                    看到同学被欺负了，高年级张明及时制止，并告知老师
-                    <span style="color: red">前进一格</span>
+                    <span style="color: red">投一次</span>
                 </div>
             </div>
             <div class="grid-item" style="background: #ab9bb8">
                 <i class="index">6</i>
-                <div style="overflow: hidden; height: 100%">
-                    <p>此插画是校园欺凌吗？</p>
-                    <el-image style="width: 400px; height: 300px" :src="item" fit="contain" />
+                <div>
+                    老王乘坐高铁时霸占他人座位，还说“我想坐那儿就坐那儿，你们还能赶我下车？”对于老王这种行为，法律没有明确规定。对吗？
                 </div>
             </div>
             <div class="grid-item" style="background: #fab6b6">
                 <i class="index">7</i>
                 <div>
-                    王明借助身体的优势打骂比较弱小的同学
-                    <span style="color: red">原地转1圈</span>
+                    <span style="color: red">原地转3圈</span>
                 </div>
             </div>
             <div class="grid-item" style="background: #529b2e">
                 <i class="index">8</i>
-                <div><span style="color: red">后退2步</span></div>
+                <div>
+                    小雨住的高层住宅坠落了一个花盆砸伤了人，在难以确定具体“真凶”的情况下，小雨可能承担补偿责任吗？
+                </div>
+            </div>
+            <div class="grid-item" style="background: #f3d19e">
+                <i class="index">9</i>
+                <div>问：胎儿尚未出生，父亲因车祸不幸身亡，胎儿是否有权继承父亲的遗产？</div>
+            </div>
+            <div class="grid-item" style="background: #f89898">
+                <i class="index">10</i>
+                <div>《民法典》的正式施行日期是？</div>
+            </div>
+            <div class="grid-item" style="background: #a0cfff">
+                <i class="index">11</i>
+                <div><span style="color: red">青蛙跳3次</span></div>
+            </div>
+            <div class="grid-item" style="background: #faecd8">
+                <i class="index">12</i>
+                <div>小花遭父亲虐待，父亲被法院撤销监护权后，有义务继续付抚养费吗？</div>
+            </div>
+            <div class="grid-item" style="background: #c45656">
+                <i class="index">13</i>
+                <div><span style="color: red">后退3格</span></div>
                 <el-icon :size="50">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
                         <path fill="#ffe500" d="M5.04 24.46a18.96 18.96 0 1 0 37.92 0a18.96 18.96 0 1 0-37.92 0Z" />
@@ -368,97 +395,6 @@ onMounted(async () => {
                         />
                     </svg>
                 </el-icon>
-            </div>
-            <div class="grid-item" style="background: #f3d19e">
-                <i class="index">9</i>
-                <div>
-                    再接再厉
-                    <span style="color: red">在投一次</span>
-                </div>
-
-                <el-icon :size="50">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-                        <path
-                            fill="#45413c"
-                            d="M8.98 45.04a15.02 1.96 0 1 0 30.04 0a15.02 1.96 0 1 0-30.04 0Z"
-                            opacity=".15"
-                        />
-                        <path
-                            fill="#daedf7"
-                            d="M24 20.8v23.7a6.62 6.62 0 0 0 2.36-.44l15.39-6a3.92 3.92 0 0 0 2.5-3.65V15.65a3.9 3.9 0 0 0-.81-2.37ZM4.56 13.28a3.9 3.9 0 0 0-.81 2.37v18.8a3.92 3.92 0 0 0 2.5 3.65l15.39 6a6.62 6.62 0 0 0 2.36.4V20.8Z"
-                        />
-                        <path
-                            fill="#fff"
-                            d="M24 20.8v23.7a6.62 6.62 0 0 0 2.36-.44l15.39-6a3.92 3.92 0 0 0 2.5-3.65V15.65a3.9 3.9 0 0 0-.81-2.37ZM4.56 13.28a3.9 3.9 0 0 0-.81 2.37v18.8a3.92 3.92 0 0 0 2.5 3.65l15.39 6a6.62 6.62 0 0 0 2.36.4V20.8Z"
-                        />
-                        <path
-                            fill="#daedf7"
-                            d="m41.75 34.4l-15.39 6a6.62 6.62 0 0 1-2.36.4v3.7a6.62 6.62 0 0 0 2.36-.44l15.39-6a3.92 3.92 0 0 0 2.5-3.65v-3.67a3.94 3.94 0 0 1-2.5 3.66Zm-35.5 0a3.94 3.94 0 0 1-2.5-3.66v3.71a3.92 3.92 0 0 0 2.5 3.65l15.39 6a6.62 6.62 0 0 0 2.36.4v-3.7a6.62 6.62 0 0 1-2.36-.44Z"
-                        />
-                        <path
-                            fill="none"
-                            stroke="#45413c"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M24 20.8v23.7a6.62 6.62 0 0 0 2.36-.44l15.39-6a3.92 3.92 0 0 0 2.5-3.65V15.65a3.9 3.9 0 0 0-.81-2.37ZM4.56 13.28a3.9 3.9 0 0 0-.81 2.37v18.8a3.92 3.92 0 0 0 2.5 3.65l15.39 6a6.62 6.62 0 0 0 2.36.4V20.8Z"
-                        />
-                        <path
-                            fill="#fff"
-                            d="m24 20.8l19.44-7.52A4 4 0 0 0 41.75 12L26.36 6a6.51 6.51 0 0 0-4.72 0L6.25 12a4 4 0 0 0-1.69 1.29Z"
-                        />
-                        <path
-                            fill="#daedf7"
-                            d="m41.75 12l-1.28-.49L26 17.09a5.58 5.58 0 0 1-4.06 0L7.53 11.5l-1.28.5a4 4 0 0 0-1.69 1.29L24 20.8l19.44-7.52A4 4 0 0 0 41.75 12Z"
-                        />
-                        <path
-                            fill="none"
-                            stroke="#45413c"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="m24 20.8l19.44-7.52A4 4 0 0 0 41.75 12L26.36 6a6.51 6.51 0 0 0-4.72 0L6.25 12a4 4 0 0 0-1.69 1.29Z"
-                        />
-                        <path
-                            fill="#ff6242"
-                            stroke="#45413c"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M19.43 12.89a4.57 1.96 0 1 0 9.14 0a4.57 1.96 0 1 0-9.14 0Z"
-                        />
-                        <path
-                            fill="#656769"
-                            stroke="#45413c"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M11.57 24.08c.23 1.61-.3 3-1.19 3.15s-1.81-1.07-2-2.68s.3-3 1.19-3.14s1.77 1.07 2 2.67Zm26.78-3.28c-.23 1.6.3 3 1.2 3.14s1.8-1.07 2-2.68s-.3-3-1.19-3.14s-1.78 1.07-2.01 2.68ZM27.32 36.47c-.23 1.61.3 3 1.2 3.15s1.8-1.07 2-2.68s-.3-3-1.19-3.14s-1.78 1.07-2.01 2.67Zm5.8-7.79c-.23 1.6.31 3 1.2 3.14s1.8-1.07 2-2.67s-.31-3-1.2-3.15s-1.76 1.07-2 2.68Zm-15.63 4.57c.23 1.61-.3 3-1.2 3.14s-1.8-1.07-2-2.67s.3-3 1.19-3.15s1.78 1.07 2.01 2.68Z"
-                        />
-                    </svg>
-                </el-icon>
-            </div>
-            <div class="grid-item" style="background: #f89898">
-                <i class="index">10</i>
-                <div>同学小张向低年级学生索要钱物，不给就软硬兼施，威逼利诱</div>
-            </div>
-            <div class="grid-item" style="background: #a0cfff">
-                <i class="index">11</i>
-                <div>遭遇校园暴力，应在学校、警方或家长的帮助下，制止暴力，决不能逆来顺受或以暴制暴</div>
-            </div>
-            <div class="grid-item" style="background: #faecd8">
-                <i class="index">12</i>
-                <div>
-                    以下哪个关于欺凌的观点是正确的？
-                    <br />
-                    A.孩子只是在互相开玩笑
-                    <br />
-                    B.孩子收到欺凌告诉他要反击回去
-                    <br />
-                    C.孩子告诉家长被同学欺负，家长责怪其胆小、懦弱等
-                    <br />
-                    D.欺凌者。被欺凌者都是受欺凌行为影响的孩子，家长需要帮助孩子找办法应对和处理
-                </div>
-            </div>
-            <div class="grid-item" style="background: #c45656">
-                <i class="index">13</i>
-                <div>张鹏不断地用语言、行为等给其他同学造成精神或心理上的压力，使其出现不良表现</div>
             </div>
 
             <div class="grid-item" style="background: #a0cfff">
@@ -467,102 +403,33 @@ onMounted(async () => {
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">15</i>
-                <div><span style="color: red">后退1步</span></div>
-                <el-icon :size="50">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-                        <path fill="#ffe500" d="M5.04 24.46a18.96 18.96 0 1 0 37.92 0a18.96 18.96 0 1 0-37.92 0Z" />
-                        <path
-                            fill="#ebcb00"
-                            d="M24 5.5a19 19 0 1 0 19 19a19 19 0 0 0-19-19Zm0 35.07a17.3 17.3 0 1 1 17.3-17.3A17.3 17.3 0 0 1 24 40.57Z"
-                        />
-                        <path fill="#fff48c" d="M18.31 9.29a5.69 1.42 0 1 0 11.38 0a5.69 1.42 0 1 0-11.38 0Z" />
-                        <path
-                            fill="#45413c"
-                            d="M8.83 45.5a15.17 1.5 0 1 0 30.34 0a15.17 1.5 0 1 0-30.34 0Z"
-                            opacity=".15"
-                        />
-                        <path
-                            fill="none"
-                            stroke="#45413c"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M5.04 24.46a18.96 18.96 0 1 0 37.92 0a18.96 18.96 0 1 0-37.92 0Z"
-                        />
-                        <path
-                            fill="#fff"
-                            stroke="#45413c"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M18.79 23a3.32 3.32 0 1 1-3.32-3.32A3.32 3.32 0 0 1 18.79 23Z"
-                        />
-                        <path
-                            fill="#ffaa54"
-                            d="M37.74 29.2c0 .78-1.06 1.42-2.37 1.42S33 30 33 29.2s1.07-1.42 2.37-1.42s2.37.63 2.37 1.42Zm-27.48 0c0 .78 1.06 1.42 2.37 1.42S15 30 15 29.2s-1.07-1.42-2.37-1.42s-2.37.63-2.37 1.42Z"
-                        />
-                        <path
-                            fill="none"
-                            stroke="#45413c"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M28.27.5v17.06m4.26-15.38v15.64M36.8 5.03v14.69"
-                        />
-                        <path
-                            fill="#fff"
-                            stroke="#45413c"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M35.85 23a3.32 3.32 0 1 1-3.32-3.32A3.32 3.32 0 0 1 35.85 23Z"
-                        />
-                        <path
-                            fill="#ffb0ca"
-                            stroke="#45413c"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M24 36.6a14.27 14.27 0 0 1 5.77 1.22c1.94.87 4.18.31 4.66-2.26c.66-3.56-4.27-8.73-10.43-8.73S12.91 32 13.57 35.56c.48 2.57 2.72 3.13 4.66 2.26A14.27 14.27 0 0 1 24 36.6Z"
-                        />
-                        <path
-                            fill="#ff87af"
-                            stroke="#45413c"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M24 36.6a14.27 14.27 0 0 1 5.77 1.22a3.37 3.37 0 0 0 3.56-.26a11.81 11.81 0 0 0-18.66 0a3.37 3.37 0 0 0 3.56.26A14.27 14.27 0 0 1 24 36.6Z"
-                        />
-                    </svg>
-                </el-icon>
+                <div>一条宠物狗与主人走失，被小张收留并悉心照顾，数天后狗主人来领，小明可以向狗主人要饲养费吗？</div>
             </div>
             <div class="grid-item" style="background: #9381a9">
                 <i class="index">16</i>
                 <div>
-                    发现同学（）可能是校园欺凌的信号
-                    <br />
-                    A身体表面无故出现瘀伤、抓伤等
-                    <br />
-                    B不同某同学玩
-                    <br />
-                    C不愿借东西给某同学
+                    <span style="color: red">再投一次</span>
                 </div>
             </div>
             <div class="grid-item" style="background: #f3d19e">
                 <i class="index">17</i>
-                <div>说一句反对校园欺凌的标语</div>
+                <div>
+                    小张在餐厅吃放，服务员误将他人点的一道菜上给他，小张明知上错菜仍然吃完，服务员发现后，可否让小张付钱？
+                </div>
             </div>
             <div class="grid-item" style="background: #79bbff">
                 <i class="index">18</i>
-                <div>校园欺凌的危害</div>
+                <div><span style="color: red">原地转3圈</span></div>
             </div>
             <div class="grid-item" style="background: #79bbff">
                 <i class="index">19</i>
                 <div>
-                    校园欺凌下面哪个是（）
-                    <br />
-                    A不跟同学说话
-                    <br />
-                    B网上传播谣言，人身攻击 不借物品
+                    问：小陈在人行道上正常行走，结果被身后驶来的一辆自行车撞伤，对方意图逃走，周围又没有摄像头，小明可否扣留对方的自行车？
                 </div>
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">20</i>
-                <div><span style="color: red">后退2步</span></div>
+                <div><span style="color: red">表情三连拍</span></div>
                 <el-icon :size="50">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
                         <path fill="#ffe500" d="M5.04 24.46a18.96 18.96 0 1 0 37.92 0a18.96 18.96 0 1 0-37.92 0Z" />
@@ -625,8 +492,32 @@ onMounted(async () => {
                     </svg>
                 </el-icon>
             </div>
+            <div class="grid-item" style="background: #f89898">
+                <i class="index">21</i>
+                <div>小马路遇一儿童落水，奋勇跳入水中救人，救起儿童的过程中造成其局部挫伤，小马要为此赔偿吗？</div>
+            </div>
+            <div class="grid-item" style="background: #f89898">
+                <i class="index">22</i>
+                <div><span style="color: red">前进3步</span></div>
+            </div>
+            <div class="grid-item" style="background: #f89898">
+                <i class="index">23</i>
+                <div>问：李佳琦的声音如“OH MY GOD,买它买它”可以随便拿来用吗？</div>
+            </div>
+            <div class="grid-item" style="background: #f89898">
+                <i class="index">24</i>
+                <div><span style="color: red">原地转3圈</span></div>
+            </div>
+            <div class="grid-item" style="background: #f89898">
+                <i class="index">25</i>
+                <div>问：小刘在小区中散步时，被从居民坠落下来的一扇窗户砸伤，物业是否有责任</div>
+            </div>
+            <div class="grid-item" style="background: #f89898">
+                <i class="index">26</i>
+                <div>问：小张将自己养的宠物狗遗弃，这条狗流浪期间咬伤他人，小张是否承担责任？</div>
+            </div>
             <div class="grid-item grid-end" style="background: #b43d63">
-                <p class="text">终点</p>
+                <p class="text">挑战成功</p>
                 <el-icon :size="80">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
                         <path fill="#45413c" d="M14 45.5a10 1.5 0 1 0 20 0a10 1.5 0 1 0-20 0Z" opacity=".15" />
@@ -833,7 +724,7 @@ onMounted(async () => {
     position: relative;
     width: 100%;
     height: 100%;
-    background: url('../../public/bg.jpg') no-repeat;
+    background: url('../../public/bg1.jpg') no-repeat;
     background-size: 100% 100%;
     font-family: 'Microsoft Yahei';
     font-weight: 500;
@@ -849,14 +740,14 @@ onMounted(async () => {
 
         .active {
             position: absolute;
-            top: -5px;
-            left: -10px;
+            top: 685px;
+            left: 150px;
             background: url(/src/assets/img/ren.png) no-repeat;
             background-size: 100% 100%;
             width: 90px;
             height: 100px;
             margin: 15px 20px 0 20px;
-            z-index: 1;
+            z-index: 2;
             transform: rotateY(185deg);
             transition: all 1s;
         }
@@ -897,7 +788,12 @@ onMounted(async () => {
                 -webkit-box-orient: vertical;
             }
         }
-        .grid-start,
+        .grid-start {
+            width: 277px;
+            height: 140px;
+            border-radius: 5px;
+            z-index: 1;
+        }
         .grid-end {
             width: 180px;
             height: 180px;
@@ -909,7 +805,7 @@ onMounted(async () => {
             .text {
                 font-family: 'DynaPuff', cursive;
                 text-align: center;
-                width: 150px;
+                width: 180px;
                 font-size: 40px;
                 position: absolute;
                 top: 80%;
@@ -918,6 +814,10 @@ onMounted(async () => {
                 text-shadow: 0 0px orange, 1px 1px black;
                 -webkit-text-fill-color: transparent;
             }
+        }
+        .grid-start .text {
+            top: 50%;
+            left: 30%;
         }
         .grid-end {
             .text {

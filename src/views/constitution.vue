@@ -22,13 +22,13 @@ const startEnd = (data: number) => {
     const time = setInterval(() => {
         if (stop >= data) {
             const text = gridData.container[gridData.pace + 1].getElementsByTagName('div')[0]
-
-            gridData.text = text.innerHTML
-            console.warn(gridData.text)
-            setTimeout(() => {
-                gridData.dialogVisible = true
-            }, 1000)
-
+            if (text) {
+                gridData.text = text.innerHTML
+                console.warn(gridData.text)
+                setTimeout(() => {
+                    gridData.dialogVisible = true
+                }, 1000)
+            }
             clearInterval(time)
         }
         stop++
