@@ -831,9 +831,9 @@ onMounted(async () => {
 <style lang="scss" scoped>
 .main {
     position: relative;
-    max-width: 1410px;
+    width: 100%;
     height: 100%;
-    background: url('@/assets/img/bg1.jpg') no-repeat;
+    background: url('../../public/bg.jpg') no-repeat;
     background-size: 100% 100%;
     font-family: 'Microsoft Yahei';
     font-weight: 500;
@@ -844,7 +844,7 @@ onMounted(async () => {
         width: 100%;
         height: 100%;
         margin-top: 50px;
-        margin-left: 150px;
+        margin-left: 20%;
         display: inline-block;
 
         .active {
@@ -927,8 +927,8 @@ onMounted(async () => {
     }
     .grid_box {
         position: absolute;
-        right: 28%;
-        bottom: 25%;
+        left: 63%;
+        bottom: 22%;
         z-index: 10;
     }
     .box_card {
