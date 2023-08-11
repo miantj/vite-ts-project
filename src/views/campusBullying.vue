@@ -29,6 +29,7 @@ const startEnd = (data: number) => {
                     gridData.dialogVisible = true
                 }, 1000)
             }
+
             clearInterval(time)
         }
         stop++
@@ -373,7 +374,7 @@ onMounted(async () => {
                 <i class="index">9</i>
                 <div>
                     再接再厉
-                    <span style="color: red">在投一次</span>
+                    <span style="color: red">再投一次</span>
                 </div>
 
                 <el-icon :size="50">
@@ -933,6 +934,8 @@ onMounted(async () => {
     }
     .box_card {
         font-size: 24px;
+        text-align: left;
+        padding: 0 30px;
     }
 }
 </style>
