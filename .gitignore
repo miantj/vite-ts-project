@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules
 dist
 osp_*
+game_*
 dist-ssr
 *.local
 stats.html

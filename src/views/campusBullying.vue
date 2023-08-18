@@ -107,6 +107,7 @@ onMounted(async () => {
     init()
 })
 </script>
+
 <template>
     <div class="main">
         <div class="grid">
@@ -940,5 +941,6 @@ onMounted(async () => {
         padding: 11% 20%;
         min-height: 700px;
         color: #111;
+    }
 }
 </style>
