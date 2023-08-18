@@ -29,12 +29,12 @@ let piniaStorageSession: any = {
     'pure-global': ['leftMenuActive'],
 }
 
-if (!__DEV__) {
-    menuPermissions = true
-    childMenuPermissions = true
-    menuDynamic = true
-    menuStatic = false
-    mock = false
-}
+// if (!__DEV__) {
+//     menuPermissions = true
+//     childMenuPermissions = true
+//     menuDynamic = true
+//     menuStatic = false
+//     mock = false
+// }
 
 export { piniaStorageLocal, piniaStorageSession, menuPermissions, childMenuPermissions, menuDynamic, menuStatic, mock }
