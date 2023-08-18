@@ -934,7 +934,7 @@ onMounted(async () => {
         z-index: 10;
     }
     .box_card {
-        background: url('@/assets/diang.png') no-repeat;
+        background: url('@/assets/diang.jpg') no-repeat;
         background-size: 100% 100%;
         font-size: 30px;
         text-align: left;
