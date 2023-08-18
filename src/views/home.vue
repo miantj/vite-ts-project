@@ -13,7 +13,7 @@ onMounted(async () => {})
     position: relative;
     width: 100%;
     height: 100%;
-    background: url('../../public/bg.jpg') no-repeat;
+    background: url('@/assets/bg.jpg') no-repeat;
     background-size: 100% 100%;
     font-family: 'Microsoft Yahei';
     font-weight: 500;
