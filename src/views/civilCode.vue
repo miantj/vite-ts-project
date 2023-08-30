@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ElMessage, ElMessageBox } from 'element-plus'
-import item from '@/assets/img/item.png'
 
 import Dice from './dice.vue'
+import { fa } from 'element-plus/es/locale'
 
 let horizontal = 8 //横
 let vertical = 6 //竖
@@ -13,6 +13,8 @@ const gridData = reactive({
     dialogVisible: false,
     container: null,
     text: '',
+    answer: '',
+    showAnswer: false,
 } as any)
 
 const startEnd = (data: number) => {
@@ -22,14 +24,15 @@ const startEnd = (data: number) => {
     const time = setInterval(() => {
         if (stop >= data) {
             const text = gridData.container[gridData.pace + 1].getElementsByTagName('div')[0]
-            if (text) {
-                gridData.text = text.innerHTML
-                console.warn(gridData.text)
-                setTimeout(() => {
-                    gridData.dialogVisible = true
-                }, 1000)
-            }
+            const answer = gridData.container[gridData.pace + 1].getElementsByTagName('div')[1]
+            console.warn(answer)
+            gridData.answer = ''
+            if (text) gridData.text = text.innerHTML
+            if (answer) gridData.answer = answer.innerHTML
 
+            setTimeout(() => {
+                gridData.dialogVisible = true
+            }, 1000)
             clearInterval(time)
         }
         stop++
@@ -101,6 +104,7 @@ const init = () => {
 }
 
 const dialogClose = () => {
+    gridData.showAnswer = false
     if (gridData.text.includes('前进3步')) startEnd(3)
 
     if (gridData.text.includes('后退3格')) {
@@ -270,11 +274,17 @@ onMounted(async () => {
             <div class="grid-item" style="background: #529b2e">
                 <i class="index">1</i>
                 <div>若小张阻止施暴男子过程中，自己的名牌眼镜被对方打坏，如何索赔</div>
+                <div style="display: none">
+                    向施暴男子要求索赔，如果施暴男子逃跑或者无力赔偿的，可由受助者给予适当补偿。《民法典》第一百八十三条因保护他人民事权益使自己受到损害的，由侵权人承担民事责任，受益人可以给予适当补偿。没有侵权人、侵权人逃逸或者无力承担民事责任，受害人请求补偿的，受益人应当给予适当补偿。
+                </div>
             </div>
             <div class="grid-item" style="background: #337ecc">
                 <i class="index">2</i>
                 <div>
                     小明见到一个小女孩被一群人围住，于是决定见义勇为。上前搭救过程中不慎造成小女孩受伤，请问小明是否需要承担民事责任？
+                </div>
+                <div style="display: none">
+                    不需要，《民法典》第一百八十四条 因自愿实施紧急救助行为造成受助人损害的，救助人不承担民事责任。
                 </div>
             </div>
             <div class="grid-item" style="background: #f3d19e">
@@ -349,6 +359,10 @@ onMounted(async () => {
                 <div>
                     11岁的小强用妈妈的手机玩游戏并充值了10000元买装备，妈妈知道之后很生气，她可以要求有些平台返还这笔钱吗？
                 </div>
+                <div style="display: none">
+                    可以。《民法典》第十九条、第二十条规定：“不满八周岁的未成年人为无民事行为能力人，由其法定代理人代理实施民事法律行为。八周岁以上的未成年人为限制民事行为能力人，实施民事法律行为由其法定代理人代理或者经其法定代理人同意、追认；但是，可以独立实施纯获利益的民事法律行为或者与其年龄、智力相适应的民事法律行为。”
+                    小强妈妈不同意、不追认小强的充值行为，小强给游戏大额充值的行为属无效，依法有权要求游戏公司退款，游戏公司也应当将充值金额予以退还。
+                </div>
             </div>
             <div class="grid-item" style="background: #a0cfff">
                 <i class="index">5</i>
@@ -417,6 +431,9 @@ onMounted(async () => {
                 <i class="index">6</i>
                 <div>
                     老王乘坐高铁时霸占他人座位，还说“我想坐那儿就坐那儿，你们还能赶我下车？”对于老王这种行为，法律没有明确规定。对吗？
+                </div>
+                <div style="display: none">
+                    错，民法典第八百一十五条规定：旅客应当按照有效客票记载的时间、班次和座位号乘坐。旅客无票乘坐、超程乘坐、越级乘坐或者持不符合减价条件的优惠客票乘坐的，应当补交票款，承运人可以按照规定加收票款；旅客不支付票款的，承运人可以拒绝运输。
                 </div>
             </div>
             <div class="grid-item" style="background: #fab6b6">
@@ -572,14 +589,22 @@ onMounted(async () => {
                 <div>
                     小雨住的高层住宅坠落了一个花盆砸伤了人，在难以确定具体“真凶”的情况下，小雨可能承担补偿责任吗？
                 </div>
+                <div>
+                    可能，民法典第一千二百五十四条规定：禁止从建筑物中抛掷物品。从建筑物中抛掷物品或者从建筑物上坠落的物品造成他人损害的，由侵权人依法承担侵权责任；经调查难以确定具体侵权人的，除能够证明自己不是侵权人的外，由可能加害的建筑物使用人给予补偿。可能加害的建筑物使用人补偿后，有权向侵权人追偿。
+                </div>
             </div>
             <div class="grid-item" style="background: #f3d19e">
                 <i class="index">9</i>
                 <div>问：胎儿尚未出生，父亲因车祸不幸身亡，胎儿是否有权继承父亲的遗产？</div>
+                <div style="display: none">
+                    是，《民法典》第十六条规定，涉及遗产继承、接受赠与等胎儿利益保护的，胎儿视为具有民事权利能力。但是，胎儿娩出时为死体的，其民事权利能力自始不存在。
+                    《民法典》第一千一百五十五条规定，遗产分割时，应当保留胎儿的继承份额。胎儿娩出时是死体的，保留的份额按照法定继承办理。
+                </div>
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">10</i>
                 <div>《民法典》的正式施行日期是？</div>
+                <div style="display: none">2021年1月1日</div>
             </div>
             <div class="grid-item" style="background: #a0cfff">
                 <i class="index">11</i>
@@ -668,6 +693,10 @@ onMounted(async () => {
             <div class="grid-item" style="background: #faecd8">
                 <i class="index">12</i>
                 <div>小花遭父亲虐待，父亲被法院撤销监护权后，有义务继续付抚养费吗？</div>
+                <div style="display: none">
+                    有，《民法典》第三十七条规定，依法负担被监护人抚
+                    养费、赡养费、扶养费的父母、子女、配偶等，被人民法院撤销监护人资格后，应当继续履行负担的义务。
+                </div>
             </div>
             <div class="grid-item" style="background: #c45656">
                 <i class="index">13</i>
@@ -736,11 +765,15 @@ onMounted(async () => {
             </div>
             <div class="grid-item" style="background: #a0cfff">
                 <i class="index">14</i>
-                <div>遇到校园欺凌了，你该怎么处理？</div>
+                <div style="display: none">遇到校园欺凌了，你该怎么处理？</div>
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">15</i>
                 <div>一条宠物狗与主人走失，被小张收留并悉心照顾，数天后狗主人来领，小明可以向狗主人要饲养费吗？</div>
+                <div style="display: none">
+                    可以，《民法典》第九百七十九条
+                    管理人没有法定的或者约定的义务，为避免他人利益受损失而管理他人事务的，可以请求受益人偿还因管理事务而支出的必要费用;管理人因管理事务受到损失的，可以请求受益人给予适当补偿。
+                </div>
             </div>
             <div class="grid-item" style="background: #9381a9">
                 <i class="index">16</i>
@@ -809,6 +842,10 @@ onMounted(async () => {
                 <i class="index">17</i>
                 <div>
                     小张在餐厅吃放，服务员误将他人点的一道菜上给他，小张明知上错菜仍然吃完，服务员发现后，可否让小张付钱？
+                </div>
+                <div style="display: none">
+                    可以，《民法典》第九百八十七条
+                    得利人知道或者应当知道取得的利益没有法律根据的，受损失的人可以请求得利人返还其取得的利益并依法赔偿损失。
                 </div>
             </div>
             <div class="grid-item" style="background: #79bbff">
@@ -962,6 +999,10 @@ onMounted(async () => {
                 <div>
                     问：小陈在人行道上正常行走，结果被身后驶来的一辆自行车撞伤，对方意图逃走，周围又没有摄像头，小明可否扣留对方的自行车？
                 </div>
+                <div style="display: none">
+                    可以，《民法典》第一千一百七十七条
+                    合法权益受到侵害，情况紧迫且不能及时获得国家机关保护，不立即采取措施将使其合法权益受到难以弥补的损害的，受害人可以在保护自己合法权益的必要范围内采取扣留侵权人的财物等合理措施;但是，应当立即请求有关国家机关处理。
+                </div>
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">20</i>
@@ -1031,6 +1072,9 @@ onMounted(async () => {
             <div class="grid-item" style="background: #f89898">
                 <i class="index">21</i>
                 <div>小马路遇一儿童落水，奋勇跳入水中救人，救起儿童的过程中造成其局部挫伤，小马要为此赔偿吗？</div>
+                <div style="display: none">
+                    不需要， 《民法典》第一百八十四条 因自愿实施紧急救助行为造成受助人损害的，救助人不承担民事责任。
+                </div>
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">22</i>
@@ -1100,6 +1144,9 @@ onMounted(async () => {
             <div class="grid-item" style="background: #f89898">
                 <i class="index">23</i>
                 <div>问：李佳琦的声音如“OH MY GOD,买它买它”可以随便拿来用吗？</div>
+                <div style="display: none">
+                    不可以，《民法典》第一千零二十三条 第二款规定：对自然人声音的保护，参照适用肖像权保护的有关规定。
+                </div>
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">24</i>
@@ -1184,10 +1231,17 @@ onMounted(async () => {
             <div class="grid-item" style="background: #f89898">
                 <i class="index">25</i>
                 <div>问：小刘在小区中散步时，被从居民坠落下来的一扇窗户砸伤，物业是否有责任</div>
+                <div style="display: none">
+                    若物业未采取必要安全保障措施，应承担责任。《中华人民共和国民法典》第一千二百五十四条规定，禁止从建筑物中抛掷物品。从建筑物中抛掷物品或者从建筑物上坠落的物品造成他人损害的，由侵权人依法承担侵权责任；经调查难以确定具体侵权人的，除能够证明自己不是侵权人的外，由可能加害的建筑物使用人给予补偿。可能加害的建筑物使用人补偿后，有权向侵权人追偿。物业服务企业等建筑物管理人应当采取必要的安全保障措施防止前款规定情形的发生；未采取必要的安全保障措施的，应当依法承担未履行安全保障义务的侵权责任。发生本条第一款规定的情形的，公安等机关应当依法及时调查，查清责任人。
+                </div>
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">26</i>
                 <div>问：小张将自己养的宠物狗遗弃，这条狗流浪期间咬伤他人，小张是否承担责任？</div>
+                <div style="display: none">
+                    是，《民法典》第一千二百四十九条
+                    遗弃、逃逸的动物在遗弃、逃逸期间造成他人损害的，由动物原饲养人或者管理人承担侵权责任。
+                </div>
             </div>
             <div class="grid-item grid-end" style="background: #b43d63">
                 <p class="text">挑战成功</p>
@@ -1379,12 +1433,24 @@ onMounted(async () => {
         <el-dialog
             v-model="gridData.dialogVisible"
             title="请听题"
-            width="70%"
+            width="90%"
             align-center
             :modal="false"
             @close="dialogClose"
         >
-            <div class="box_card" v-html="gridData.text"></div>
+            <div class="box_card">
+                <div v-html="gridData.text"></div>
+                <div class="answer" v-if="gridData.showAnswer">
+                    <span>
+                        <span style="color: #111">答案：</span>
+                        <span v-html="gridData.answer"></span>
+                    </span>
+                    <i></i>
+                </div>
+                <div v-else style="text-align: center">
+                    <el-button type="primary" v-if="gridData.answer" @click="gridData.showAnswer = true">查看答案</el-button>
+                </div>
+            </div>
 
             <template #footer>
                 <el-button type="primary" @click="gridData.dialogVisible = false">关闭</el-button>
@@ -1393,6 +1459,7 @@ onMounted(async () => {
     </div>
 </template>
 <style lang="scss" scoped>
+@import './style.scss';
 .main {
     position: relative;
     width: 100%;
@@ -1404,114 +1471,5 @@ onMounted(async () => {
     margin: auto;
     overflow: hidden;
     text-align: center;
-    :deep(.grid) {
-        position: relative;
-        width: 1100px;
-        height: 100%;
-        margin: 50px auto;
-        display: inline-block;
-
-        .active {
-            position: absolute;
-            top: 685px;
-            left: 150px;
-            background: url(/src/assets/img/ren.png) no-repeat;
-            background-size: 100% 100%;
-            width: 90px;
-            height: 100px;
-            margin: 15px 20px 0 20px;
-            z-index: 2;
-            transform: rotateY(185deg);
-            transition: all 1s;
-        }
-
-        .grid-item {
-            position: absolute;
-            padding: 26px 10px;
-            width: 140px;
-            height: 140px;
-            border: 3px solid #111;
-            text-align: center;
-            span {
-                color: #fff !important;
-            }
-
-            .index {
-                position: absolute;
-                top: 4px;
-                right: 4px;
-                width: 22px;
-                height: 22px;
-                line-height: 22px;
-                text-align: center;
-                background: #b43d63;
-                border-radius: 50%;
-                color: #fff;
-                font-style: normal;
-                font-size: 14px;
-            }
-            div {
-                color: #fff;
-                font-size: 18px;
-                text-align: center;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                display: -webkit-box;
-                -webkit-line-clamp: 4;
-                -webkit-box-orient: vertical;
-            }
-        }
-        .grid-start {
-            width: 277px;
-            height: 140px;
-            border-radius: 5px;
-            z-index: 1;
-        }
-        .grid-end {
-            width: 180px;
-            height: 180px;
-            border-radius: 5px;
-        }
-        .grid-start,
-        .grid-end {
-            background: #b43d63;
-            .text {
-                font-family: 'DynaPuff', cursive;
-                text-align: center;
-                width: 180px;
-                font-size: 40px;
-                position: absolute;
-                top: 80%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                text-shadow: 0 0px orange, 1px 1px black;
-                -webkit-text-fill-color: transparent;
-            }
-        }
-        .grid-start .text {
-            top: 50%;
-            left: 30%;
-        }
-        .grid-end {
-            .text {
-                text-shadow: 0 0px #ffff33, 1px 1px black;
-            }
-        }
-    }
-    .grid_box {
-        position: absolute;
-        left: 65%;
-        bottom: 21%;
-        z-index: 10;
-    }
-    .box_card {
-        background: url('@/assets/diang.jpg') no-repeat;
-        background-size: 100% 100%;
-        font-size: 30px;
-        text-align: left;
-        padding: 11% 20%;
-        min-height: 700px;
-        color: #111;
-    }
 }
 </style>
