@@ -25,7 +25,7 @@ const startEnd = (data: number) => {
         if (stop >= data) {
             const text = gridData.container[gridData.pace + 1].getElementsByTagName('div')[0]
             const answer = gridData.container[gridData.pace + 1].getElementsByTagName('div')[1]
-            console.warn(answer)
+           
             gridData.answer = ''
             if (text) gridData.text = text.innerHTML
             if (answer) gridData.answer = answer.innerHTML
