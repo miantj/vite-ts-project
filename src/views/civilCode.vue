@@ -589,7 +589,7 @@ onMounted(async () => {
                 <div>
                     小雨住的高层住宅坠落了一个花盆砸伤了人，在难以确定具体“真凶”的情况下，小雨可能承担补偿责任吗？
                 </div>
-                <div>
+                <div style="display: none">
                     可能，民法典第一千二百五十四条规定：禁止从建筑物中抛掷物品。从建筑物中抛掷物品或者从建筑物上坠落的物品造成他人损害的，由侵权人依法承担侵权责任；经调查难以确定具体侵权人的，除能够证明自己不是侵权人的外，由可能加害的建筑物使用人给予补偿。可能加害的建筑物使用人补偿后，有权向侵权人追偿。
                 </div>
             </div>
@@ -765,7 +765,7 @@ onMounted(async () => {
             </div>
             <div class="grid-item" style="background: #a0cfff">
                 <i class="index">14</i>
-                <div style="display: none">遇到校园欺凌了，你该怎么处理？</div>
+                <div>遇到校园欺凌了，你该怎么处理？</div>
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">15</i>
@@ -1448,7 +1448,9 @@ onMounted(async () => {
                     <i></i>
                 </div>
                 <div v-else style="text-align: center">
-                    <el-button type="primary" v-if="gridData.answer" @click="gridData.showAnswer = true">查看答案</el-button>
+                    <el-button type="primary" v-if="gridData.answer" @click="gridData.showAnswer = true">
+                        查看答案
+                    </el-button>
                 </div>
             </div>
 
