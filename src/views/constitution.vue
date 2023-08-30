@@ -13,6 +13,8 @@ const gridData = reactive({
     dialogVisible: false,
     container: null,
     text: '',
+    answer: '',
+    showAnswer: false,
 } as any)
 
 const startEnd = (data: number) => {
@@ -22,13 +24,15 @@ const startEnd = (data: number) => {
     const time = setInterval(() => {
         if (stop >= data) {
             const text = gridData.container[gridData.pace + 1].getElementsByTagName('div')[0]
-            if (text) {
-                gridData.text = text.innerHTML
-                console.warn(gridData.text)
-                setTimeout(() => {
-                    gridData.dialogVisible = true
-                }, 1000)
-            }
+            const answer = gridData.container[gridData.pace + 1].getElementsByTagName('div')[1]
+
+            gridData.answer = ''
+            if (text) gridData.text = text.innerHTML
+            if (answer) gridData.answer = answer.innerHTML
+
+            setTimeout(() => {
+                gridData.dialogVisible = true
+            }, 1000)
 
             clearInterval(time)
         }
@@ -101,6 +105,7 @@ const init = () => {
 }
 
 const dialogClose = () => {
+    gridData.showAnswer = false
     if (gridData.text.includes('前进2步')) startEnd(2)
     if (gridData.text.includes('前进3格')) startEnd(3)
     if (gridData.text.includes('后退2格')) {
@@ -282,8 +287,9 @@ onMounted(async () => {
                     <br />
                     C.2014年11月2日
                     <br />
-                    D.2014年11月4日
+                    D.2014年11月4日A
                 </div>
+                <div style="display: none">A</div>
             </div>
             <div class="grid-item" style="background: #337ecc">
                 <i class="index">2</i>
@@ -291,14 +297,21 @@ onMounted(async () => {
                     哪些是见义勇为的情况？
                     <span style="color: red">前进2步</span>
                 </div>
+                <div style="display: none">
+                    见义勇为是指为保护国家、集体利益或者他人的人身、财产安全，不顾个人安危，与正在发生的违法犯罪作斗争或者抢险救灾的行为。
+                    具体来看，包括同正在进行的侵犯国家、集体财产或者他人人身、财产安全的违法犯罪行为作斗争的；同正在进行的危害国家安全、妨害公共安全或者扰乱公共秩序的违法犯罪行为作斗争的；在抢险救灾中，不顾个人安危抢救国家、集体财产或者他人生命财产的；
+                    以及其他为保护国家、集体利益或者他人生命财产安全免受正在遭受的侵害，不顾个人安危，挺身救助的行为。
+                </div>
             </div>
             <div class="grid-item" style="background: #f3d19e">
                 <i class="index">3</i>
                 <div>全国人民代表大会每届任期为几年</div>
+                <div style="display: none">5年</div>
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">4</i>
                 <div>建国以来我国共颁布了4部宪法： 1954年宪法、1975年宪法、1978年宪法、1982年宪法，对吗？</div>
+                <div style="display: none">对</div>
             </div>
             <div class="grid-item" style="background: #a0cfff">
                 <i class="index">5</i>
@@ -376,10 +389,15 @@ onMounted(async () => {
                     <br />
                     D.全国人民代表大会
                 </div>
+
+                <div style="display: none">D</div>
             </div>
             <div class="grid-item" style="background: #fab6b6">
                 <i class="index">7</i>
                 <div>四项基本原则的内容是什么</div>
+                <div style="display: none">
+                    坚持社会主义道路，坚持人民民主专政，坚持共产党的领导，坚持马列主义、毛泽东思想。
+                </div>
             </div>
             <div class="grid-item" style="background: #529b2e">
                 <i class="index">8</i>
@@ -466,6 +484,7 @@ onMounted(async () => {
             <div class="grid-item" style="background: #f3d19e">
                 <i class="index">9</i>
                 <div>宪法规范的特点是：最高性、包容性和概括性、制裁的特殊性，对吗？</div>
+                <div style="display: none">对</div>
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">10</i>
@@ -480,10 +499,12 @@ onMounted(async () => {
                     <br />
                     D.执政党
                 </div>
+                <div style="display: none">C</div>
             </div>
             <div class="grid-item" style="background: #a0cfff">
                 <i class="index">11</i>
                 <div>宪法规定最高国家权利机关是什么</div>
+                <div style="display: none">全国人民代表大会</div>
             </div>
             <div class="grid-item" style="background: #faecd8">
                 <i class="index">12</i>
@@ -505,6 +526,7 @@ onMounted(async () => {
                     <br />
                     D.公民与公民间的权利义务关系
                 </div>
+                <div style="display: none">B</div>
             </div>
 
             <div class="grid-item" style="background: #a0cfff">
@@ -571,6 +593,7 @@ onMounted(async () => {
             <div class="grid-item" style="background: #f89898">
                 <i class="index">15</i>
                 <div>公民的含义是什么</div>
+                <div style="display: none">具有某一国国籍，并根据该国法律规定享有权利和承担义务的人。</div>
             </div>
             <div class="grid-item" style="background: #9381a9">
                 <i class="index">16</i>
@@ -581,10 +604,12 @@ onMounted(async () => {
                     <br />
                     B.错
                 </div>
+                <div style="display: none">B</div>
             </div>
             <div class="grid-item" style="background: #f3d19e">
                 <i class="index">17</i>
-                <div>公民在年老。疾病或者丧失劳动力的情况下，有从国家和社会获得物质帮助的权利</div>
+                <div>公民在年老。疾病或者丧失劳动力的情况下，有从国家和社会获得物质帮助的权利，对吗?</div>
+                <div style="display: none">对</div>
             </div>
             <div class="grid-item" style="background: #79bbff">
                 <i class="index">18</i>
@@ -660,10 +685,12 @@ onMounted(async () => {
                     <br />
                     B.错
                 </div>
+                <div style="display: none">A</div>
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">20</i>
                 <div>我国社会主义经济制度的基础是生产资料的社会主义公有制。实行各尽所能、按劳分配。这个说法对吗？</div>
+                <div style="display: none">对</div>
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">21</i>
@@ -678,6 +705,7 @@ onMounted(async () => {
                     <br />
                     D.人民代表大会制度
                 </div>
+                <div style="display: none">B</div>
             </div>
 
             <div class="grid-item grid-end" style="background: #b43d63">
@@ -870,12 +898,26 @@ onMounted(async () => {
         <el-dialog
             v-model="gridData.dialogVisible"
             title="请听题"
-            width="70%"
+            width="90%"
             align-center
             :modal="false"
             @close="dialogClose"
         >
-            <div class="box_card" v-html="gridData.text"></div>
+            <div class="box_card">
+                <div v-html="gridData.text"></div>
+                <div class="answer" v-if="gridData.showAnswer">
+                    <span>
+                        <span style="color: #111">答案：</span>
+                        <span v-html="gridData.answer"></span>
+                    </span>
+                    <i></i>
+                </div>
+                <div v-else style="text-align: center">
+                    <el-button type="primary" v-if="gridData.answer" @click="gridData.showAnswer = true">
+                        查看答案
+                    </el-button>
+                </div>
+            </div>
 
             <template #footer>
                 <el-button type="primary" @click="gridData.dialogVisible = false">关闭</el-button>
@@ -885,7 +927,6 @@ onMounted(async () => {
 </template>
 <style lang="scss" scoped>
 @import './style.scss';
-
 .main {
     position: relative;
     width: 100%;
@@ -897,5 +938,53 @@ onMounted(async () => {
     margin: auto;
     overflow: hidden;
     text-align: center;
+
+    .grid-item {
+        position: absolute;
+        padding: 26px 10px;
+        width: 140px;
+        height: 140px;
+        border: 3px solid #111;
+        text-align: center;
+        span {
+            color: #fff !important;
+        }
+    }
+    .grid-start {
+        width: 277px;
+        height: 140px;
+        border-radius: 5px;
+        z-index: 1;
+    }
+    .grid-end {
+        width: 180px;
+        height: 180px;
+        border-radius: 5px;
+    }
+    .grid-start,
+    .grid-end {
+        background: #b43d63;
+        .text {
+            font-family: 'DynaPuff', cursive;
+            text-align: center;
+            width: 180px;
+            font-size: 40px;
+            position: absolute;
+            top: 80%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-shadow: 0 0px orange, 1px 1px black;
+            -webkit-text-fill-color: transparent;
+        }
+    }
+    .grid-start .text {
+        top: 50%;
+        left: 30%;
+    }
+    .grid-end {
+        .text {
+            text-shadow: 0 0px #ffff33, 1px 1px black;
+        }
+    }
 }
 </style>

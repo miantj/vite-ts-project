@@ -860,7 +860,7 @@ onMounted(async () => {
         <el-dialog
             v-model="gridData.dialogVisible"
             title="请听题"
-            width="70%"
+            width="90%"
             align-center
             :modal="false"
             @close="dialogClose"
