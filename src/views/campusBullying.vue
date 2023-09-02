@@ -25,7 +25,7 @@ const startEnd = (data: number) => {
         if (stop >= data) {
             const text = gridData.container[gridData.pace + 1].getElementsByTagName('div')[0]
             const answer = gridData.container[gridData.pace + 1].getElementsByTagName('div')[1]
-          
+
             gridData.answer = ''
             if (text) gridData.text = text.innerHTML
             if (answer) gridData.answer = answer.innerHTML
@@ -307,7 +307,7 @@ onMounted(async () => {
                 <i class="index">6</i>
                 <div style="overflow: hidden; height: 100%">
                     <p>此插画是校园欺凌吗？</p>
-                    <el-image style="width: 400px; height: 300px" :src="item" fit="contain" />
+                    <image style="width: 400px; height: 300px" :src="item" />
                 </div>
                 <div style="display: none">
                     是，校园内外学生间一方(个体或群体)单次或多次蓄意或恶意通过肢体、语言实施欺负、侮辱，造成另一方(个体或群体)身体和心理伤害、财产损失或精神损害等的行为是校园欺凌
@@ -492,10 +492,16 @@ onMounted(async () => {
                 <i class="index">14</i>
                 <div>遇到校园欺凌了，你该怎么处理？</div>
                 <div style="display: none">
-                    【开放性答案】 1、沉着冷静，采取迂回战术，尽可能拖延时间。
+                    【开放性答案】
+                    <br />
+                    1、沉着冷静，采取迂回战术，尽可能拖延时间。
+                    <br />
                     2、人身安全永远是第一位，不要去激怒对方，必要时，向路人、同学、老师呼救求助。
+                    <br />
                     3、顺从对方的话去说，从其言语中找出可插入话题，缓解气氛，分散对方注意力，同时获取信任，为自己争取时间。
+                    <br />
                     4、上学和放学尽可能结伴而行。
+                    <br />
                     5、穿戴用品尽量低调，不要过于招摇。不主动与同学发生冲突，一旦发生及时找老师解决
                 </div>
             </div>
@@ -569,11 +575,11 @@ onMounted(async () => {
                 <div>
                     发现同学（）可能是校园欺凌的信号
                     <br />
-                    A身体表面无故出现瘀伤、抓伤等
+                    A.身体表面无故出现瘀伤、抓伤等
                     <br />
-                    B不同某同学玩
+                    B.不同某同学玩
                     <br />
-                    C不愿借东西给某同学
+                    C.不愿借东西给某同学
                 </div>
                 <div style="display: none">A</div>
             </div>
@@ -581,8 +587,13 @@ onMounted(async () => {
                 <i class="index">17</i>
                 <div>说一句反对校园欺凌的标语</div>
                 <div style="display: none">
-                    1）小事不计较，大事共商讨，友爱互助团结好. （2）言出不必惊人，谈吐一定文明
-                    （3）健康生活，文明做人，平安校园，幸福一生 （4）欺凌同学要不得，互助互爱好品德
+                    （1）小事不计较，大事共商讨，友爱互助团结好.
+                    <br />
+                    （2）言出不必惊人，谈吐一定文明
+                    <br />
+                    （3）健康生活，文明做人，平安校园，幸福一生
+                    <br />
+                    （4）欺凌同学要不得，互助互爱好品德
                 </div>
             </div>
             <div class="grid-item" style="background: #79bbff">
@@ -874,7 +885,7 @@ onMounted(async () => {
                     </span>
                     <i></i>
                 </div>
-                <div v-else style="text-align: center">
+                <div v-else style="text-align: center; margin-top: 60px">
                     <el-button type="primary" v-if="gridData.answer" @click="gridData.showAnswer = true">
                         查看答案
                     </el-button>

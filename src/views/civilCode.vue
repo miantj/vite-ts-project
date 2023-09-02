@@ -1447,7 +1447,7 @@ onMounted(async () => {
                     </span>
                     <i></i>
                 </div>
-                <div v-else style="text-align: center">
+                <div v-else style="text-align: center; margin-top: 60px">
                     <el-button type="primary" v-if="gridData.answer" @click="gridData.showAnswer = true">
                         查看答案
                     </el-button>

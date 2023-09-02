@@ -35,8 +35,8 @@ const startRun = () => {
         }
         box.style.animation = 'none'
 
-        emit('startEnd', 1)
-        // emit('startEnd', dicData.loseNumber)
+        // emit('startEnd', 1)
+        emit('startEnd', dicData.loseNumber)
     }, 1000)
 }
 onMounted(async () => {})

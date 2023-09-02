@@ -279,7 +279,7 @@ onMounted(async () => {
             <div class="grid-item" style="background: #529b2e">
                 <i class="index">1</i>
                 <div>
-                    2我国的国家宪法日是什么时候确立的？
+                    我国的国家宪法日是什么时候确立的？
                     <br />
                     A.2014年11月1日
                     <br />
@@ -912,7 +912,7 @@ onMounted(async () => {
                     </span>
                     <i></i>
                 </div>
-                <div v-else style="text-align: center">
+                <div v-else style="text-align: center; margin-top: 60px">
                     <el-button type="primary" v-if="gridData.answer" @click="gridData.showAnswer = true">
                         查看答案
                     </el-button>
