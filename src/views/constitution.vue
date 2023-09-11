@@ -19,6 +19,7 @@ const gridData = reactive({
 
 const startEnd = (data: number) => {
     console.warn('结果', data)
+    gridData.start = false
     const active = document.querySelector('.active') as any
     let stop = 1
     const time = setInterval(() => {
@@ -29,9 +30,10 @@ const startEnd = (data: number) => {
             gridData.answer = ''
             if (text) gridData.text = text.innerHTML
             if (answer) gridData.answer = answer.innerHTML
-
+            console.warn(gridData.pace, gridData.total)
             setTimeout(() => {
-                gridData.dialogVisible = true
+                if (gridData.pace != gridData.total) gridData.dialogVisible = true
+                gridData.start = true
             }, 1000)
 
             clearInterval(time)
@@ -48,6 +50,7 @@ const startEnd = (data: number) => {
                             gridData.pace = 1
                             active.style.top = '685px'
                             active.style.left = '150px'
+                            gridData.start = true
                         },
                     })
                 }, 600)
@@ -117,6 +120,12 @@ const dialogClose = () => {
         startEnd(1)
     }
 }
+
+const close = () => {
+    gridData.dialogVisible = false
+    gridData.start = true
+}
+
 onMounted(async () => {
     init()
 })
@@ -892,7 +901,7 @@ onMounted(async () => {
             </div>
         </div>
         <div class="grid_box">
-            <Dice @startEnd="startEnd" />
+            <Dice @startEnd="startEnd" :start="gridData.start" @startChange="gridData.start = false" />
         </div>
 
         <el-dialog
@@ -920,7 +929,7 @@ onMounted(async () => {
             </div>
 
             <template #footer>
-                <el-button type="primary" @click="gridData.dialogVisible = false">关闭</el-button>
+                <el-button type="primary" @click="close">关闭</el-button>
             </template>
         </el-dialog>
     </div>

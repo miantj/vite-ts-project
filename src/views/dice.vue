@@ -1,11 +1,20 @@
 <script setup lang="ts">
-const emit = defineEmits(['startEnd'])
+const emit = defineEmits(['startEnd', 'startChange'])
+
+const props = defineProps({
+    start: {
+        type: Boolean,
+        default: true,
+    },
+})
 
 const dicData = reactive({
     loseNumber: 1,
 } as any)
 
 const startRun = () => {
+    if (!props.start) return
+    emit('startChange')
     const box = document.querySelector('.dice-box') as any
     box.style.animation = `rotate 0.1s linear infinite`
     setTimeout(() => {
@@ -35,7 +44,6 @@ const startRun = () => {
         }
         box.style.animation = 'none'
 
-        // emit('startEnd', 1)
         emit('startEnd', dicData.loseNumber)
     }, 1000)
 }
