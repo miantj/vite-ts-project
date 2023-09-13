@@ -6,14 +6,12 @@ onMounted(async () => {})
         <div class="title">
             <span>普法闯关智多星</span>
         </div>
-        <p>
-            <span @click="$router.push('/civilCode')" style="color: #67c23a">民法典大冲关</span>
-        </p>
-        <p><span @click="$router.push('/campusBullying')" style="color: #e77510">防范校园欺凌</span></p>
-        <p><span @click="$router.push('/constitution')" style="color: #e9ae21">宪法知识大冲关</span></p>
+        <p><span @click="$router.push('/civilCode')">民法典大冲关</span></p>
+        <p><span @click="$router.push('/campusBullying')">防范校园欺凌</span></p>
+        <p><span @click="$router.push('/constitution')">宪法知识大冲关</span></p>
 
-        <div class="bottom" style="text-align: left; padding-left: 32%; padding-top: 40px">
-            <div>监制单位：广州市白云区司法局龙归司法所</div>
+        <div class="bottom" style="text-align: left; padding: 40px 31%">
+            <div>指导单位：广州市白云区司法局龙归司法所</div>
             <div>开发制作：明天健</div>
         </div>
     </div>
@@ -23,23 +21,22 @@ onMounted(async () => {})
     position: relative;
     width: 100%;
     height: 100%;
-    background: url('@/assets/img/home2.jpg') no-repeat;
+    background: url('@/assets/img/home3.jpg') no-repeat;
     background-size: 100% 100%;
     font-family: 'Microsoft Yahei';
     font-weight: 500;
     margin: auto;
     overflow: hidden;
     text-align: center;
-    padding-top: 8%;
+    padding-top: 7%;
     .title {
         font-size: 4.2vw;
         margin-bottom: 20px;
-
         span {
             border-radius: 10px;
-            color: #57a9f7;
+          font-weight: bold;
+            color: #fbff4c;
             padding: 5px 20px;
-            font-weight: bold;
         }
     }
     p {
@@ -47,17 +44,16 @@ onMounted(async () => {})
         padding: 12px;
         span {
             font-size: 2.4vw;
-            color: #57a9f7;
+            color: #fbff4c;
             cursor: pointer;
             font-weight: bold;
         }
     }
     .bottom {
         div {
-            font-size: 26px;
+            color: #fbff4c;
             font-size: 2vw;
             font-weight: bold;
-            color: #29d;
         }
     }
 }

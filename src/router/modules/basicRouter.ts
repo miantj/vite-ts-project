@@ -22,6 +22,16 @@ const basicRouter = [
         },
     },
     {
+        path: '/home1',
+        name: 'home1',
+        component: () => import('@/views/home1.vue'),
+        meta: {
+            title: '首页',
+            icon: 'home-filled',
+            hiddenChildren: true,
+        },
+    },
+    {
         path: '/campusBullying',
         name: 'campusBullying',
         component: () => import('@/views/campusBullying.vue'),
