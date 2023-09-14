@@ -4,7 +4,7 @@ onMounted(async () => {})
 <template>
     <div class="main">
         <div class="title">
-            <span>普法闯关智多星</span>
+            <span>学法冲关智多星</span>
         </div>
         <p>
             <span @click="$router.push('/civilCode')" style="color: #67c23a">民法典大冲关</span>
