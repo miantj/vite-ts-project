@@ -3,10 +3,11 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import item from '@/assets/img/item.png'
 
 import Dice from './dice.vue'
+import { startEnd, init } from '@/utils/dice'
 
-let horizontal = 8 //横
-let vertical = 6 //竖
 const gridData = reactive({
+    horizontal: 8, //横
+    vertical: 6, //竖
     pace: 0,
     total: 0,
     width: 137,
@@ -16,100 +17,19 @@ const gridData = reactive({
     answer: '',
     showAnswer: false,
     start: true,
+    type: 'campusBullying',
 } as any)
-
-const startEnd = (data: number) => {
-    console.warn('结果', data)
-    gridData.start = false
-    const active = document.querySelector('.active') as any
-    let stop = 1
-    const time = setInterval(() => {
-        if (stop >= data) {
-            const text = gridData.container[gridData.pace + 1].getElementsByTagName('div')[0]
-            const answer = gridData.container[gridData.pace + 1].getElementsByTagName('div')[1]
-
-            gridData.answer = ''
-            if (text) gridData.text = text.innerHTML
-            if (answer) gridData.answer = answer.innerHTML
-
-            setTimeout(() => {
-                if (gridData.pace != gridData.total) gridData.dialogVisible = true
-                gridData.start = true
-            }, 1000)
-
-            clearInterval(time)
-        }
-        stop++
-
-        if (gridData.pace <= gridData.total - 1) {
-            ;[active.style.left, active.style.top] = direction(++gridData.pace)
-            if (gridData.pace > gridData.total - 1) {
-                setTimeout(() => {
-                    ElMessageBox.alert('恭喜你到达终点了！', '提示', {
-                        confirmButtonText: '重新开始',
-                        callback: (action: any) => {
-                            gridData.pace = 0
-                            active.style.top = '0'
-                            active.style.left = '0'
-                            gridData.start = true
-                        },
-                    })
-                }, 600)
-                clearInterval(time)
-            }
-        }
-    }, 1000)
-}
-
-const direction = (index: number) => {
-    let left = 0,
-        top = 0
-    if (index < horizontal) {
-        left = index == 0 ? -40 : index * gridData.width
-        top = index == 0 ? -20 : 0
-    } else {
-        const row = index - horizontal + 1
-        if (row < vertical) {
-            left = (horizontal - 1) * gridData.width
-            top = row * gridData.width
-        } else {
-            if (index > horizontal * 2 + vertical - 3) {
-                left = 0
-                top = (gridData.total + 3 - index) * gridData.width
-                if (index == gridData.total) {
-                    top = top - 40
-                    left = left - 20
-                }
-            } else {
-                left = (vertical + horizontal + (horizontal - 3) - index) * gridData.width
-                top = (vertical - 1) * gridData.width
-            }
-        }
-    }
-    return [left + 'px', top + 'px']
-}
-
-// 初始化地图
-const init = () => {
-    gridData.container = document.querySelectorAll('.grid-item') as any
-
-    gridData.total = gridData.container.length - 1
-    gridData.container.forEach((box: any, index: number) => {
-        // box.textContent = String(index)
-        ;[box.style.left, box.style.top] = direction(index)
-    })
-}
 
 const dialogClose = () => {
     gridData.showAnswer = false
-    if (gridData.text.includes('前进一格')) startEnd(1)
+    if (gridData.text.includes('前进一格')) startEnd(gridData, 1)
     if (gridData.text.includes('后退1步')) {
         gridData.pace = gridData.pace - 2
-        startEnd(1)
+        startEnd(gridData, 1)
     }
     if (gridData.text.includes('后退2步')) {
         gridData.pace = gridData.pace - 3
-        startEnd(1)
+        startEnd(gridData, 1)
     }
 }
 
@@ -119,12 +39,13 @@ const close = () => {
 }
 
 onMounted(async () => {
-    init()
+    init(gridData)
 })
 </script>
 
 <template>
     <div class="main">
+        <div class="back" @click="$router.go(-1)">返回</div>
         <div class="grid">
             <div class="active"></div>
             <div class="grid-item grid-start" style="background: #ffff33">
@@ -875,7 +796,11 @@ onMounted(async () => {
             </div>
         </div>
         <div class="grid_box">
-            <Dice @startEnd="startEnd" :start="gridData.start" @startChange="gridData.start = false" />
+            <Dice
+                @startEnd="(data:any) => startEnd(gridData,data)"
+                :start="gridData.start"
+                @startChange="gridData.start = false"
+            />
         </div>
 
         <el-dialog
@@ -906,6 +831,13 @@ onMounted(async () => {
                 <el-button type="primary" @click="close">关闭</el-button>
             </template>
         </el-dialog>
+
+        <div class="yanhua yanhua1"></div>
+        <div class="yanhua yanhua2"></div>
+        <div class="yanhua yanhua3"></div>
+        <div class="yanhua yanhua1 yanhua4"></div>
+        <div class="yanhua yanhua2 yanhua5"></div>
+        <div class="yanhua yanhua3 yanhua6"></div>
     </div>
 </template>
 <style lang="scss" scoped>
