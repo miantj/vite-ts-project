@@ -2,7 +2,7 @@
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 import Dice from './dice.vue'
-import { startEnd, init } from '@/utils/dice'
+import { startEnd, init } from '@/views/dice'
 
 const gridData = reactive({
     horizontal: 8, //横
