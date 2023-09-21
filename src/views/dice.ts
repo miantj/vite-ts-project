@@ -101,21 +101,22 @@ const direction3 = (gridData: any, index: number) => {
 }
 
 export const startEnd = (gridData: any, data: number) => {
-    console.warn('结果', data)
     gridData.start = false
-    const active = document.querySelector('.active') as any
+    const all = document.querySelectorAll('.active') as any
+    const active = all[gridData.user - 1] as any
+
     let stop = 1
     const time = setInterval(() => {
         if (stop >= data) {
-            const text = gridData.container[gridData.pace + 1].getElementsByTagName('div')[0]
-            const answer = gridData.container[gridData.pace + 1].getElementsByTagName('div')[1]
+            const text = gridData.container[gridData.pace[gridData.user - 1] + 1].getElementsByTagName('div')[0]
+            const answer = gridData.container[gridData.pace[gridData.user - 1] + 1].getElementsByTagName('div')[1]
 
             gridData.answer = ''
             if (text) gridData.text = text.innerHTML
             if (answer) gridData.answer = answer.innerHTML
 
             setTimeout(() => {
-                if (gridData.pace != gridData.total) gridData.dialogVisible = true
+                if (gridData.pace[gridData.user - 1] != gridData.total) gridData.dialogVisible = true
                 gridData.start = true
             }, 1000)
 
@@ -123,24 +124,24 @@ export const startEnd = (gridData: any, data: number) => {
         }
         stop++
 
-        if (gridData.pace <= gridData.total - 1) {
+        if (gridData.pace[gridData.user - 1] <= gridData.total - 1) {
             if (gridData.type == 'campusBullying') {
-                ;[active.style.left, active.style.top] = direction(gridData, ++gridData.pace)
+                ;[active.style.left, active.style.top] = direction(gridData, ++gridData.pace[gridData.user - 1])
             }
             if (gridData.type == 'civilCode') {
-                ;[active.style.left, active.style.top] = direction2(gridData, ++gridData.pace)
+                ;[active.style.left, active.style.top] = direction2(gridData, ++gridData.pace[gridData.user - 1])
             }
             if (gridData.type == 'constitution') {
-                ;[active.style.left, active.style.top] = direction3(gridData, ++gridData.pace)
+                ;[active.style.left, active.style.top] = direction3(gridData, ++gridData.pace[gridData.user - 1])
             }
-            if (gridData.pace > gridData.total - 1) {
+            if (gridData.pace[gridData.user - 1] > gridData.total - 1) {
                 setTimeout(() => {
                     let list = document.querySelectorAll('.yanhua')
                     for (let index = 0; index < list.length; index++) {
                         const element = list[index] as any
                         element.style.display = 'block'
                     }
-                    ElMessageBox.alert('恭喜你到达终点了！', '提示', {
+                    ElMessageBox.alert(`恭喜玩家${gridData.user}到达终点了！`, '提示', {
                         confirmButtonText: '重新开始',
                         appendTo: document.querySelectorAll('.main')[0] as any,
                         callback: (action: any) => {
@@ -149,13 +150,19 @@ export const startEnd = (gridData: any, data: number) => {
                                 element.style.display = 'none'
                             }
                             if (gridData.type == 'campusBullying') {
-                                gridData.pace = 0
-                                active.style.top = '0'
-                                active.style.left = '0'
+                                for (let index = 0; index < all.length; index++) {
+                                    const element = all[index]
+                                    gridData.pace[index] = 0
+                                    element.style.top = '0'
+                                    element.style.left = index * 50 + 0
+                                }
                             } else {
-                                gridData.pace = 1
-                                active.style.top = '685px'
-                                active.style.left = '150px'
+                                for (let index = 0; index < all.length; index++) {
+                                    const element = all[index]
+                                    gridData.pace[index] = 0
+                                    element.style.top = '685px'
+                                    element.style.left = 150 - index * 50 + 'px'
+                                }
                             }
                             gridData.start = true
                         },

@@ -7,7 +7,8 @@ import { startEnd, init } from '@/views/dice'
 const gridData = reactive({
     horizontal: 8, //横
     vertical: 6, //竖
-    pace: 1,
+    pace: [1, 1], // 多人
+    user: 1,
     total: 0,
     width: 137,
     dialogVisible: false,
@@ -21,12 +22,19 @@ const gridData = reactive({
 
 const dialogClose = () => {
     gridData.showAnswer = false
-    if (gridData.text.includes('前进3步')) startEnd(gridData, 3)
+    if (gridData.text.includes('再投一次')) return
+
+    if (gridData.text.includes('前进3步')) {
+        startEnd(gridData, 3)
+        return
+    }
 
     if (gridData.text.includes('后退3格')) {
-        gridData.pace = gridData.pace - 4
+        gridData.pace[gridData.user - 1] = gridData.pace[gridData.user - 1] - 4
         startEnd(gridData, 1)
+        return
     }
+    gridData.user = gridData.user == 1 ? 2 : 1
 }
 
 const close = () => {
@@ -41,8 +49,10 @@ onMounted(async () => {
 <template>
     <div class="main">
         <div class="back" @click="$router.go(-1)">返回</div>
+        <div class="userTitle">玩家{{ gridData.user }}</div>
         <div class="grid">
             <div class="active"></div>
+            <div class="active user"></div>
             <div class="grid-item grid-start" style="background: #ffff33">
                 <p></p>
                 <p class="text">

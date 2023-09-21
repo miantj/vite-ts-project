@@ -44,6 +44,7 @@ const startRun = () => {
         }
         box.style.animation = 'none'
 
+        // emit('startEnd',18)
         emit('startEnd', dicData.loseNumber)
     }, 1000)
 }
