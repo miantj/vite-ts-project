@@ -108,8 +108,13 @@ export const startEnd = (gridData: any, data: number) => {
     let stop = 1
     const time = setInterval(() => {
         if (stop >= data) {
-            const text = gridData.container[gridData.pace[gridData.user - 1] + 1].getElementsByTagName('div')[0]
-            const answer = gridData.container[gridData.pace[gridData.user - 1] + 1].getElementsByTagName('div')[1]
+            const topic = gridData.container[gridData.pace[gridData.user - 1] + 1].getElementsByTagName('div')
+            const text = topic[topic.length > 1 ? topic.length - 2 : topic.length - 1]
+            const answer = topic.length > 1 ? topic[topic.length - 1] : ''
+
+            console.warn(topic)
+            console.warn(text)
+            console.warn(answer)
 
             gridData.answer = ''
             if (text) gridData.text = text.innerHTML
