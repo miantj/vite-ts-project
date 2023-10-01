@@ -112,10 +112,6 @@ export const startEnd = (gridData: any, data: number) => {
             const text = topic[topic.length > 1 ? topic.length - 2 : topic.length - 1]
             const answer = topic.length > 1 ? topic[topic.length - 1] : ''
 
-            console.warn(topic)
-            console.warn(text)
-            console.warn(answer)
-
             gridData.answer = ''
             if (text) gridData.text = text.innerHTML
             if (answer) gridData.answer = answer.innerHTML

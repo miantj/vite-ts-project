@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ElMessage, ElMessageBox } from 'element-plus'
-import item from '@/assets/img/item.png'
+import MFD from '@/../public/xyql'
+import { trim } from '@/utils'
 
 import Dice from './dice.vue'
 import { startEnd, init } from '@/views/dice'
@@ -19,6 +19,7 @@ const gridData = reactive({
     showAnswer: false,
     start: true,
     type: 'campusBullying',
+    topics: [],
 } as any)
 
 const dialogClose = () => {
@@ -48,8 +49,34 @@ const close = () => {
     gridData.start = true
 }
 
+const generate = (num: number): string => {
+    if (num > MFD.length) return ''
+    let i = Math.floor(Math.random() * MFD.length)
+    if (!gridData.topics.includes(i)) {
+        gridData.topics.push(i)
+        let topic = trim(MFD[i].topic, 'all').replace(/(A\.|B\.|C\.|D\.)/g, '<br> &nbsp; $1')
+        let answer = trim(MFD[i].answer, 'all')
+        return `
+                <div>${topic}</div>
+                <div style="display: none">${answer}</div>
+                `
+    } else {
+        return generate(num)
+    }
+}
+
+const generateTopic = () => {
+    const topics = document.querySelectorAll('.topic') as any
+
+    for (let index = 0; index < topics.length; index++) {
+        const element = topics[index]
+        element.innerHTML = generate(topics.length)
+    }
+}
+
 onMounted(async () => {
     init(gridData)
+    generateTopic()
 })
 </script>
 
@@ -205,65 +232,31 @@ onMounted(async () => {
             </div>
             <div class="grid-item" style="background: #529b2e">
                 <i class="index">1</i>
-                <div>
-                    小明常用污言秽语对其他学生进行攻击，从而产生矛盾
-                    <span style="color: red">蹲起3个</span>
-                </div>
-                <div style="display: none">属于，校园欺凌是指同学间欺负弱小、言语羞辱及敲诈勒索甚至殴打的行为等。</div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #337ecc">
                 <i class="index">2</i>
-                <div>开展校园欺凌治理为主题的专题教育，开展品德。心理健康和安全教育</div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f3d19e">
                 <i class="index">3</i>
-                <div>
-                    给李明取侮辱性绰号侮辱他人人格
-                    <span style="color: red">原地转1圈</span>
-                </div>
-                <div style="display: none">属于，校园欺凌是指同学间欺负弱小、言语羞辱及敲诈勒索甚至殴打的行为等。</div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">4</i>
-                <div>
-                    我国刑法对犯罪年龄的界定是（）
-                    <br />
-                    A已满16周岁应当负刑事责任
-                    <br />
-                    B已满14周岁不满16周岁故意伤害不负刑责
-                    <br />
-                    C已满16周岁不负刑事责任
-                </div>
-                <div style="display: none">A</div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #a0cfff">
                 <i class="index">5</i>
-                <div>
-                    看到同学被欺负了，高年级张明及时制止，并告知老师
-                    <span style="color: red">前进一格</span>
-                </div>
-                <div style="display: none">
-                    对，张明及时制止校园欺负行为，避免被欺负的同学受到更大的伤害，通过求助老师，让老师介入解决事情。
-                </div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #ab9bb8">
                 <i class="index">6</i>
-                <div style="overflow: hidden; height: 100%">
-                    <p>此插画是校园欺凌吗？</p>
-                    <image style="width: 400px; height: 300px" :src="item" />
-                </div>
-                <div style="display: none">
-                    是，校园内外学生间一方(个体或群体)单次或多次蓄意或恶意通过肢体、语言实施欺负、侮辱，造成另一方(个体或群体)身体和心理伤害、财产损失或精神损害等的行为是校园欺凌
-                    。
-                </div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #fab6b6">
                 <i class="index">7</i>
-                <div>
-                    王明借助身体的优势打骂比较弱小的同学
-                    <span style="color: red">原地转1圈</span>
-                </div>
-                <div style="display: none">是，校园欺凌是指同学间欺负弱小、言语羞辱及敲诈勒索甚至殴打的行为等。</div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #529b2e">
                 <i class="index">8</i>
@@ -397,56 +390,24 @@ onMounted(async () => {
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">10</i>
-                <div>同学小张向低年级学生索要钱物，不给就软硬兼施，威逼利诱</div>
-                <div style="display: none">是，校园欺凌是指同学间欺负弱小、言语羞辱及敲诈勒索甚至殴打的行为等。</div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #a0cfff">
                 <i class="index">11</i>
-                <div>遭遇校园暴力，应在学校、警方或家长的帮助下，制止暴力，决不能逆来顺受或以暴制暴</div>
-                <div style="display: none">
-                    是。当我们遭遇校园暴力，首先可以大声警告对方，他们的所作所为是违法违纪的，会受到法律纪律严厉的制裁，会为此付出应有的代价。这样做的目的一是大声告诉周围的老师同学关注欺凌者的行为，二是欺凌者大都知道自己的行为不对，心虚，洪亮的声音可以起一个震摄作用。如果对方还是继续欺凌行为的话，应适当自卫，而不是忍受挨打。自卫的原则不是以暴制暴打回去，而是同样起一个震摄作用，以行动告诉对方我们不是软弱可欺的。一般欺凌者都欺软怕硬，若看到欺负对象奋起反抗，多会心虚停止攻击行为，而如果被欺负者默默忍受，反而会让他更加得意忘形，从而持续攻击行为，直到达到目的为止。如果反抗后对方仍未停止攻击，应该在自卫的同时大声呼救求助，并且寻找机会逃走，保护好自身安全是最重要的。
-                </div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #faecd8">
                 <i class="index">12</i>
-                <div>
-                    以下哪个关于欺凌的观点是正确的？
-                    <br />
-                    A.孩子只是在互相开玩笑
-                    <br />
-                    B.孩子收到欺凌告诉他要反击回去
-                    <br />
-                    C.孩子告诉家长被同学欺负，家长责怪其胆小、懦弱等
-                    <br />
-                    D.欺凌者。被欺凌者都是受欺凌行为影响的孩子，家长需要帮助孩子找办法应对和处理
-                </div>
-                <div style="display: none">D</div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #c45656">
                 <i class="index">13</i>
-                <div>张鹏不断地用语言、行为等给其他同学造成精神或心理上的压力，使其出现不良表现</div>
-                <div style="display: none">
-                    是，校园内外学生间一方单次或多次蓄意或恶意通过肢体、语言实施欺负、侮辱，造成另一方(个体或群体)身体和心理伤害、财产损失或精神损害等的行为是校园欺凌
-                    。
-                </div>
+                <div class="topic"></div>
             </div>
 
             <div class="grid-item" style="background: #a0cfff">
                 <i class="index">14</i>
-                <div>遇到校园欺凌了，你该怎么处理？</div>
-                <div style="display: none">
-                    【开放性答案】
-                    <br />
-                    1、沉着冷静，采取迂回战术，尽可能拖延时间。
-                    <br />
-                    2、人身安全永远是第一位，不要去激怒对方，必要时，向路人、同学、老师呼救求助。
-                    <br />
-                    3、顺从对方的话去说，从其言语中找出可插入话题，缓解气氛，分散对方注意力，同时获取信任，为自己争取时间。
-                    <br />
-                    4、上学和放学尽可能结伴而行。
-                    <br />
-                    5、穿戴用品尽量低调，不要过于招摇。不主动与同学发生冲突，一旦发生及时找老师解决
-                </div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">15</i>
@@ -515,49 +476,19 @@ onMounted(async () => {
             </div>
             <div class="grid-item" style="background: #9381a9">
                 <i class="index">16</i>
-                <div>
-                    发现同学（）可能是校园欺凌的信号
-                    <br />
-                    A.身体表面无故出现瘀伤、抓伤等
-                    <br />
-                    B.不同某同学玩
-                    <br />
-                    C.不愿借东西给某同学
-                </div>
-                <div style="display: none">A</div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f3d19e">
                 <i class="index">17</i>
-                <div>说一句反对校园欺凌的标语</div>
-                <div style="display: none">
-                    （1）小事不计较，大事共商讨，友爱互助团结好.
-                    <br />
-                    （2）言出不必惊人，谈吐一定文明
-                    <br />
-                    （3）健康生活，文明做人，平安校园，幸福一生
-                    <br />
-                    （4）欺凌同学要不得，互助互爱好品德
-                </div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #79bbff">
                 <i class="index">18</i>
-                <div>校园欺凌的危害</div>
-                <div style="display: none">
-                    （1）校园暴力会使学生的身心健康受到伤害。校园暴力不仅直接伤害了学生的身体，还会严重损害学生的心理健康，有些学生由此产生恐惧心理，难以集中精力学习，造成学习成绩下降，有的甚至不能正常完成学业。
-                    （2）校园暴力会使家长的工作生活受到影响。由于担心校园暴力发生在自己孩子身上，许多家长亲自接着孩子上下学，从而影响他们的正常工作和生活，有的家长不得不求助于相关法制机构。
-                    （3）校园暴力会使校园正常秩序受到破坏。校园暴力的存在和发生，使学生不得不挤出时间和精力采取相应的防范措施，既影响了正常的教学秩序，又给学校管理带来很大困难。
-                </div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #79bbff">
                 <i class="index">19</i>
-                <div>
-                    校园欺凌下面哪个是（）
-                    <br />
-                    A不跟同学说话
-                    <br />
-                    B网上传播谣言，人身攻击 不借物品
-                </div>
-                <div style="display: none">B</div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">20</i>

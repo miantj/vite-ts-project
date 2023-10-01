@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import MFD from '@/../public/mfd.json'
+import MFD from '@/../public/mfd'
 import Dice from './dice.vue'
-import { trim, deepClone } from '@/utils'
+import { trim } from '@/utils'
 import { startEnd, init } from '@/views/dice'
 
 console.warn(MFD)
@@ -50,8 +50,8 @@ const generate = (num: number): string => {
     let i = Math.floor(Math.random() * MFD.length)
     if (!gridData.topics.includes(i)) {
         gridData.topics.push(i)
-        let topic = trim(MFD[i].topic, 'all').replace(/(A\.|B\.|C\.|D\.)/g, '<br>$1')
-        let answer = trim(MFD[i].answer, 'all').replace(/(A\.|B\.|C\.|D\.)/g, '<br>$1')
+        let topic = trim(MFD[i].topic, 'all').replace(/(A\.|B\.|C\.|D\.)/g, '<br> &nbsp; $1')
+        let answer = trim(MFD[i].answer, 'all')
         return `
                 <div>${topic}</div>
                 <div style="display: none">${answer}</div>
