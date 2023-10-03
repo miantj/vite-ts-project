@@ -4,7 +4,6 @@ import Dice from './dice.vue'
 import { trim } from '@/utils'
 import { startEnd, init } from '@/views/dice'
 
-console.warn(MFD)
 
 const gridData = reactive({
     horizontal: 8, //横

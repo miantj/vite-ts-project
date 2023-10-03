@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ElMessage, ElMessageBox } from 'element-plus'
+import MFD from '@/../public/xf'
 import Dice from './dice.vue'
+import { trim } from '@/utils'
 import { startEnd, init } from '@/views/dice'
 
 const gridData = reactive({
@@ -16,6 +17,7 @@ const gridData = reactive({
     answer: '',
     showAnswer: false,
     type: 'constitution',
+    topics: [],
 } as any)
 
 const dialogClose = () => {
@@ -42,8 +44,34 @@ const close = () => {
     gridData.start = true
 }
 
+const generate = (num: number): string => {
+    if (num > MFD.length) return ''
+    let i = Math.floor(Math.random() * MFD.length)
+    if (!gridData.topics.includes(i)) {
+        gridData.topics.push(i)
+        let topic = trim(MFD[i].topic, 'all').replace(/(A\.|B\.|C\.|D\.)/g, '<br> &nbsp; $1')
+        let answer = trim(MFD[i].answer, 'all')
+        return `
+                <div>${topic}</div>
+                <div style="display: none">${answer}</div>
+                `
+    } else {
+        return generate(num)
+    }
+}
+
+const generateTopic = () => {
+    const topics = document.querySelectorAll('.topic') as any
+
+    for (let index = 0; index < topics.length; index++) {
+        const element = topics[index]
+        element.innerHTML = generate(topics.length)
+    }
+}
+
 onMounted(async () => {
     init(gridData)
+    generateTopic()
 })
 </script>
 <template>
@@ -206,40 +234,19 @@ onMounted(async () => {
             </div>
             <div class="grid-item" style="background: #529b2e">
                 <i class="index">1</i>
-                <div>
-                    我国的国家宪法日是什么时候确立的？
-                    <br />
-                    A.2014年11月1日
-                    <br />
-                    B.2014年11月3日
-                    <br />
-                    C.2014年11月2日
-                    <br />
-                    D.2014年11月4日A
-                </div>
-                <div style="display: none">A</div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #337ecc">
                 <i class="index">2</i>
-                <div>
-                    哪些是见义勇为的情况？
-                    <span style="color: red">前进2步</span>
-                </div>
-                <div style="display: none">
-                    见义勇为是指为保护国家、集体利益或者他人的人身、财产安全，不顾个人安危，与正在发生的违法犯罪作斗争或者抢险救灾的行为。
-                    具体来看，包括同正在进行的侵犯国家、集体财产或者他人人身、财产安全的违法犯罪行为作斗争的；同正在进行的危害国家安全、妨害公共安全或者扰乱公共秩序的违法犯罪行为作斗争的；在抢险救灾中，不顾个人安危抢救国家、集体财产或者他人生命财产的；
-                    以及其他为保护国家、集体利益或者他人生命财产安全免受正在遭受的侵害，不顾个人安危，挺身救助的行为。
-                </div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f3d19e">
                 <i class="index">3</i>
-                <div>全国人民代表大会每届任期为几年</div>
-                <div style="display: none">5年</div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">4</i>
-                <div>建国以来我国共颁布了4部宪法： 1954年宪法、1975年宪法、1978年宪法、1982年宪法，对吗？</div>
-                <div style="display: none">对</div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #a0cfff">
                 <i class="index">5</i>
@@ -306,26 +313,11 @@ onMounted(async () => {
             </div>
             <div class="grid-item" style="background: #ab9bb8">
                 <i class="index">6</i>
-                <div>
-                    宪法修改机关是（ ）
-                    <br />
-                    A.最高人民法院
-                    <br />
-                    B.国务院
-                    <br />
-                    C.司法部
-                    <br />
-                    D.全国人民代表大会
-                </div>
-
-                <div style="display: none">D</div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #fab6b6">
                 <i class="index">7</i>
-                <div>四项基本原则的内容是什么</div>
-                <div style="display: none">
-                    坚持社会主义道路，坚持人民民主专政，坚持共产党的领导，坚持马列主义、毛泽东思想。
-                </div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #529b2e">
                 <i class="index">8</i>
@@ -411,50 +403,25 @@ onMounted(async () => {
             </div>
             <div class="grid-item" style="background: #f3d19e">
                 <i class="index">9</i>
-                <div>宪法规范的特点是：最高性、包容性和概括性、制裁的特殊性，对吗？</div>
-                <div style="display: none">对</div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">10</i>
-                <div>
-                    宪法规定“中华人民共和国的一切权利属于（）
-                    <br />
-                    A.工人阶级
-                    <br />
-                    B.全体公民
-                    <br />
-                    C.人民
-                    <br />
-                    D.执政党
-                </div>
-                <div style="display: none">C</div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #a0cfff">
                 <i class="index">11</i>
-                <div>宪法规定最高国家权利机关是什么</div>
-                <div style="display: none">全国人民代表大会</div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #faecd8">
                 <i class="index">12</i>
                 <div>
-                    学习到《民法典》哪些知识？
                     <span style="color: red">前进3格</span>
                 </div>
             </div>
             <div class="grid-item" style="background: #c45656">
                 <i class="index">13</i>
-                <div>
-                    宪法中最核心的权利义务关系是（）
-                    <br />
-                    A.国家与社会团体间的权利义务关系
-                    <br />
-                    B.国家与公民间的权利义务关系
-                    <br />
-                    C.国家与国家机关间的权利义务关系
-                    <br />
-                    D.公民与公民间的权利义务关系
-                </div>
-                <div style="display: none">B</div>
+                <div class="topic"></div>
             </div>
 
             <div class="grid-item" style="background: #a0cfff">
@@ -520,24 +487,15 @@ onMounted(async () => {
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">15</i>
-                <div>公民的含义是什么</div>
-                <div style="display: none">具有某一国国籍，并根据该国法律规定享有权利和承担义务的人。</div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #9381a9">
                 <i class="index">16</i>
-                <div>
-                    凡是年满18周岁，在中国定居的人，就是中国公民，这种说法正确吗？
-                    <br />
-                    A.对
-                    <br />
-                    B.错
-                </div>
-                <div style="display: none">B</div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f3d19e">
                 <i class="index">17</i>
-                <div>公民在年老。疾病或者丧失劳动力的情况下，有从国家和社会获得物质帮助的权利，对吗?</div>
-                <div style="display: none">对</div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #79bbff">
                 <i class="index">18</i>
@@ -606,34 +564,15 @@ onMounted(async () => {
             </div>
             <div class="grid-item" style="background: #79bbff">
                 <i class="index">19</i>
-                <div>
-                    受教育权既是公民的权利，也是公民的义务，这种说法正确吗？
-                    <br />
-                    A.对
-                    <br />
-                    B.错
-                </div>
-                <div style="display: none">A</div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">20</i>
-                <div>我国社会主义经济制度的基础是生产资料的社会主义公有制。实行各尽所能、按劳分配。这个说法对吗？</div>
-                <div style="display: none">对</div>
+                <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f89898">
                 <i class="index">21</i>
-                <div>
-                    依照宪法规定，我国的根本制度是（）
-                    <br />
-                    A.人民民主专政
-                    <br />
-                    B.社会主义制度
-                    <br />
-                    C.中国共产党的领导
-                    <br />
-                    D.人民代表大会制度
-                </div>
-                <div style="display: none">B</div>
+                <div class="topic"></div>
             </div>
 
             <div class="grid-item grid-end" style="background: #b43d63">
