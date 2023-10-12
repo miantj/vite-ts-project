@@ -1,8 +1,22 @@
 <script setup lang="ts">
-onMounted(async () => {})
+import { useGlobalStoreHook } from '@/store/modules/global'
+const aud = ref(useGlobalStoreHook().audioSwitch || false)
+
+const audioChange = () => {
+    const audioRef = document.getElementById('audioRef') as any
+    if (aud.value) {
+        audioRef.play()
+    } else {
+        audioRef.pause()
+    }
+    useGlobalStoreHook().audioSwitch = aud.value
+}
 </script>
 <template>
     <div class="main">
+        <div class="audio">
+            <el-switch v-model="aud" @change="audioChange" />
+        </div>
         <div class="title">
             <span>学法冲关智多星</span>
         </div>
@@ -59,6 +73,12 @@ onMounted(async () => {})
             font-weight: bold;
             color: #29d;
         }
+    }
+    .audio {
+        position: absolute;
+        top: 60px;
+        left: 60px;
+        z-index: 99;
     }
 }
 </style>

@@ -13,54 +13,69 @@
 const basicRouter = [
     {
         path: '/',
-        name: 'home',
-        component: () => import('@/views/home.vue'),
+        name: 'home2',
+        component: () => import('@/layout/components/router-view.vue'),
+        redirect: '/home',
         meta: {
             title: '首页',
             icon: 'home-filled',
             hiddenChildren: true,
         },
+        children: [
+            {
+                path: '/home',
+                name: 'home',
+                component: () => import('@/views/home.vue'),
+                meta: {
+                    title: '首页',
+                    icon: 'home-filled',
+                    hiddenChildren: true,
+                },
+            },
+            {
+                path: '/home1',
+                name: 'home1',
+                component: () => import('@/views/home1.vue'),
+                meta: {
+                    title: '首页',
+                    icon: 'home-filled',
+                    hiddenChildren: true,
+                },
+            },
+
+            {
+                path: '/campusBullying',
+                name: 'campusBullying',
+                component: () => import('@/views/campusBullying.vue'),
+                meta: {
+                    title: '防范校园欺凌',
+                    icon: 'home-filled',
+                    hiddenChildren: true,
+                },
+            },
+            {
+                path: '/civilCode',
+                name: 'civilCode',
+                component: () => import('@/views/civilCode.vue'),
+                meta: {
+                    title: '民法典大冲关',
+                    icon: 'home-filled',
+                    hiddenChildren: true,
+                },
+            },
+            {
+                path: '/constitution',
+                name: '宪法知识大冲关',
+                component: () => import('@/views/constitution.vue'),
+                meta: {
+                    title: '宪法知识大冲关',
+                    icon: 'home-filled',
+                    hiddenChildren: true,
+                },
+            },
+        ],
     },
-    {
-        path: '/home1',
-        name: 'home1',
-        component: () => import('@/views/home1.vue'),
-        meta: {
-            title: '首页',
-            icon: 'home-filled',
-            hiddenChildren: true,
-        },
-    },
-    {
-        path: '/campusBullying',
-        name: 'campusBullying',
-        component: () => import('@/views/campusBullying.vue'),
-        meta: {
-            title: '防范校园欺凌',
-            icon: 'home-filled',
-            hiddenChildren: true,
-        },
-    },
-    {
-        path: '/civilCode',
-        name: 'civilCode',
-        component: () => import('@/views/civilCode.vue'),
-        meta: {
-            title: '民法典大冲关',
-            icon: 'home-filled',
-            hiddenChildren: true,
-        },
-    },
-    {
-        path: '/constitution',
-        name: '宪法知识大冲关',
-        component: () => import('@/views/constitution.vue'),
-        meta: {
-            title: '首页',
-            icon: 'home-filled',
-            hiddenChildren: true,
-        },
-    },
+
     {
         path: '/error',
         name: 'error',

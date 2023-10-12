@@ -29,18 +29,7 @@ const set: setType = reactive({
 
 window.document.body.setAttribute('layout', layout.value)
 
-const handleMessage = (params: any) => {
-    if (params.origin != location.host) {
-        const data = params.data
-        if (data.source == 'child') {
-            useLayoutStoreHook().CHANGE_IFRAME(false)
-            useGlobalStoreHook().clientHeight = useGlobalStoreHook().clientHeight + 150
-        }
-    }
-    emitter.emit('mittHandleMessage', params)
-}
 
-window.addEventListener('message', handleMessage)
 onMounted(async () => {})
 </script>
 
