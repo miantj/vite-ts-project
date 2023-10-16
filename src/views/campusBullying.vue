@@ -796,16 +796,23 @@ onMounted(async () => {
     margin: auto;
     overflow: hidden;
     text-align: center;
-
     .active {
+        background: url('@/assets/img/chicken.png') no-repeat;
+        background-size: 100% 100%;
+        width: 70px;
+        height: 70px;
+        margin-top: 30px;
+        margin-left: 30px;
         top: -5px;
-        left: -20px;
+        left: -50px;
         z-index: 2;
     }
 
     .user2 {
+        background: url('@/assets/img/rabbit.png') no-repeat;
+        background-size: 100% 100%;
         top: -5px;
-        left: 40px;
+        left: 20px;
     }
 
     .grid-start,

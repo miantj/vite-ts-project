@@ -4,7 +4,6 @@ import Dice from './dice.vue'
 import { trim } from '@/utils'
 import { startEnd, init } from '@/views/dice'
 
-
 const gridData = reactive({
     horizontal: 8, //横
     vertical: 6, //竖
@@ -1383,5 +1382,13 @@ onMounted(async () => {
     margin: auto;
     overflow: hidden;
     text-align: center;
+    .active {
+        background: url('@/assets/img/man.jpg') no-repeat;
+        background-size: 100% 100%;
+    }
+    .user {
+        background: url('@/assets/img/girl.jpg') no-repeat;
+        background-size: 100% 100%;
+    }
 }
 </style>

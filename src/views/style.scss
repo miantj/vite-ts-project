@@ -9,8 +9,6 @@
         position: absolute;
         top: 685px;
         left: 150px;
-        background: url('@/assets/img/ren.png') no-repeat;
-        background-size: 100% 100%;
         width: 90px;
         height: 100px;
         margin: 15px 20px 0 20px;
@@ -23,8 +21,6 @@
         top: 685px;
         left: 100px;
     }
-
-  
 
     .grid-item {
         position: absolute;
@@ -117,7 +113,6 @@
         position: relative;
         color: #e4353c;
         z-index: 2;
-
     }
 
     i {
@@ -228,7 +223,6 @@
     animation: yanhua 3s ease-out infinite 1.5s backwards, yanse3 3s ease-out infinite backwards 1.5s,
         touming 3s ease-out infinite 1.5s backwards;
 }
-
 
 @keyframes yanhua {
     0% {
