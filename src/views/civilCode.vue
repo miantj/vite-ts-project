@@ -1383,11 +1383,11 @@ onMounted(async () => {
     overflow: hidden;
     text-align: center;
     .active {
-        background: url('@/assets/img/man.jpg') no-repeat;
+        background: url('@/assets/img/man.png') no-repeat;
         background-size: 100% 100%;
     }
     .user {
-        background: url('@/assets/img/girl.jpg') no-repeat;
+        background: url('@/assets/img/girl.png') no-repeat;
         background-size: 100% 100%;
     }
 }

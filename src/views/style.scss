@@ -9,16 +9,15 @@
         position: absolute;
         top: 685px;
         left: 150px;
-        width: 90px;
-        height: 100px;
-        margin: 15px 20px 0 20px;
+        width: 60px;
+        height: 86px;
+        margin: 20px 20px 0 40px;
         z-index: 2;
-        transform: rotateY(185deg);
+        // transform: rotateY(185deg);
         transition: all 1s;
     }
 
     .user {
-        top: 685px;
         left: 100px;
     }
 

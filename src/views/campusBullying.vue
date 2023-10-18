@@ -799,10 +799,10 @@ onMounted(async () => {
     .active {
         background: url('@/assets/img/chicken.png') no-repeat;
         background-size: 100% 100%;
-        width: 70px;
-        height: 70px;
-        margin-top: 30px;
-        margin-left: 30px;
+        width: 60px;
+        height: 60px;
+        margin-top: 40px;
+        margin-left: 40px;
         top: -5px;
         left: -50px;
         z-index: 2;

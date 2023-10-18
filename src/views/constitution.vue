@@ -816,7 +816,18 @@ onMounted(async () => {
     margin: auto;
     overflow: hidden;
     text-align: center;
+    .active {
+        background: url('@/assets/img/rabbit2.png') no-repeat;
+        background-size: 100% 100%;
+    }
 
+    .user {
+        background: url('@/assets/img/turtle.png') no-repeat;
+        background-size: 100% 100%;
+        height: 36px;
+        width: 70px;
+        margin: 60px 20px 0 40px;
+    }
     .grid-item {
         position: absolute;
         padding: 26px 10px;
