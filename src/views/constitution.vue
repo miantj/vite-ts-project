@@ -52,7 +52,7 @@ const generate = (num: number): string => {
         let topic = trim(MFD[i].topic, 'all').replace(/(A\.|B\.|C\.|D\.)/g, '<br> &nbsp; $1')
         let answer = trim(MFD[i].answer, 'all')
         return `
-                <div>${topic}</div>
+                <div style="display: none">${topic}</div>
                 <div style="display: none">${answer}</div>
                 `
     } else {
@@ -233,19 +233,19 @@ onMounted(async () => {
                 <div></div>
             </div>
             <div class="grid-item" style="background: #529b2e">
-                <i class="index">1</i>
+                <i class="digit">1</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #337ecc">
-                <i class="index">2</i>
+                <i class="digit">2</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f3d19e">
-                <i class="index">3</i>
+                <i class="digit">3</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f89898">
-                <i class="index">4</i>
+                <i class="digit">4</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #a0cfff">
@@ -312,11 +312,11 @@ onMounted(async () => {
                 </el-icon>
             </div>
             <div class="grid-item" style="background: #ab9bb8">
-                <i class="index">6</i>
+                <i class="digit">6</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #fab6b6">
-                <i class="index">7</i>
+                <i class="digit">7</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #529b2e">
@@ -402,15 +402,15 @@ onMounted(async () => {
                 </el-icon>
             </div>
             <div class="grid-item" style="background: #f3d19e">
-                <i class="index">9</i>
+                <i class="digit">9</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f89898">
-                <i class="index">10</i>
+                <i class="digit">10</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #a0cfff">
-                <i class="index">11</i>
+                <i class="digit">11</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #faecd8">
@@ -418,9 +418,66 @@ onMounted(async () => {
                 <div>
                     <span style="color: red">前进3格</span>
                 </div>
+                <el-icon :size="50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+                        <path
+                            fill="#45413c"
+                            d="M8.98 45.04a15.02 1.96 0 1 0 30.04 0a15.02 1.96 0 1 0-30.04 0Z"
+                            opacity=".15"
+                        />
+                        <path
+                            fill="#daedf7"
+                            d="M24 20.8v23.7a6.62 6.62 0 0 0 2.36-.44l15.39-6a3.92 3.92 0 0 0 2.5-3.65V15.65a3.9 3.9 0 0 0-.81-2.37ZM4.56 13.28a3.9 3.9 0 0 0-.81 2.37v18.8a3.92 3.92 0 0 0 2.5 3.65l15.39 6a6.62 6.62 0 0 0 2.36.4V20.8Z"
+                        />
+                        <path
+                            fill="#fff"
+                            d="M24 20.8v23.7a6.62 6.62 0 0 0 2.36-.44l15.39-6a3.92 3.92 0 0 0 2.5-3.65V15.65a3.9 3.9 0 0 0-.81-2.37ZM4.56 13.28a3.9 3.9 0 0 0-.81 2.37v18.8a3.92 3.92 0 0 0 2.5 3.65l15.39 6a6.62 6.62 0 0 0 2.36.4V20.8Z"
+                        />
+                        <path
+                            fill="#daedf7"
+                            d="m41.75 34.4l-15.39 6a6.62 6.62 0 0 1-2.36.4v3.7a6.62 6.62 0 0 0 2.36-.44l15.39-6a3.92 3.92 0 0 0 2.5-3.65v-3.67a3.94 3.94 0 0 1-2.5 3.66Zm-35.5 0a3.94 3.94 0 0 1-2.5-3.66v3.71a3.92 3.92 0 0 0 2.5 3.65l15.39 6a6.62 6.62 0 0 0 2.36.4v-3.7a6.62 6.62 0 0 1-2.36-.44Z"
+                        />
+                        <path
+                            fill="none"
+                            stroke="#45413c"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M24 20.8v23.7a6.62 6.62 0 0 0 2.36-.44l15.39-6a3.92 3.92 0 0 0 2.5-3.65V15.65a3.9 3.9 0 0 0-.81-2.37ZM4.56 13.28a3.9 3.9 0 0 0-.81 2.37v18.8a3.92 3.92 0 0 0 2.5 3.65l15.39 6a6.62 6.62 0 0 0 2.36.4V20.8Z"
+                        />
+                        <path
+                            fill="#fff"
+                            d="m24 20.8l19.44-7.52A4 4 0 0 0 41.75 12L26.36 6a6.51 6.51 0 0 0-4.72 0L6.25 12a4 4 0 0 0-1.69 1.29Z"
+                        />
+                        <path
+                            fill="#daedf7"
+                            d="m41.75 12l-1.28-.49L26 17.09a5.58 5.58 0 0 1-4.06 0L7.53 11.5l-1.28.5a4 4 0 0 0-1.69 1.29L24 20.8l19.44-7.52A4 4 0 0 0 41.75 12Z"
+                        />
+                        <path
+                            fill="none"
+                            stroke="#45413c"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="m24 20.8l19.44-7.52A4 4 0 0 0 41.75 12L26.36 6a6.51 6.51 0 0 0-4.72 0L6.25 12a4 4 0 0 0-1.69 1.29Z"
+                        />
+                        <path
+                            fill="#ff6242"
+                            stroke="#45413c"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M19.43 12.89a4.57 1.96 0 1 0 9.14 0a4.57 1.96 0 1 0-9.14 0Z"
+                        />
+                        <path
+                            fill="#656769"
+                            stroke="#45413c"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M11.57 24.08c.23 1.61-.3 3-1.19 3.15s-1.81-1.07-2-2.68s.3-3 1.19-3.14s1.77 1.07 2 2.67Zm26.78-3.28c-.23 1.6.3 3 1.2 3.14s1.8-1.07 2-2.68s-.3-3-1.19-3.14s-1.78 1.07-2.01 2.68ZM27.32 36.47c-.23 1.61.3 3 1.2 3.15s1.8-1.07 2-2.68s-.3-3-1.19-3.14s-1.78 1.07-2.01 2.67Zm5.8-7.79c-.23 1.6.31 3 1.2 3.14s1.8-1.07 2-2.67s-.31-3-1.2-3.15s-1.76 1.07-2 2.68Zm-15.63 4.57c.23 1.61-.3 3-1.2 3.14s-1.8-1.07-2-2.67s.3-3 1.19-3.15s1.78 1.07 2.01 2.68Z"
+                        />
+                    </svg>
+                </el-icon>
             </div>
             <div class="grid-item" style="background: #c45656">
-                <i class="index">13</i>
+                <i class="digit">13</i>
                 <div class="topic"></div>
             </div>
 
@@ -486,15 +543,15 @@ onMounted(async () => {
                 </el-icon>
             </div>
             <div class="grid-item" style="background: #f89898">
-                <i class="index">15</i>
+                <i class="digit">15</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #9381a9">
-                <i class="index">16</i>
+                <i class="digit">16</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f3d19e">
-                <i class="index">17</i>
+                <i class="digit">17</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #79bbff">
@@ -563,15 +620,15 @@ onMounted(async () => {
                 </el-icon>
             </div>
             <div class="grid-item" style="background: #79bbff">
-                <i class="index">19</i>
+                <i class="digit">19</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f89898">
-                <i class="index">20</i>
+                <i class="digit">20</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f89898">
-                <i class="index">21</i>
+                <i class="digit">21</i>
                 <div class="topic"></div>
             </div>
 

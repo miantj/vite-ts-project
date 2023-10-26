@@ -57,7 +57,7 @@ const generate = (num: number): string => {
         let topic = trim(MFD[i].topic, 'all').replace(/(A\.|B\.|C\.|D\.)/g, '<br> &nbsp; $1')
         let answer = trim(MFD[i].answer, 'all')
         return `
-                <div>${topic}</div>
+                <div style="display: none">${topic}</div>
                 <div style="display: none">${answer}</div>
                 `
     } else {
@@ -231,31 +231,31 @@ onMounted(async () => {
                 </el-icon>
             </div>
             <div class="grid-item" style="background: #529b2e">
-                <i class="index">1</i>
+                <i class="digit">1</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #337ecc">
-                <i class="index">2</i>
+                <i class="digit">2</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f3d19e">
-                <i class="index">3</i>
+                <i class="digit">3</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f89898">
-                <i class="index">4</i>
+                <i class="digit">4</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #a0cfff">
-                <i class="index">5</i>
+                <i class="digit">5</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #ab9bb8">
-                <i class="index">6</i>
+                <i class="digit">6</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #fab6b6">
-                <i class="index">7</i>
+                <i class="digit">7</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #529b2e">
@@ -389,24 +389,24 @@ onMounted(async () => {
                 </el-icon>
             </div>
             <div class="grid-item" style="background: #f89898">
-                <i class="index">10</i>
+                <i class="digit">10</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #a0cfff">
-                <i class="index">11</i>
+                <i class="digit">11</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #faecd8">
-                <i class="index">12</i>
+                <i class="digit">12</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #c45656">
-                <i class="index">13</i>
+                <i class="digit">13</i>
                 <div class="topic"></div>
             </div>
 
             <div class="grid-item" style="background: #a0cfff">
-                <i class="index">14</i>
+                <i class="digit">14</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f89898">
@@ -475,19 +475,19 @@ onMounted(async () => {
                 </el-icon>
             </div>
             <div class="grid-item" style="background: #9381a9">
-                <i class="index">16</i>
+                <i class="digit">16</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f3d19e">
-                <i class="index">17</i>
+                <i class="digit">17</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #79bbff">
-                <i class="index">18</i>
+                <i class="digit">18</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #79bbff">
-                <i class="index">19</i>
+                <i class="digit">19</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f89898">

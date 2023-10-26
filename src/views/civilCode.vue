@@ -51,7 +51,7 @@ const generate = (num: number): string => {
         let topic = trim(MFD[i].topic, 'all').replace(/(A\.|B\.|C\.|D\.)/g, '<br> &nbsp; $1')
         let answer = trim(MFD[i].answer, 'all')
         return `
-                <div>${topic}</div>
+                <div style="display: none">${topic}</div>
                 <div style="display: none">${answer}</div>
                 `
     } else {
@@ -232,11 +232,11 @@ onMounted(async () => {
                 <div></div>
             </div>
             <div class="grid-item" style="background: #529b2e">
-                <i class="index">1</i>
+                <i class="digit">1</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #337ecc">
-                <i class="index">2</i>
+                <i class="digit">2</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f3d19e">
@@ -307,7 +307,7 @@ onMounted(async () => {
                 </el-icon>
             </div>
             <div class="grid-item" style="background: #f89898">
-                <i class="index">4</i>
+                <i class="digit">4</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #a0cfff">
@@ -374,7 +374,7 @@ onMounted(async () => {
                 </el-icon>
             </div>
             <div class="grid-item" style="background: #ab9bb8">
-                <i class="index">6</i>
+                <i class="digit">6</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #fab6b6">
@@ -526,15 +526,15 @@ onMounted(async () => {
                 </el-icon>
             </div>
             <div class="grid-item" style="background: #529b2e">
-                <i class="index">8</i>
+                <i class="digit">8</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f3d19e">
-                <i class="index">9</i>
+                <i class="digit">9</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f89898">
-                <i class="index">10</i>
+                <i class="digit">10</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #a0cfff">
@@ -622,7 +622,7 @@ onMounted(async () => {
                 </svg>
             </div>
             <div class="grid-item" style="background: #faecd8">
-                <i class="index">12</i>
+                <i class="digit">12</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #c45656">
@@ -691,11 +691,11 @@ onMounted(async () => {
                 </el-icon>
             </div>
             <div class="grid-item" style="background: #a0cfff">
-                <i class="index">14</i>
+                <i class="digit">14</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f89898">
-                <i class="index">15</i>
+                <i class="digit">15</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #9381a9">
@@ -762,7 +762,7 @@ onMounted(async () => {
                 </el-icon>
             </div>
             <div class="grid-item" style="background: #f3d19e">
-                <i class="index">17</i>
+                <i class="digit">17</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #79bbff">
@@ -912,7 +912,7 @@ onMounted(async () => {
                 </el-icon>
             </div>
             <div class="grid-item" style="background: #79bbff">
-                <i class="index">19</i>
+                <i class="digit">19</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f89898">
@@ -981,7 +981,7 @@ onMounted(async () => {
                 </el-icon>
             </div>
             <div class="grid-item" style="background: #f89898">
-                <i class="index">21</i>
+                <i class="digit">21</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f89898">
@@ -1050,7 +1050,7 @@ onMounted(async () => {
                 </el-icon>
             </div>
             <div class="grid-item" style="background: #f89898">
-                <i class="index">23</i>
+                <i class="digit">23</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f89898">
@@ -1134,11 +1134,11 @@ onMounted(async () => {
                 </el-icon>
             </div>
             <div class="grid-item" style="background: #f89898">
-                <i class="index">25</i>
+                <i class="digit">25</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item" style="background: #f89898">
-                <i class="index">26</i>
+                <i class="digit">26</i>
                 <div class="topic"></div>
             </div>
             <div class="grid-item grid-end" style="background: #b43d63">
