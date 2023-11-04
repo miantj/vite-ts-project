@@ -413,7 +413,7 @@ onMounted(async () => {
                 <i class="digit">11</i>
                 <div class="topic"></div>
             </div>
-            <div class="grid-item" style="background: #faecd8">
+            <div class="grid-item" style="background: #9a86ff">
                 <i class="index">12</i>
                 <div>
                     <span style="color: red">前进3格</span>

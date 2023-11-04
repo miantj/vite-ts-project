@@ -1,30 +1,37 @@
 <script setup lang="ts">
-import { useGlobalStoreHook } from '@/store/modules/global'
-const aud = ref(useGlobalStoreHook().audioSwitch || false)
+const audioRef = ref()
+const router = useRouter()
 
 const audioChange = () => {
-    const audioRef = document.getElementById('audioRef') as any
-    if (aud.value) {
-        audioRef.play()
-    } else {
-        audioRef.pause()
-    }
-    useGlobalStoreHook().audioSwitch = aud.value
+    audioRef.value = document.getElementById('audioRef') as any
+    router.push('/civilCode')
+    audioRef.value.play()
 }
+const audioChange2 = () => {
+    audioRef.value = document.getElementById('audioRef2') as any
+    audioRef.value.play()
+    router.push('/campusBullying')
+}
+const audioChange3 = () => {
+    audioRef.value = document.getElementById('audioRef3') as any
+    audioRef.value.play()
+    router.push('/constitution')
+}
+
+onActivated(() => {
+    if (audioRef.value) audioRef.value.pause()
+})
 </script>
 <template>
     <div class="main">
-        <div class="audio">
-            <el-switch v-model="aud" @change="audioChange" />
-        </div>
         <div class="title">
             <span>学法冲关智多星</span>
         </div>
         <p>
-            <span @click="$router.push('/civilCode')" style="color: #67c23a">民法典大冲关</span>
+            <span @click="audioChange" style="color: #67c23a">民法典大冲关</span>
         </p>
-        <p><span @click="$router.push('/campusBullying')" style="color: #e77510">防范校园欺凌</span></p>
-        <p><span @click="$router.push('/constitution')" style="color: #e9ae21">宪法知识大冲关</span></p>
+        <p><span @click="audioChange2" style="color: #e77510">防范校园欺凌</span></p>
+        <p><span @click="audioChange3" style="color: #e9ae21">宪法知识大冲关</span></p>
 
         <div class="bottom" style="text-align: left; padding-left: 32%; padding-top: 40px">
             <div>监制单位：广州市白云区司法局龙归司法所</div>

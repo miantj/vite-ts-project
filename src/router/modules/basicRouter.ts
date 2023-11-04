@@ -30,6 +30,7 @@ const basicRouter = [
                     title: '首页',
                     icon: 'home-filled',
                     hiddenChildren: true,
+                    cache: true,
                 },
             },
             {

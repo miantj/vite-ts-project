@@ -396,7 +396,7 @@ onMounted(async () => {
                 <i class="digit">11</i>
                 <div class="topic"></div>
             </div>
-            <div class="grid-item" style="background: #faecd8">
+            <div class="grid-item" style="background: #9a86ff">
                 <i class="digit">12</i>
                 <div class="topic"></div>
             </div>
