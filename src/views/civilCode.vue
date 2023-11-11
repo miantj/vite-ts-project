@@ -18,6 +18,7 @@ const gridData = reactive({
     showAnswer: false,
     start: true,
     type: 'civilCode',
+    grids: '',
     topics: [],
 } as any)
 
@@ -68,7 +69,23 @@ const generateTopic = () => {
     }
 }
 
+watch(
+    () => gridData.dialogVisible,
+    (news, old) => {
+        if (news) {
+            const index = gridData.pace[gridData.user - 1] - 2
+            const parentNode = gridData.grids[index < 0 ? 0 : index].parentNode
+            const dom = parentNode.getElementsByClassName('topic')
+            console.warn(parentNode, gridData.topics)
+            if (dom[0]) dom[0].innerHTML = generate(1)
+        }
+    }
+)
+
 onMounted(async () => {
+    gridData.grids = document.querySelectorAll('.digit ,.index') as any
+    console.warn(gridData.grids);
+    
     init(gridData)
     generateTopic()
 })
@@ -81,7 +98,6 @@ onMounted(async () => {
             <div class="active"></div>
             <div class="active user"></div>
             <div class="grid-item grid-start" style="background: #ffff33">
-                <p></p>
                 <p class="text">
                     起点
                     <br />
@@ -227,10 +243,7 @@ onMounted(async () => {
                     </svg>
                 </el-icon>
             </div>
-            <div class="grid-item" style="background: #529b2e">
-                <i class="index">1</i>
-                <div></div>
-            </div>
+            <div class="grid-item" style="background: #529b2e"></div>
             <div class="grid-item" style="background: #529b2e">
                 <i class="digit">1</i>
                 <div class="topic"></div>

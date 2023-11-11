@@ -19,6 +19,7 @@ const gridData = reactive({
     showAnswer: false,
     start: true,
     type: 'campusBullying',
+    grids: '',
     topics: [],
 } as any)
 
@@ -74,7 +75,22 @@ const generateTopic = () => {
     }
 }
 
+watch(
+    () => gridData.dialogVisible,
+    (news, old) => {
+        if (news) {
+            const index = gridData.pace[gridData.user - 1] - 1
+            const parentNode = gridData.grids[index < 0 ? 0 : index].parentNode
+            const dom = parentNode.getElementsByClassName('topic')
+            console.warn(parentNode, gridData.topics)
+            if (dom[0]) dom[0].innerHTML = generate(1)
+        }
+    }
+)
+
 onMounted(async () => {
+    gridData.grids = document.querySelectorAll('.digit ,.index') as any
+
     init(gridData)
     generateTopic()
 })
@@ -88,7 +104,6 @@ onMounted(async () => {
             <div class="active"></div>
             <div class="active user2"></div>
             <div class="grid-item grid-start" style="background: #ffff33">
-                <p></p>
                 <p class="text">起点GO</p>
                 <el-icon :size="70">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
