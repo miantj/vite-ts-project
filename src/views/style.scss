@@ -2,7 +2,7 @@
     position: relative;
     width: 1100px;
     height: 100%;
-    // margin: 50px auto;
+    margin-top: 50px;
     display: inline-block;
 
     .active {
@@ -135,9 +135,10 @@
 
 .grid_box {
     position: absolute;
-    left: 65%;
-    bottom: 19%;
+    left: 60%;
+    bottom: 18%;
     z-index: 10;
+    display: flex;
 }
 
 .box_card {
@@ -157,11 +158,6 @@
     color: #29d;
     font-size: 22px;
     cursor: pointer;
-}
-
-.userTitle {
-    padding: 10px;
-    font-size: 30px;
 }
 
 .yanhua {

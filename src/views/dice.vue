@@ -6,20 +6,30 @@ const props = defineProps({
         type: Boolean,
         default: true,
     },
+    title: {
+        type: String,
+        default: '玩家1',
+    },
 })
 
 const dicData = reactive({
     loseNumber: 1,
+    classID: '',
 } as any)
 
+function generateUniqueId() {
+    // 生成唯一ID的逻辑，可以使用时间戳和随机数的组合等方式
+    return 'unique_id_' + Math.random().toString(36).substr(2, 9)
+}
+
+dicData.dicData = generateUniqueId()
 const startRun = () => {
     if (!props.start) return
     emit('startChange')
-    const box = document.querySelector('.dice-box') as any
+    const box = document.querySelector(`.${dicData.dicData}`) as any
     box.style.animation = `rotate 0.1s linear infinite`
     setTimeout(() => {
         dicData.loseNumber = Math.round(Math.random() * 5 + 1)
-        console.warn(dicData.loseNumber)
 
         switch (dicData.loseNumber) {
             case 2:
@@ -44,15 +54,16 @@ const startRun = () => {
         }
         box.style.animation = 'none'
 
-        // emit('startEnd',18)
-        emit('startEnd', dicData.loseNumber)
+        emit('startEnd',7)
+        // emit('startEnd', dicData.loseNumber)
     }, 1000)
 }
 onMounted(async () => {})
 </script>
 <template>
     <div class="dice" @click="startRun">
-        <div class="dice-box">
+        <div class="name">{{ props.title }}</div>
+        <div class="dice-box" :class="dicData.dicData">
             <div class="dice first-face">
                 <span class="dot"></span>
             </div>
@@ -105,9 +116,17 @@ onMounted(async () => {})
 </template>
 <style lang="scss" scoped>
 .dice {
+    position: relative;
     width: 100px;
     display: inline-block;
     cursor: pointer;
+    .name {
+        position: absolute;
+        font-size: 20px;
+        top: 0%;
+        left: 30px;
+        font-weight: bold;
+    }
     .dice-box {
         margin: 50px auto;
         width: 50px;

@@ -42,7 +42,7 @@ const dialogClose = () => {
         return
     }
 
-    gridData.user = gridData.user == 1 ? 2 : 1
+    // gridData.user = gridData.user == 1 ? 2 : 1
 }
 
 const close = () => {
@@ -82,7 +82,7 @@ watch(
             const index = gridData.pace[gridData.user - 1] - 1
             const parentNode = gridData.grids[index < 0 ? 0 : index].parentNode
             const dom = parentNode.getElementsByClassName('topic')
-            console.warn(parentNode, gridData.topics)
+            // console.warn(parentNode, gridData.topics)
             if (dom[0]) dom[0].innerHTML = generate(1)
         }
     }
@@ -99,7 +99,6 @@ onMounted(async () => {
 <template>
     <div class="main">
         <div class="back" @click="$router.go(-1)">返回</div>
-        <div class="userTitle">玩家{{ gridData.user }}</div>
         <div class="grid">
             <div class="active"></div>
             <div class="active user2"></div>
@@ -755,9 +754,18 @@ onMounted(async () => {
         </div>
         <div class="grid_box">
             <Dice
-                @startEnd="(data:any) => startEnd(gridData,data)"
+                title="玩家1"
                 :start="gridData.start"
                 @startChange="gridData.start = false"
+                @startEnd="(data:any) => {gridData.user = 1;startEnd(gridData,data)}"
+                style="margin-right: 20px"
+            />
+
+            <Dice
+                title="玩家2"
+                :start="gridData.start"
+                @startChange="gridData.start = false"
+                @startEnd="(data:any) => {gridData.user = 2;startEnd(gridData,data)}"
             />
         </div>
 
