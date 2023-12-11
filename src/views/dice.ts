@@ -153,9 +153,9 @@ export const startEnd = (gridData: any, data: number) => {
                             if (gridData.type == 'campusBullying') {
                                 for (let index = 0; index < all.length; index++) {
                                     const element = all[index]
-                                    gridData.pace[index] = 0
+                                    gridData.pace[index] = '-20'
                                     element.style.top = '0'
-                                    element.style.left = index * 50 + 0
+                                    element.style.left = index * 30 + 0 + 'px'
                                 }
                             } else {
                                 for (let index = 0; index < all.length; index++) {
