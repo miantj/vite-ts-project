@@ -37,7 +37,8 @@ class sessionStorageProxy implements ProxyStorage {
     // 取
     public getItem(key: string): any {
         try {
-            return JSON.parse(this.storage.getItem(key))
+            let data = this.storage.getItem(key)
+            return isNaN(Number(data)) ? JSON.parse(data) : data
         } catch (error) {
             return this.storage.getItem(key)
         }

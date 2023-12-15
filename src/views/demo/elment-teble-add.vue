@@ -26,7 +26,7 @@ const handleEditRow = ({ row, column, event }: any) => {
 }
 
 const handleCurrentChange = (val: number) => {
-    console.log(`current page: ${val}`)
+    console.log(`current page: `, val)
 }
 
 tableColumn.value = [
@@ -67,12 +67,12 @@ const onAddItem = () => {
         date: '',
         name: '',
         address: '',
-        edit: true,
+        noRules: true,
     })
 }
 
-const saveAll = () => {
-    tableRef.value.saveAll()
+const saveAll = async () => {
+    console.warn(await tableRef.value.validate())
 }
 
 onMounted(() => {
@@ -123,16 +123,14 @@ onMounted(() => {
             :tableColumn="tableColumn"
             :resizeHeight="168"
             :showPagination="false"
+            :rowEdit="true"
             @selection-change="handleSelectionChange"
             @size-change="handleSizeChange"
             @row-edit="handleEditRow"
             @current-change="handleCurrentChange"
         >
             <template #name="scope">
-                <el-tag v-show="!scope.row.edit">{{ scope.row.name }}</el-tag>
-
-                <!-- 失去焦点时更改"edit"属性，显示文本 -->
-                <el-input v-show="scope.row.edit" type="text" v-model="scope.row.name" />
+                <el-input type="text" v-model="scope.row.name" />
             </template>
 
             <template #edit="scope">

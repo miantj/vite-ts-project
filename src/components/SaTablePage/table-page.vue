@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useGlobalStoreHook } from '@/store/modules/global'
-import { useLayoutStoreHook } from '@/layout/store'
 import type { ElTable, FormInstance } from 'element-plus'
 
 const props = defineProps({
@@ -67,15 +66,15 @@ const props = defineProps({
     },
 })
 
-const emit = defineEmits(['selectionChange', 'sizeChange', 'currentChange', 'rowEdit'])
+const emit = defineEmits(['selectionChange', 'pagSizeChange', 'pagCurrentChange'])
 
 const sum = ref(0)
 const selectionArr = ref()
-const editRow = ref()
+// const editRow = ref()
 
 // 表单数据与校验
 const tableRuleFormRef = ref<FormInstance>()
-const formData = ref()
+const formData = ref({} as any)
 let formRules = {} as any
 
 for (let index = 0; index < props.tableColumn.length; index++) {
@@ -104,12 +103,12 @@ const handleSelectionChange = (val: any) => {
 const handleSizeChange = (val: number) => {
     console.warn(val)
 
-    emit('sizeChange', val)
+    emit('pagSizeChange', val)
 }
 
 const handleCurrentChange = (val: number) => {
     console.warn(val)
-    emit('currentChange', val)
+    emit('pagCurrentChange', val)
 }
 
 const tableRowClassName = ({ row, rowIndex }: { row: any; rowIndex: number }) => {
@@ -125,69 +124,18 @@ const toggleRowSelection = (row: any, type: boolean): any => {
     multipleTableRef.value?.toggleRowSelection(row, type)
 }
 
-async function handleRowClick(row: any, column: any, event: any) {
-    let vali = true
-    if (props.rowEdit) {
-        if (editRow.value?.row !== row) {
-            if (editRow.value?.row) {
-                // 检验表单
-                vali = (await validate()) as any
-            }
-
-            if (vali) {
-                if (editRow.value?.row && editRow.value?.row?.edit) {
-                    editRow.value.row.edit = false
-                    emit('rowEdit', editRow.value)
-                    editRow.value = null
-                }
-
-                editRow.value = { row, column, event }
-                formData.value = editRow.value?.row
-
-                row.edit = true
-            }
-        }
-    }
-}
-
-async function closeEditRow(e: any) {
-    if (props.rowEdit && editRow.value) {
-        let row: any = null
-        for (let index = 0; index < editRow.value?.event?.path.length; index++) {
-            const element = editRow.value?.event?.path[index]
-            if (element.className?.includes('el-table__row')) {
-                row = element
-            }
-        }
-
-        if (!row?.contains(e.target)) {
-            // 检验表单
-            let vali = (await validate()) as any
-            if (vali && editRow.value?.row?.edit) {
-                emit('rowEdit', editRow.value)
-                editRow.value.row.edit = false
-                editRow.value = null
-            }
-        }
-    }
-}
-
-async function saveAll() {
-    for (let index = 0; index < props.data.length; index++) {
-        const element = props.data[index]
-        // 编辑状态列表进行检验
-        if (element.edit) {
-            formData.value = element
-            let vali = (await validate()) as any
-            if (vali) {
-                element.edit = false
-            }
-        }
-    }
-}
-
 const validate = () => {
     const formEl = tableRuleFormRef.value
+    for (let index = 0; index < props.data.length; index++) {
+        const element = props.data[index]
+        if (element?.noRules) element.noRules = false
+        // 编辑状态列表进行检验
+        let val = 0
+        for (const item of props.tableColumn) {
+            if (item?.prop) formData.value[`${item?.prop}${index}${val}`] = element[item?.prop]
+            ++val
+        }
+    }
 
     return new Promise<void>((resolve, reject) => {
         nextTick(() => {
@@ -208,27 +156,9 @@ const validate = () => {
 defineExpose({
     toggleRowSelection, //设置是否选中状态
     validate, //校验表单
-    saveAll, //保持全部列表
 })
 
-onMounted(() => {
-    nextTick(() => {
-        document.addEventListener('click', closeEditRow)
-    })
-})
-onActivated(() => {
-    nextTick(() => {
-        document.addEventListener('click', closeEditRow)
-    })
-})
-
-// 移除绑定的closeEditRow事件监听
-onBeforeUnmount(() => {
-    document.removeEventListener('click', closeEditRow)
-})
-onDeactivated(() => {
-    document.removeEventListener('click', closeEditRow)
-})
+onMounted(() => {})
 </script>
 
 <template>
@@ -241,12 +171,11 @@ onDeactivated(() => {
                 :header-cell-style="{ background: 'var(--sa-table-header-color)', color: '#333' }"
                 :row-class-name="tableRowClassName"
                 @selection-change="handleSelectionChange"
-                @row-click="handleRowClick"
                 v-bind="$attrs"
             >
                 <slot v-if="props.native"></slot>
                 <template v-else>
-                    <template v-for="item in props.tableColumn" :key="item.prop">
+                    <template v-for="(item, index) in props.tableColumn" :key="item.prop">
                         <slot v-if="item.init"></slot>
                         <el-table-column
                             v-else
@@ -262,18 +191,23 @@ onDeactivated(() => {
                             :align="item?.align ? item?.align : 'center'"
                         >
                             <template v-if="item?.slot" #default="scope">
-                                <slot v-if="!scope.row.edit" :name="item.prop" v-bind="scope"></slot>
-
-                                <el-form-item v-if="scope.row.edit" :prop="item.prop" :rules="item.rules">
+                                <el-form-item
+                                    :prop="item.prop + scope.$index + index"
+                                    :rules="scope.row.noRules ? [] : item.rules"
+                                >
                                     <slot :name="item.prop" v-bind="scope"></slot>
                                 </el-form-item>
                             </template>
 
                             <template v-else-if="item.type !== 'selection'" #default="scope">
-                                <span v-show="!scope.row.edit">
+                                <span v-if="!props.rowEdit">
                                     {{ scope.row[item.prop] ? scope.row[item.prop] : item.empty ? item.empty : '-' }}
                                 </span>
-                                <el-form-item v-if="scope.row.edit" :prop="item.prop" :rules="item.rules">
+                                <el-form-item
+                                    v-if="props.rowEdit"
+                                    :prop="item.prop + scope.$index + index"
+                                    :rules="scope.row.noRules ? [] : item.rules"
+                                >
                                     <el-input type="text" v-model="scope.row[item.prop]" />
                                 </el-form-item>
                             </template>

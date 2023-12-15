@@ -10,7 +10,7 @@ import { storageSession } from '@/utils/storage'
 import { useNav } from '@/layout/hook/nav'
 import { version, name } from '../package.json'
 import { ElConfigProvider } from 'element-plus'
-import zhCn from 'element-plus/lib/locale/lang/zh-cn'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
 const themesAll = import.meta.glob('./style/themes.ts', { eager: true }) as any
 

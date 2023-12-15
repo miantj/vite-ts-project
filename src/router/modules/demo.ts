@@ -75,6 +75,14 @@ const demoRouter = [
                 },
             },
             {
+                path: '/demo/elmentTebleRadio',
+                name: 'elmentTebleRadio',
+                component: () => import('@/views/demo/elment-teble-radio.vue'),
+                meta: {
+                    title: '表单单选',
+                },
+            },
+            {
                 path: '/demo/elmentTeble',
                 name: 'elmentTeble',
                 component: () => import('@/layout/components/router-view.vue'),

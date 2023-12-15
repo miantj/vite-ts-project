@@ -137,7 +137,7 @@ defineExpose({
                     <span class="custom-tree-node">
                         <span
                             :class="{
-                                'node-label': data.id == currentLabel || node.label == currentLabel,
+                                'node-label': data.id === currentLabel || node.label === currentLabel,
                             }"
                             :title="node.label"
                         >
@@ -195,7 +195,7 @@ defineExpose({
                         <span class="custom-tree-node">
                             <span
                                 :class="{
-                                    'node-label': data.id == currentLabel || node.label == currentLabel,
+                                    'node-label': data.id === currentLabel || node.label === currentLabel,
                                 }"
                                 :title="node.label"
                             >

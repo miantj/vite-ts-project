@@ -1,11 +1,11 @@
 <script setup lang="ts">
 const tableData = ref()
 const tableColumn = ref()
-const tableRef = ref()
 const tebleData = reactive({
     currentPage: 1, //当前页数
     pageTotal: 11, // 总条目数
     pageSize: 10, // 每页显示条目个数
+    currentData: {}, // 每页显示条目个数
 })
 
 const handleClick = (data: any) => {
@@ -13,7 +13,8 @@ const handleClick = (data: any) => {
 }
 
 const handleSelectionChange = (val: any) => {
-    console.warn(val)
+    tebleData.currentData = val
+    console.warn(tebleData.currentData)
 }
 
 const handleSizeChange = (val: number) => {
@@ -28,18 +29,11 @@ const handleCurrentChange = (val: number) => {
     console.log(`current page: ${val}`)
 }
 
-const saveAll = async () => {
-    console.warn(await tableRef.value.validate())
-}
-
 tableColumn.value = [
     {
-        type: 'selection',
+        prop: 'radio',
         width: 50,
-        align: 'center',
-        selectable: (row: any) => {
-            return row.status != 0
-        },
+        slot: true,
     },
     {
         prop: 'date',
@@ -119,9 +113,27 @@ onMounted(() => {
                 name: 'Tom',
                 address: 'No. 189, Grove St, Los Angeles',
             },
+            {
+                date: '2016-05-02',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles',
+            },
+            {
+                date: '2016-05-04',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles',
+            },
+            {
+                date: '2016-05-01',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles',
+            },
+            {
+                date: '2016-05-01',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles',
+            },
         ]
-
-        tebleData.pageTotal = tableData.value.length
     }, 1000)
 })
 </script>
@@ -133,26 +145,34 @@ onMounted(() => {
                 <span class="font-medium">扩展elemenet-table的表单动态编辑</span>
             </div>
         </template>
-        <el-button style="width: 100%" @click="saveAll">保存 Item</el-button>
         <sa-table-page
-            ref="tableRef"
-            stripe
             :data="tableData"
             :tableColumn="tableColumn"
-            :rowEdit="true"
             :resizeHeight="84"
             :pagination="{
                 currentPage: tebleData.currentPage,
                 total: tebleData.pageTotal,
                 pageSize: tebleData.pageSize,
             }"
-            @selection-change="handleSelectionChange"
+            highlight-current-row
+            @current-change="handleSelectionChange"
             @row-edit="handleEditRow"
             @pag-size-change="handleSizeChange"
             @pag-current-change="handleCurrentChange"
         >
+            <template #radio="scope">
+                <label class="el-radio el-radio--large">
+                    <span class="el-radio__input" :class="{ 'is-checked': tebleData.currentData == scope.row }">
+                        <input class="el-radio__original" type="radio" value="1" />
+                        <span class="el-radio__inner"></span>
+                    </span>
+                </label>
+            </template>
             <template #name="scope">
-                <el-input type="text" v-model="scope.row.name" />
+                <el-tag v-show="!scope.row.edit">{{ scope.row.name }}</el-tag>
+
+                <!-- 失去焦点时更改"edit"属性，显示文本 -->
+                <el-input v-show="scope.row.edit" type="text" v-model="scope.row.name" />
             </template>
 
             <template #edit="scope">

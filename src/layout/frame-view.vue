@@ -82,6 +82,10 @@ onMounted(() => {
     })
     init()
 })
+
+onUnmounted(() => {
+    emitter.off('mittHandleMessage')
+})
 </script>
 
 <template>

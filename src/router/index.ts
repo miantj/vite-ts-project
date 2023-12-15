@@ -184,6 +184,7 @@ const importMenuDynamic = async (menu: any) => {
 
 // 初始化路由
 export async function initRouter() {
+    routers = []
     if (!menuDynamic && menuStatic) routers = deepClone(routesStatic)
     let tag = true
     let arr: unknown[] = []
