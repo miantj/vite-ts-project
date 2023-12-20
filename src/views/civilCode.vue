@@ -3,6 +3,7 @@ import MFD from '@/../public/mfd'
 import Dice from './dice.vue'
 import { trim } from '@/utils'
 import { startEnd, init } from '@/views/dice'
+import { reactive } from 'vue';
 
 const gridData = reactive({
     horizontal: 8, //横
