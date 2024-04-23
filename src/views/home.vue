@@ -32,11 +32,6 @@ onActivated(() => {
         </p>
         <p><span @click="audioChange2" style="color: #e77510">防范校园欺凌</span></p>
         <p><span @click="audioChange3" style="color: #e9ae21">宪法知识大冲关</span></p>
-
-        <div class="bottom" style="text-align: left; padding-left: 32%; padding-top: 40px">
-            <div>监制单位：广州市白云区司法局龙归司法所</div>
-            <div>开发制作：明天健</div>
-        </div>
     </div>
 </template>
 <style lang="scss" scoped>
